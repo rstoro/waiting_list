@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img class="logo" src="./assets/logo.png" alt="Station300 Logo">
+    <!-- <img class="logo" src="./assets/logo.png" alt="Station300 Logo"> -->
     <WaitingList/>
   </div>
 </template>
@@ -17,11 +17,11 @@ export default {
 </script>
 
 <style>
-img.logo {
+/* img.logo {
   display: flex;
   max-width: 128px;
   height: auto;
-}
+} */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

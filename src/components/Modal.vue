@@ -89,6 +89,4 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-
-/* TODO: fix enter animation, no idea why it is not working */
 </style>

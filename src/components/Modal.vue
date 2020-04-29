@@ -65,9 +65,6 @@ export default {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
-.modal-body {
-  margin: 16px 0;
-}
 .modal-footer {
   display: flex;
   justify-content: flex-end;

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import WaitingList from './components/WaitingList.vue'
+import WaitingList from './components/WaitingList.vue';
 
 export default {
   name: 'App',

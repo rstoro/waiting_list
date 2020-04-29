@@ -11,16 +11,17 @@
         </a>
       </div>
     </section>
-    
+
     <NewGroupModal v-bind:show-modal="showModal" 
         v-on:closeNewGroupModal="showModal = false"
         v-on:newGroupCreated="addNewGroup"/>
 
     <section class="section">
       <div class="container">
-        <div v-for="(group, index) in groups" :key="`group-${index}`">
+        <div v-for="(group, index) in groups" :key="group.fullname"
+            v-dragging="{item: group, list: groups, group: 'group'}">
           <GroupCard v-bind:group="group" v-bind:uid="index"
-              v-on:deleteGroup="removeGroupFromGroups"/>
+              v-on:deleteGroup="removeGroupFromGroups" />
         </div>
       </div>
     </section>
@@ -29,8 +30,8 @@
 </template>
 
 <script>
-import NewGroupModal from './NewGroupModal.vue'
-import GroupCard from './GroupCard.vue'
+import NewGroupModal from './NewGroupModal.vue';
+import GroupCard from './GroupCard.vue';
 
 export default {
   name: 'WaitingList',
@@ -58,8 +59,7 @@ function addNewGroup(vm, newGroup) {
 }
 
 function removeGroupFromGroups(vm, index) {
-  console.log(index);
-  console.log(vm.groups.splice(index, index+1));
+  vm.groups.splice(index, index+1);
 }
 
 function DEBUGcreateGroup(fullname, phonenumber, notes) {

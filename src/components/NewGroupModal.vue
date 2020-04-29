@@ -1,7 +1,7 @@
 <template>
   <Modal v-if="showModal">
-    <h1 slot="header" class="subtitle is-4">New Group</h1>
-    <div slot="body">
+    <h1 slot="header" class="title is-4">{{ newGroupText }}</h1>
+    <div class="modal-body" slot="body">
       <div class="full-name">
         <div class="field">
           <p class="control has-icons-left">
@@ -25,9 +25,6 @@
       <div class="notes">
         <div class="field">
           <p class="control has-icons-left">
-            <span class="icon is-small is-left">
-              <font-awesome-icon :icon="['fas', 'phone']"/>
-            </span>
             <textarea class="textarea" type="text" placeholder="Notes" v-model="newNotes"></textarea>
           </p>
         </div>
@@ -38,13 +35,13 @@
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'ban']"/>
         </span>
-        <span>Cancel</span>
+        <span>{{ cancelGroupText }}</span>
       </button>
       <button class="button is-success button-margin-left" @click="addNewGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'check']"/>
         </span>
-        <span>Add Group</span>
+        <span>{{ addGroupText }}</span>
       </button>
     </div>
   </Modal>
@@ -65,7 +62,10 @@ export default {
     return {
       'newFullname': '',
       'newPhonenumber': '',
-      'newNotes': ''
+      'newNotes': '',
+      'newGroupText': 'New Group',
+      'addGroupText': 'Add Group',
+      'cancelGroupText': 'Cancel'
     }
   },
   methods: {
@@ -104,7 +104,8 @@ function resetModal(vm) {
 .button-margin-left {
   margin-left: 8px;
 }
-.full-name {
+.modal-body > .full-name,
+.modal-body > .phone-number {
   padding-bottom: 8px;
 }
 </style>

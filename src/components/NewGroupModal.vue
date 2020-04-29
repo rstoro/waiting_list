@@ -15,10 +15,20 @@
       <div class="phone-number">
         <div class="field">
           <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Phone Number" v-model="newPhonenumber">
+            <input class="input" type="tel" placeholder="Phone Number" v-model="newPhonenumber">
             <span class="icon is-small is-left">
               <font-awesome-icon :icon="['fas', 'phone']"/>
             </span>
+          </p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="field">
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <font-awesome-icon :icon="['fas', 'phone']"/>
+            </span>
+            <textarea class="textarea" type="text" placeholder="Notes" v-model="newNotes"></textarea>
           </p>
         </div>
       </div>
@@ -54,12 +64,13 @@ export default {
   data: () => {
     return {
       'newFullname': '',
-      'newPhonenumber': ''
+      'newPhonenumber': '',
+      'newNotes': ''
     }
   },
   methods: {
-    cancelNewGroup: function() { cancelNewGroup(this) },
-    addNewGroup: function() { addNewGroup(this) }
+    cancelNewGroup: function() { return cancelNewGroup(this) },
+    addNewGroup: function() { return addNewGroup(this) }
   }
 }
 
@@ -71,10 +82,11 @@ function cancelNewGroup(vm) {
 function addNewGroup(vm) {
   //TODO: data check group attributes before this point 
   vm.$emit('newGroupCreated', {
-    'fullname': vm.fullname, 
-    'phonenumber': vm.phonenumber,
+    'fullname': vm.newFullname, 
+    'phonenumber': vm.newPhonenumber,
+    'notes': vm.newNotes,
     'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created
-    'secondsSinceEpoch': () => { (Date.now() / 1000 | 0) - this.epochInSeconds }
+    'secondsSinceEpoch': 0
   })
   
   //TODO: notify user of successful addition

@@ -1,30 +1,29 @@
 <template>
   <div>
 
-    <div class="groups-header">
-      <h1 class="title">Waiting List</h1>
-      <a class="card-header-icon" @click="showModal = true">
-        <span class="icon icon-margin-right">
-          <font-awesome-icon :icon="['fas', 'users']"/>
-        </span>
-        <span>Create New Group</span>
-      </a>
-    </div>
+    <section class="hero">
+      <div class="hero-body groups-header">
+        <h1 class="title">Waiting List</h1>
+        <a class="card-header-icon" @click="showModal = true">
+          <span class="icon">
+            <font-awesome-icon :icon="['fas', 'users']"/>
+          </span>
+          <span>Create New Group</span>
+        </a>
+      </div>
+    </section>
 
     <NewGroupModal v-bind:show-modal="showModal" v-on:closeNewGroupModal="showModal = false"
-        v-on:newGroupCreated="addNewGroup()"/>
+        v-on:newGroupCreated="addNewGroup"/>
 
-    <div class="card-content">
-      <div class="content">
-        <div v-for="(group, index) in groups" :key="`group-${index}`" class="card">
+    <section class="section">
+      <div class="container">
+        <div v-for="(group, index) in groups" :key="`group-${index}`">
           <GroupCard v-bind:group="group"/>
         </div>
       </div>
+    </section>
 
-      <!-- <footer class="card-footer">
-      </footer> -->
-
-    </div>
   </div>
 </template>
 
@@ -45,11 +44,12 @@ export default {
     }
   },
   methods: {
-    addNewGroup: function(newGroup) {
-      const vm = this;
-      vm.groups.push(newGroup);
-    }
+    addNewGroup: function(newGroup) { return addNewGroup(this, newGroup) }
   }
+}
+
+function addNewGroup(vm, newGroup) {
+  vm.groups.push(newGroup);
 }
 
 function DEBUGcreateGroup(fullname, phonenumber) {
@@ -57,7 +57,7 @@ function DEBUGcreateGroup(fullname, phonenumber) {
     'fullname': fullname, 
     'phonenumber': phonenumber,
     'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created
-    'secondsSinceEpoch': () => { (Date.now() / 1000 | 0) - this.epochInSeconds }
+    'secondsSinceEpoch': 0
   }
 }
 </script>
@@ -70,13 +70,11 @@ function DEBUGcreateGroup(fullname, phonenumber) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px;
   background-color: whitesmoke;
 }
 .groups-header > .title {
   margin: 0;
-  padding-left: 8px;
-}
-.icon-margin-right {
-  margin-right: 8px;
+  padding: 8px;
 }
 </style>

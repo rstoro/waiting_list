@@ -94,18 +94,10 @@ export default {
     formatAddedOn: function(epochInSeconds) { return formatAddedOn(epochInSeconds) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
     messageGroup: function() { return messageGroup(this) },
-    beforeEnter: function(el) {
-      el.style.height = '0';
-    },
-    enter: function(el) {
-      el.style.height = el.scrollHeight + 'px';
-    },
-    beforeLeave: function(el) {
-      el.style.height = el.scrollHeight + 'px';
-    },
-    leave: function(el) {
-      el.style.height = '0';
-    }
+    beforeEnter: function(el) { return removeHeight(el) },
+    enter: function(el) { return addScrollHeight(el) },
+    beforeLeave: function(el) { addScrollHeight(el) },
+    leave: function(el) { removeHeight(el) }
   }
 }
 
@@ -125,6 +117,15 @@ function deleteGroup(vm, uid) {
 function messageGroup(vm) {
   console.error('SMS Service Integration Required.')
 }
+
+function removeHeight(el) {
+  el.style.height = '0';
+}
+
+function addScrollHeight(el) {
+  el.style.height = el.scrollHeight + 'px';
+}
+
 </script>
 
 <style scoped>

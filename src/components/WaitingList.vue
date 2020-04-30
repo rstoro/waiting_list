@@ -44,24 +44,31 @@ export default {
       'waitingListText': 'Waiting List',
       'createNewGroupText': 'Create New Group',
       'showModal': false,
-      'groups': [DEBUGcreateGroup('Ryan Storo', '1234567890', 'test first note'), 
-          DEBUGcreateGroup('Destiny Gauthier', '9876543210', 'test second note')]
+      'groups': (localStorage.getItem('groups')) ? JSON.parse(localStorage.getItem('groups')) : {}
     }
   },
   methods: {
     addNewGroup: function(newGroup) { return addNewGroup(this, newGroup) },
     removeGroupFromGroups: function(index) { return removeGroupFromGroups(this, index) }
+  },
+  watch: {
+    'groups': {
+      handler() {
+        const vm = this;
+        console.log('groups changed!');
+        localStorage.setItem('groups', JSON.stringify(vm.groups));
+      },
+      deep: true
+    }
   }
 }
 
 function addNewGroup(vm, newGroup) {
   vm.groups.push(newGroup);
-  //TODO: save into json file
 }
 
 function removeGroupFromGroups(vm, index) {
   vm.groups.splice(index, index+1);
-  //TODO: save into json file
 }
 
 function DEBUGcreateGroup(fullname, phonenumber, notes) {

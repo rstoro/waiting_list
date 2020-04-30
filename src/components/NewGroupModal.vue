@@ -63,13 +63,13 @@
     </div>
 
     <div slot="footer">
-      <button class="button is-danger button-margin-left" @click="cancelNewGroup()">
+      <button class="button is-outlined is-normal is-danger button-margin-left" @click="cancelNewGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'ban']"/>
         </span>
         <span>{{ cancelGroupText }}</span>
       </button>
-      <button class="button is-success button-margin-left" @click="addNewGroup()" 
+      <button class="button is-outlined is-normal is-success button-margin-left" @click="addNewGroup()" 
           v-bind:disabled="errors.phonenumber || errors.fullname">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'check']"/>
@@ -145,8 +145,7 @@ function addNewGroup(vm) {
   })
   
   //NOTE: should we notify user of successful addition?
-  resetModal(vm);
-  vm.$emit('closeNewGroupModal');
+  cancelNewGroup(vm);
 }
 
 function resetModal(vm) {
@@ -155,6 +154,7 @@ function resetModal(vm) {
   vm.errors.phonenumber = true;
   vm.errors.fullname = true;
 }
+
 </script>
 
 <style scoped>

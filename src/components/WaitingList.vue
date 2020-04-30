@@ -64,7 +64,6 @@ export default {
 
 function addNewGroup(vm, newGroup) {
   newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
-  console.log(newGroup);
   vm.groups.push(newGroup);
 }
 

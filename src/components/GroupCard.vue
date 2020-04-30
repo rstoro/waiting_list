@@ -7,48 +7,52 @@
         </span>
         <span>{{ group.fullname }}</span>
       </p>
-      <a href="#" class="card-header-icon" aria-label="more options" @click="isSelected = !isSelected">
+      <a href="#" class="card-header-icon" aria-label="more options" 
+          @click="isSelected = !isSelected">
         <span class="icon-margin-right">
           <font-awesome-icon :icon="['fas', 'clock']"/>
         </span>
         <span class="time">{{ formatTime(group.secondsSinceEpoch) }}</span>
-        <span class="icon">
-          <!-- NOTE: this is crap, I wish there was a conditional to prevent this garbage. -->
-          <font-awesome-icon v-if="isSelected" :icon="['fas', 'angle-right']"/>
-          <font-awesome-icon v-if="!isSelected" :icon="['fas', 'angle-down']"/>
+        <span class="icon rotate-icon" v-bind:class="{'rotate': isSelected}">
+          <font-awesome-icon :icon="['fas', 'angle-right']"/>
         </span>
       </a>
     </header>
 
-    <div v-if="isSelected">
-      <transition name="selected">
-        <div>
-          
-          <div class="group-card-content">
-            <textarea class="textarea" type="text" placeholder="Notes" v-model="group.notes"></textarea>
-          </div>
-
-          <div class="group-card-footer">
-            <p class="is-size-7 has-text-weight-light">{{ formatAddedOn(group.epochInSeconds) }}</p>
-            <div class="group-card-buttons">
-              <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" @click="deleteGroup(uid)">
-                <span class="icon is-small">
-                  <font-awesome-icon :icon="['fas', 'trash-alt']"/>
-                </span>
-                <span>{{ deleteText }}</span>
-              </button>
-              <button class="button group-card-button is-outlined is-normal is-success button-margin-left" @click="messageGroup()">
-                <span class="icon is-small">
-                  <font-awesome-icon :icon="['fas', 'envelope']"/>
-                </span>
-                <span>{{ textText }}</span>
-              </button>
-            </div>
-          </div>
-
+    <transition name="accordion"
+        v-on:before-enter="beforeEnter" 
+        v-on:enter="enter"
+        v-on:before-leave="beforeLeave" 
+        v-on:leave="leave">
+      <div v-if="isSelected" class="group-card-body">
+        <div class="group-card-content">
+          <textarea class="textarea" type="text" placeholder="Notes" 
+              v-model="group.notes"></textarea>
         </div>
-      </transition>
-    </div>
+
+        <div class="group-card-footer">
+          <p class="is-size-7 has-text-weight-light">
+            {{ formatAddedOn(group.epochInSeconds) }}
+          </p>
+          <div class="group-card-buttons">
+            <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
+                @click="deleteGroup(uid)">
+              <span class="icon is-small">
+                <font-awesome-icon :icon="['fas', 'trash-alt']"/>
+              </span>
+              <span>{{ deleteText }}</span>
+            </button>
+            <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
+                @click="messageGroup()">
+              <span class="icon is-small">
+                <font-awesome-icon :icon="['fas', 'envelope']"/>
+              </span>
+              <span>{{ textText }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
 
   </div>
 </template>
@@ -88,8 +92,20 @@ export default {
   methods: {
     formatTime: function(secondsSinceEpoch) { return formatTime(secondsSinceEpoch) },
     formatAddedOn: function(epochInSeconds) { return formatAddedOn(epochInSeconds) },
-    deleteGroup: function(uid) { return deleteGroup(this, uid)},
-    messageGroup: function() { return messageGroup(this)}
+    deleteGroup: function(uid) { return deleteGroup(this, uid) },
+    messageGroup: function() { return messageGroup(this) },
+    beforeEnter: function(el) {
+      el.style.height = '0';
+    },
+    enter: function(el) {
+      el.style.height = el.scrollHeight + 'px';
+    },
+    beforeLeave: function(el) {
+      el.style.height = el.scrollHeight + 'px';
+    },
+    leave: function(el) {
+      el.style.height = '0';
+    }
   }
 }
 
@@ -109,7 +125,6 @@ function deleteGroup(vm, uid) {
 function messageGroup(vm) {
   console.error('SMS Service Integration Required.')
 }
-
 </script>
 
 <style scoped>
@@ -122,7 +137,19 @@ function messageGroup(vm) {
 .group-card .icon-margin-right {
   margin-right: 8px;
 }
-.group-card .group-card-content {
+.group-card .card-header-icon .rotate-icon {
+  transform: rotate(0deg);
+  transition-duration: 0.3s;
+}
+.group-card .card-header-icon .rotate-icon.rotate {
+  transform: rotate(90deg);
+  transition-duration: 0.3s;
+}
+.group-card .group-card-body {
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+}
+.group-card .group-card-body .group-card-content {
   padding: 16px;
   display: flex;
 }
@@ -143,5 +170,4 @@ function messageGroup(vm) {
 .group-card .group-card-footer > .group-card-buttons > .group-card-button {
   margin-left: 8px;
 }
-/* TODO: group-selected animations */
 </style>

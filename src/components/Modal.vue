@@ -50,6 +50,7 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+  position: relative;
 }
 .modal-header,
 .modal-body,
@@ -57,7 +58,6 @@ export default {
   padding: 16px 16px;
 }
 .modal-header {
-  margin-top: 0;
   text-align: left;
   color: #42b983;
   background-color: whitesmoke;
@@ -83,7 +83,7 @@ export default {
 }
 .modal-enter-active .modal-container,
 .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  transform: translate3d(0, -100%, 0) scale(0);
+
 }
 </style>

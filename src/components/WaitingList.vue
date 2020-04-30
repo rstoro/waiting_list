@@ -56,10 +56,12 @@ export default {
 
 function addNewGroup(vm, newGroup) {
   vm.groups.push(newGroup);
+  //TODO: save into json file
 }
 
 function removeGroupFromGroups(vm, index) {
   vm.groups.splice(index, index+1);
+  //TODO: save into json file
 }
 
 function DEBUGcreateGroup(fullname, phonenumber, notes) {

@@ -1,7 +1,7 @@
 <template>
   <Modal v-if="showModal">
 
-    <h1 slot="header" class="title is-4">{{ newGroupText }}</h1>
+    <h1 slot="header" class="title is-4 new-group-header">{{ newGroupText }}</h1>
 
     <div class="modal-body" slot="body">
       <div class="full-name">
@@ -160,6 +160,11 @@ function resetModal(vm) {
 <style scoped>
 .button-margin-left {
   margin-left: 8px;
+}
+.new-group-header {
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 .modal-body > .full-name,
 .modal-body > .phone-number {

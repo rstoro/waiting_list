@@ -18,7 +18,7 @@
 
     <section class="section">
       <div class="container">
-        <div v-for="(group, index) in groups" :key="group.fullname"
+        <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`"
             v-dragging="{item: group, list: groups, group: 'group'}">
           <GroupCard v-bind:group="group" v-bind:uid="index"
               v-on:deleteGroup="removeGroupFromGroups" />
@@ -55,7 +55,6 @@ export default {
     'groups': {
       handler() {
         const vm = this;
-        console.log('groups changed!');
         localStorage.setItem('groups', JSON.stringify(vm.groups));
       },
       deep: true
@@ -64,6 +63,8 @@ export default {
 }
 
 function addNewGroup(vm, newGroup) {
+  newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
+  console.log(newGroup);
   vm.groups.push(newGroup);
 }
 

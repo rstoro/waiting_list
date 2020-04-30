@@ -18,7 +18,8 @@
     "awe-dnd": "^0.3.4",
     "bulma": "^0.8.2",
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",

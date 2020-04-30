@@ -78,12 +78,8 @@ export default {
     'group.secondsSinceEpoch': {
       handler(value) {
         const vm = this;
-        if (vm.group.secondsSinceEpoch === 0) {
-          vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
-        }
-
         vm.counter = setTimeout(() => {
-          vm.group.secondsSinceEpoch++;
+          vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
         }, 1000);
       }, 
       immediate: true
@@ -115,7 +111,8 @@ function deleteGroup(vm, uid) {
 }
 
 function messageGroup(vm) {
-  console.error('SMS Service Integration Required.')
+  console.log(`Mock SMS: Phone Number ${vm.group.phonenumber} messaged!`);
+  console.error('SMS Service Integration Required.');
 }
 
 function removeHeight(el) {

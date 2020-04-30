@@ -68,7 +68,7 @@ function addNewGroup(vm, newGroup) {
 }
 
 function removeGroupFromGroups(vm, index) {
-  vm.groups.splice(index, index+1);
+  vm.groups.splice(index, 1);
 }
 
 function DEBUGcreateGroup(fullname, phonenumber, notes) {

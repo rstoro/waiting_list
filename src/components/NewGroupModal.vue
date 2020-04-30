@@ -151,6 +151,7 @@ function addNewGroup(vm) {
 function resetModal(vm) {
   vm.newFullname = null;
   vm.newPhonenumber = null;
+  vm.newNotes = null;
   vm.errors.phonenumber = true;
   vm.errors.fullname = true;
 }

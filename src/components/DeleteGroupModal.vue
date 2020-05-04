@@ -13,28 +13,23 @@
     </h1>
 
     <div slot="body">
-      <p>
-        Would you like to message <b>{{ group.fullname }}</b> at <b>{{ group.phonenumber }}</b>:
-      </p>
-      <p>
-        'We have your lanes available etc. etc.'?
-      </p>
+      <p>wow</p>
     </div>
 
     <div slot="footer">
       <button class="button is-outlined is-normal is-danger margin-right" 
-          @click="cancelMessageGroup()">
+          @click="cancelDeleteGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'ban']"/>
         </span>
-        <span>{{ cancelMessageGroupText }}</span>
+        <span>{{ cancelDeleteGroupText }}</span>
       </button>
       <button class="button is-outlined is-normal is-success" 
-          @click="confirmMessageGroup()">
+          @click="confirmDeleteGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'check']"/>
         </span>
-        <span>{{ confirmMessageGroupText }}</span>
+        <span>{{ confirmDeleteGroupText }}</span>
       </button>
     </div>
 
@@ -45,14 +40,14 @@
 import Modal from './Modal.vue'
 
 export default {
-  name: 'MessageGroupModal',
+  name: 'DeleteGroupModal',
   components: {
     Modal
   },
   data: () => {
     return {
-      'cancelMessageGroupText': 'No',
-      'confirmMessageGroupText': 'Yes'
+      'cancelDeleteGroupText': 'No',
+      'confirmDeleteGroupText': 'Yes'
     }
   },
   props: {
@@ -61,17 +56,17 @@ export default {
     'uid': null
   },
   methods: {
-    confirmMessageGroup: function() { return confirmMessageGroup(this) },
-    cancelMessageGroup: function() { return cancelMessageGroup(this) }
+    confirmDeleteGroup: function() { return confirmDeleteGroup(this) },
+    cancelDeleteGroup: function() { return cancelDeleteGroup(this) }
   }
 }
 
-function confirmMessageGroup(vm) {
-  vm.$emit('confirmMessageGroup', vm.uid)
+function confirmDeleteGroup(vm) {
+  vm.$emit('confirmDeleteGroup', vm.uid)
 }
 
-function cancelMessageGroup(vm) {
-  vm.$emit('closeMessageGroupModal');
+function cancelDeleteGroup(vm) {
+  vm.$emit('closeDeleteGroupModal');
 }
 
 </script>

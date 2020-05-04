@@ -39,14 +39,14 @@
           </p>
           <div class="group-card-buttons">
             <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
-                @click="deleteGroup(uid)">
+                @click="displayDeleteGroupModal = true">
               <span class="icon is-small">
                 <font-awesome-icon :icon="['fas', 'trash-alt']"/>
               </span>
               <span>{{ deleteText }}</span>
             </button>
             <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-                @click="displayMessageGroupModal = !displayMessageGroupModal">
+                @click="displayMessageGroupModal = true">
               <span class="icon is-small">
                 <font-awesome-icon :icon="['fas', 'envelope']"/>
               </span>
@@ -56,24 +56,37 @@
         </div>
       </div>
     </transition>
-    <MessageGroupModal v-bind:showModal="displayMessageGroupModal" 
-      v-on:closeMessageGroupModal="displayMessageGroupModal = false"
-      v-bind:group="group"/>
+
+    <MessageGroupModal v-bind:showModal="displayMessageGroupModal"
+        v-bind:uid="uid"
+        v-on:closeMessageGroupModal="displayMessageGroupModal = false"
+        v-on:confirmMessageGroup="messageGroup(uid)"
+        v-bind:group="group"/>
+    
+    <DeleteGroupModal v-bind:showModal="displayDeleteGroupModal"
+        v-bind:uid="uid"
+        v-on:closeDeleteGroupModal="displayDeleteGroupModal = false"
+        v-on:confirmDeleteGroup="deleteGroup(uid)"
+        v-bind:group="group"/>
+      
   </div>
 </template>
 
 <script>
 import MessageGroupModal from './MessageGroupModal.vue';
+import DeleteGroupModal from './DeleteGroupModal.vue';
 
 export default {
   name: 'GroupCard',
   components: {
-    MessageGroupModal
+    MessageGroupModal,
+    DeleteGroupModal
   },
   data: () => {
     return {
       'isSelected': false,
       'displayMessageGroupModal': false,
+      'displayDeleteGroupModal': false,
       'displayTime': 0,
       'counter': {},
       'textText': 'Text',
@@ -100,7 +113,7 @@ export default {
     formatTime: function(secondsSinceEpoch) { return formatTime(secondsSinceEpoch) },
     formatAddedOn: function(epochInSeconds) { return formatAddedOn(epochInSeconds) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
-    // messageGroup: function() { return messageGroup(this) },
+    messageGroup: function() { return messageGroup(this) },
     beforeEnter: function(el) { return removeHeight(el) },
     enter: function(el) { return addScrollHeight(el) },
     beforeLeave: function(el) { addScrollHeight(el) },
@@ -108,17 +121,21 @@ export default {
   }
 }
 
-function formatAddedOn(epochInSeconds) {
-  return `Added ${new Date(epochInSeconds * 1000)}`;
-}
-
 function formatTime(secondsSinceEpoch) {
   //NOTE: this is pretty expensive...
   return new Date(secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
 }
 
+function formatAddedOn(epochInSeconds) {
+  return `Added ${new Date(epochInSeconds * 1000)}`;
+}
+
 function deleteGroup(vm, uid) {
   vm.$emit('deleteGroup', uid);
+}
+
+function messageGroup(vm, uid) {
+  console.log('to be implimented');
 }
 
 function removeHeight(el) {

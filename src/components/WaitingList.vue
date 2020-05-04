@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <section class="hero">
+  <div class="waiting-list">
+    <section class="hero waiting-list-header">
       <div class="hero-body groups-header">
         <h1 class="title">{{ waitingListText }}</h1>
         <a class="card-header-icon" @click="showModal = true">
@@ -17,14 +17,31 @@
         v-on:closeNewGroupModal="showModal = false"
         v-on:newGroupCreated="addNewGroup"/>
 
-    <section class="section">
-      <div class="container" v-dragula="groups" drake="group_cards">
-        <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
-          <GroupCard v-bind:group="group" v-bind:uid="index"
-              v-on:deleteGroup="removeGroupFromGroups" />
+    <div class="waiting-list-body">
+      <div class="true-center" v-if="groups === [] || groups === null || groups.length === 0">
+        <div>
+          <span>{{ noGroupsExistText }}</span>
+        </div>
+        <div>
+          <span>
+            <a @click="showModal = true">
+              <span class="icon-margin-right">
+                <font-awesome-icon :icon="['fas', 'users']"/>
+              </span>
+              <span class="has-icons-left">{{ createNewGroupText }}</span>
+            </a>
+          </span>
         </div>
       </div>
-    </section>
+      <section class="section" v-else>
+        <div class="container" v-dragula="groups" drake="group_cards">
+          <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
+            <GroupCard v-bind:group="group" v-bind:uid="index"
+                v-on:deleteGroup="removeGroupFromGroups"/>
+          </div>
+        </div>
+      </section>
+    </div>
 
   </div>
 </template>
@@ -43,6 +60,7 @@ export default {
     return {
       'waitingListText': 'Waiting List',
       'createNewGroupText': 'Create New Group',
+      'noGroupsExistText': 'There are currently no groups on the waiting list.',
       'showModal': false,
       'groups': (localStorage.getItem('groups')) ? JSON.parse(localStorage.getItem('groups')) : {}
     }
@@ -75,7 +93,19 @@ function removeGroupFromGroups(vm, index) {
 
 <style scoped>
 .waiting-list {
-  margin: 32px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.waiting-list-header {
+  display: flex;
+  flex-flow: row;
+}
+.waiting-list-body {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  overflow: auto;
 }
 .groups-header {
   display: flex;
@@ -89,5 +119,11 @@ function removeGroupFromGroups(vm, index) {
 }
 .icon-margin-right {
   margin-right: 8px;
+}
+.true-center {
+  display:flex;
+  flex-flow: column;
+  height:100%;
+  justify-content: center;
 }
 </style>

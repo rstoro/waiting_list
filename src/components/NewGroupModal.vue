@@ -86,12 +86,12 @@ import Modal from './Modal.vue'
 
 export default {
   name: 'NewGroupModal',
+  props: {
+    'showModal': false
+  },
   components: {
     Modal
   },
-  props: [
-    'showModal'
-  ],
   data: () => {
     return {
       'newFullname': null,  //NOTE: null is being treated as untouched...

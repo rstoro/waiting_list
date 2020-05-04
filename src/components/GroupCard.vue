@@ -46,7 +46,7 @@
               <span>{{ deleteText }}</span>
             </button>
             <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-                @click="messageGroup()">
+                @click="displayMessageGroupModal = !displayMessageGroupModal">
               <span class="icon is-small">
                 <font-awesome-icon :icon="['fas', 'envelope']"/>
               </span>
@@ -56,21 +56,29 @@
         </div>
       </div>
     </transition>
-
+    <MessageGroupModal v-bind:showModal="displayMessageGroupModal" 
+      v-on:closeMessageGroupModal="displayMessageGroupModal = false"
+      v-bind:group="group"/>
   </div>
 </template>
 
 <script>
+import MessageGroupModal from './MessageGroupModal.vue';
+
 export default {
   name: 'GroupCard',
+  components: {
+    MessageGroupModal
+  },
   data: () => {
     return {
       'isSelected': false,
+      'displayMessageGroupModal': false,
       'displayTime': 0,
       'counter': {},
       'textText': 'Text',
       'editText': 'Edit',
-      'deleteText': 'Delete'
+      'deleteText': 'Delete',
     }
   },
   props: {
@@ -92,7 +100,7 @@ export default {
     formatTime: function(secondsSinceEpoch) { return formatTime(secondsSinceEpoch) },
     formatAddedOn: function(epochInSeconds) { return formatAddedOn(epochInSeconds) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
-    messageGroup: function() { return messageGroup(this) },
+    // messageGroup: function() { return messageGroup(this) },
     beforeEnter: function(el) { return removeHeight(el) },
     enter: function(el) { return addScrollHeight(el) },
     beforeLeave: function(el) { addScrollHeight(el) },
@@ -111,11 +119,6 @@ function formatTime(secondsSinceEpoch) {
 
 function deleteGroup(vm, uid) {
   vm.$emit('deleteGroup', uid);
-}
-
-function messageGroup(vm) {
-  console.log(`Mock SMS: Phone Number ${vm.group.phonenumber} messaged!`);
-  console.error('SMS Service Integration Required.');
 }
 
 function removeHeight(el) {

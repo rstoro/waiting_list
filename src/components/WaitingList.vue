@@ -12,15 +12,14 @@
       </div>
     </section>
 
-    <NewGroupModal v-bind:show-modal="showModal" 
+    <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
+    <NewGroupModal v-bind:showModal="showModal"
         v-on:closeNewGroupModal="showModal = false"
         v-on:newGroupCreated="addNewGroup"/>
 
     <section class="section">
       <div class="container" v-dragula="groups" drake="group_cards">
         <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
-        <!-- <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`"
-            v-dragging="{item: group, list: groups, group: 'group'}"> -->
           <GroupCard v-bind:group="group" v-bind:uid="index"
               v-on:deleteGroup="removeGroupFromGroups" />
         </div>
@@ -72,15 +71,6 @@ function removeGroupFromGroups(vm, index) {
   vm.groups.splice(index, 1);
 }
 
-function DEBUGcreateGroup(fullname, phonenumber, notes) {
-  return {
-    'fullname': fullname, 
-    'phonenumber': phonenumber,
-    'notes': notes,
-    'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created
-    'secondsSinceEpoch': 0
-  }
-}
 </script>
 
 <style scoped>

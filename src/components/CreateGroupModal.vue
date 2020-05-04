@@ -1,7 +1,12 @@
 <template>
   <Modal v-if="showModal">
-
-    <h1 slot="header" class="title is-4 new-group-header">{{ newGroupText }}</h1>
+    
+    <h1 slot="header" class="title is-4 create-group-header">
+      <span class="margin-right">
+        <font-awesome-icon :icon="['fas', 'user']"/>
+      </span>
+      <span>{{ createGroupText }}</span>
+    </h1>
 
     <div class="modal-body" slot="body">
       <div class="full-name">
@@ -103,7 +108,7 @@ export default {
       },
       'fullnameRequiredText': 'Name is required.',
       'phonenumberRequiredText': 'Valid Phone Number is required.',
-      'newGroupText': 'Create Group',
+      'createGroupText': 'Create Group',
       'addGroupText': 'Add Group',
       'cancelGroupText': 'Cancel'
     }
@@ -159,11 +164,15 @@ function resetModal(vm) {
 </script>
 
 <style scoped>
+.margin-right {
+  margin-right: 8px;
+}
 .button-margin-left {
   margin-left: 8px;
 }
-.new-group-header {
-  height: 40px;
+.create-group-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
   display: flex;
   align-items: center;
 }

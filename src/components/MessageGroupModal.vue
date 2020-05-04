@@ -5,7 +5,7 @@
       <span class="margin-right">
         <font-awesome-icon :icon="['fas', 'envelope']"/>
       </span>
-      <span class="has-text-weight-medium margin-right">{{ messageGroupHeaderText }}</span>
+      <span>{{ messageGroupHeaderText }}</span>
     </h1>
 
     <div slot="body">
@@ -25,9 +25,7 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea">
-
-        </textarea>
+        <textarea class="textarea" type="text" placeholder="Message" :value="getMessageText()"></textarea>
       </div>
     </div>
 
@@ -73,9 +71,14 @@ export default {
     'uid': null
   },
   methods: {
+    getMessageText: function() { return getMessageText(this) },
     confirmMessageGroup: function() { return confirmMessageGroup(this) },
     cancelMessageGroup: function() { return cancelMessageGroup(this) }
   }
+}
+
+function getMessageText(vm) {
+  return `Hello ${ vm.group.fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 30 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
 }
 
 function confirmMessageGroup(vm) {

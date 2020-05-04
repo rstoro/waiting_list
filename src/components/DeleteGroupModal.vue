@@ -5,7 +5,7 @@
       <span class="margin-right has-text-danger">
         <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
       </span>
-      <span class="has-text-weight-medium margin-right">{{ confirmDeleteHeaderText }}</span>
+      <span>{{ confirmDeleteHeaderText }}</span>
     </h1>
 
     <div slot="body">

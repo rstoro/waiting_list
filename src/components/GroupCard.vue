@@ -131,10 +131,13 @@ function formatAddedOn(epochInSeconds) {
 }
 
 function deleteGroup(vm, uid) {
+  vm.displayDeleteGroupModal = false;
   vm.$emit('deleteGroup', uid);
 }
 
 function messageGroup(vm, uid) {
+  vm.displayMessageGroupModal = false;
+  //TODO: countdown, 30 minutes until void
   console.log('to be implimented');
 }
 

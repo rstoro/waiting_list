@@ -2,7 +2,7 @@
   <Modal v-if="showModal">
 
     <h1 slot="header" class="title is-4 message-group-header">
-      <span class="margin-right">
+      <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'envelope']"/>
       </span>
       <span>{{ messageGroupHeaderText }}</span>
@@ -13,13 +13,13 @@
       <div class="text-area">
         <div class="text-area-header">
           <p class="has-text-left">
-            <span class="margin-right">
+            <span class="small-margin-right">
               <font-awesome-icon :icon="['fas', 'user']"/>
             </span>
             <span class="has-text-weight-medium"><b>{{ group.fullname }}</b></span>
           </p>
           <p class="has-text-right">
-            <span class="margin-right">
+            <span class="small-margin-right">
               <font-awesome-icon :icon="['fas', 'phone']"/>
             </span>
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
@@ -30,7 +30,7 @@
     </div>
 
     <div slot="footer">
-      <button class="button is-outlined is-normal is-danger margin-right" 
+      <button class="button is-outlined is-normal is-danger small-margin-right" 
           @click="cancelMessageGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'ban']"/>
@@ -67,8 +67,7 @@ export default {
   },
   props: {
     'group': {},
-    'showModal': false,
-    'uid': null
+    'showModal': false
   },
   methods: {
     getMessageText: function() { return getMessageText(this) },
@@ -82,7 +81,7 @@ function getMessageText(vm) {
 }
 
 function confirmMessageGroup(vm) {
-  vm.$emit('confirmMessageGroup', vm.uid)
+  vm.$emit('confirmMessageGroup')
 }
 
 function cancelMessageGroup(vm) {
@@ -92,9 +91,6 @@ function cancelMessageGroup(vm) {
 </script>
 
 <style scoped>
-.margin-right{
-  margin-right: 8px;
-}
 .message-group-header {
   height: 40px;
   display: flex;

@@ -16,17 +16,6 @@ export default {
 </script>
 
 <style>
-html,
-body,
-#app {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  overflow: hidden;
-}
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -56,5 +45,21 @@ body {
   opacity: 0.2;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
   filter: alpha(opacity=20);
+}
+/* GLOBAL CSS */
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+body {
+  overflow: hidden;
+}
+.small-margin-right {
+  margin-right: 8px;
+}
+.large-margin-right {
+  margin-right: 32px;
 }
 </style>

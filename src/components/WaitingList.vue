@@ -4,7 +4,7 @@
       <div class="hero-body groups-header">
         <h1 class="title">{{ waitingListText }}</h1>
         <a class="card-header-icon" @click="showModal = true">
-          <span class="icon-margin-right">
+          <span class="small-margin-right">
             <font-awesome-icon :icon="['fas', 'users']"/>
           </span>
           <span class="has-icons-left">{{ createNewGroupText }}</span>
@@ -25,7 +25,7 @@
         <div>
           <span>
             <a @click="showModal = true">
-              <span class="icon-margin-right">
+              <span class="small-margin-right">
                 <font-awesome-icon :icon="['fas', 'users']"/>
               </span>
               <span class="has-icons-left">{{ createNewGroupText }}</span>
@@ -119,9 +119,6 @@ function removeGroupFromGroups(vm, index) {
 .groups-header > .title {
   margin: 0;
   padding: 8px;
-}
-.icon-margin-right {
-  margin-right: 8px;
 }
 .true-center {
   display:flex;

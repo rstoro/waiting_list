@@ -2,7 +2,7 @@
   <Modal v-if="showModal">
     
     <h1 slot="header" class="title is-4 create-group-header">
-      <span class="margin-right">
+      <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'user']"/>
       </span>
       <span>{{ createGroupText }}</span>
@@ -12,7 +12,7 @@
       <div class="full-name">
         <div class="field">
           <p class="has-icons-left is-size-7 has-text-danger danger-message"
-              v-bind:class="[errors.fullname && newFullname !== null ? '' : 'hidden']">
+              v-bind:class="[errors.fullname && newFullname !== null ? '' : 'hide-error']">
             <span class="icon is-small is-left has-text-danger">
               <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
             </span>
@@ -36,7 +36,7 @@
       <div class="phone-number">
         <div class="field">
           <p class="has-icons-left is-size-7 has-text-danger danger-message"
-              v-bind:class="[errors.phonenumber && newPhonenumber !== null ? '' : 'hidden']">
+              v-bind:class="[errors.phonenumber && newPhonenumber !== null ? '' : 'hide-error']">
             <span class="icon is-small is-left has-text-danger">
               <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
             </span>
@@ -145,8 +145,10 @@ function addNewGroup(vm) {
     'fullname': vm.newFullname, 
     'phonenumber': vm.newPhonenumber,
     'notes': vm.newNotes,
-    'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created
-    'secondsSinceEpoch': 0
+    'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created, something something premature micro-optimizations.
+    'secondsSinceEpoch': 0,
+    'messageSent': false,
+    'messageSentAt': null
   })
   
   //NOTE: should we notify user of successful addition?
@@ -164,9 +166,6 @@ function resetModal(vm) {
 </script>
 
 <style scoped>
-.margin-right {
-  margin-right: 8px;
-}
 .button-margin-left {
   margin-left: 8px;
 }
@@ -188,7 +187,7 @@ function resetModal(vm) {
   display: flex;
   height: 18px;
 }
-.hidden {
+.hide-error {
   opacity: 0;
 }
 </style>

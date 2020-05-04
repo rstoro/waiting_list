@@ -2,20 +2,18 @@
   <div class="card group-card">
     <header class="card-header">
       <p class="card-header-title">
-        <span class="icon-margin-right">{{ uid+1 }}</span>
-      </p>
-      <p class="card-header-title">
-        <span class="icon-margin-right">
+        <span class="large-margin-right">{{ uid+1 }}</span>
+        <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
         <span class="has-text-weight-medium">{{ group.fullname }}</span>
       </p>
       <a href="#" class="card-header-icon" aria-label="more options" 
           @click="isSelected = !isSelected">
-        <span class="icon-margin-right">
+        <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'clock']"/>
         </span>
-        <span class="time">{{ formatTime(group.secondsSinceEpoch) }}</span>
+        <span class="time">{{ formatTime() }}</span>
         <span class="icon rotate-icon" v-bind:class="{'rotate': isSelected}">
           <font-awesome-icon :icon="['fas', 'angle-right']"/>
         </span>
@@ -35,7 +33,7 @@
 
         <div class="group-card-footer">
           <p class="is-size-7 has-text-weight-light">
-            {{ formatAddedOn(group.epochInSeconds) }}
+            {{ formatAddedOn() }}
           </p>
           <div class="group-card-buttons">
             <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
@@ -60,13 +58,13 @@
     <MessageGroupModal v-bind:showModal="displayMessageGroupModal"
         v-bind:uid="uid"
         v-on:closeMessageGroupModal="displayMessageGroupModal = false"
-        v-on:confirmMessageGroup="messageGroup(uid)"
+        v-on:confirmMessageGroup="messageGroup()"
         v-bind:group="group"/>
     
     <DeleteGroupModal v-bind:showModal="displayDeleteGroupModal"
         v-bind:uid="uid"
         v-on:closeDeleteGroupModal="displayDeleteGroupModal = false"
-        v-on:confirmDeleteGroup="deleteGroup(uid)"
+        v-on:confirmDeleteGroup="deleteGroup()"
         v-bind:group="group"/>
       
   </div>
@@ -99,9 +97,11 @@ export default {
     'uid': 0
   },
   watch: {
+    //TODO: maybe unsubcribe this at some point?
     'group.secondsSinceEpoch': {
       handler(value) {
         const vm = this;
+        
         vm.counter = setTimeout(() => {
           vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
         }, 1000);
@@ -110,8 +110,8 @@ export default {
     }
   },
   methods: {
-    formatTime: function(secondsSinceEpoch) { return formatTime(secondsSinceEpoch) },
-    formatAddedOn: function(epochInSeconds) { return formatAddedOn(epochInSeconds) },
+    formatTime: function() { return formatTime(this) },
+    formatAddedOn: function() { return formatAddedOn(this) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
     messageGroup: function() { return messageGroup(this) },
     beforeEnter: function(el) { return removeHeight(el) },
@@ -121,22 +121,28 @@ export default {
   }
 }
 
-function formatTime(secondsSinceEpoch) {
+function formatTime(vm) {
   //NOTE: this is pretty expensive...
-  return new Date(secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
+  return new Date(vm.group.secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
 }
 
-function formatAddedOn(epochInSeconds) {
-  return `Added ${new Date(epochInSeconds * 1000)}`;
+function formatAddedOn(vm) {
+  return `Added ${new Date(vm.group.epochInSeconds * 1000)}`;
 }
 
-function deleteGroup(vm, uid) {
+function deleteGroup(vm) {
   vm.displayDeleteGroupModal = false;
-  vm.$emit('deleteGroup', uid);
+  vm.$emit('deleteGroup', vm.uid);
 }
 
-function messageGroup(vm, uid) {
+function messageGroup(vm) {
   vm.displayMessageGroupModal = false;
+  vm.group.messageSent = true;
+  vm.group.messageSentAt = Date.now() / 1000 | 0;
+
+  // vm.counter = setTimeout(() => {
+  //         vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
+  //       }, 1000);
   //TODO: countdown, 30 minutes until void
   console.log('to be implimented');
 }
@@ -157,9 +163,6 @@ function addScrollHeight(el) {
 }
 .group-card .time {
   padding-right: 16px;
-}
-.group-card .icon-margin-right {
-  margin-right: 8px;
 }
 .group-card .card-header-icon .rotate-icon {
   transform: rotate(0deg);

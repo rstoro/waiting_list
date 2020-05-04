@@ -2,7 +2,7 @@
   <Modal v-if="showModal">
 
     <h1 slot="header" class="title is-4 message-group-header">
-      <span class="margin-right has-text-danger">
+      <span class="small-margin-right has-text-danger">
         <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
       </span>
       <span>{{ confirmDeleteHeaderText }}</span>
@@ -11,7 +11,7 @@
     <div slot="body">
       <p>{{ confirmDeleteBodyText }}</p>
       <p>
-        <span class="margin-right">
+        <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
         <span class="has-text-weight-medium"><b>{{ group.fullname }}</b></span>
@@ -19,7 +19,7 @@
     </div>
 
     <div slot="footer">
-      <button class="button is-outlined is-normal is-danger margin-right" 
+      <button class="button is-outlined is-normal is-danger small-margin-right" 
           @click="cancelDeleteGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'ban']"/>
@@ -76,9 +76,6 @@ function cancelDeleteGroup(vm) {
 </script>
 
 <style scoped>
-.margin-right{
-  margin-right: 8px;
-}
 .message-group-header {
   height: 40px;
   display: flex;

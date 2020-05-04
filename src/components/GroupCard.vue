@@ -2,10 +2,13 @@
   <div class="card group-card">
     <header class="card-header">
       <p class="card-header-title">
+        <span class="icon-margin-right">{{ uid+1 }}</span>
+      </p>
+      <p class="card-header-title">
         <span class="icon-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
-        <span>{{ group.fullname }}</span>
+        <span class="has-text-weight-medium">{{ group.fullname }}</span>
       </p>
       <a href="#" class="card-header-icon" aria-label="more options" 
           @click="isSelected = !isSelected">

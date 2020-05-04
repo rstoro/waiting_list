@@ -17,9 +17,10 @@
         v-on:newGroupCreated="addNewGroup"/>
 
     <section class="section">
-      <div class="container">
-        <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`"
-            v-dragging="{item: group, list: groups, group: 'group'}">
+      <div class="container" v-dragula="groups" drake="group_cards">
+        <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
+        <!-- <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`"
+            v-dragging="{item: group, list: groups, group: 'group'}"> -->
           <GroupCard v-bind:group="group" v-bind:uid="index"
               v-on:deleteGroup="removeGroupFromGroups" />
         </div>

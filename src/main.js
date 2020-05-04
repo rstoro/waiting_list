@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-import VueDND from 'awe-dnd';
-Vue.use(VueDND);
+import { Vue2Dragula } from 'vue2-dragula';
+Vue.use(Vue2Dragula);
 
 Vue.config.productionTip = false
 

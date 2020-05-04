@@ -2,18 +2,20 @@
   <Modal v-if="showModal">
 
     <h1 slot="header" class="title is-4 message-group-header">
-      <span class="margin-right">
-        <font-awesome-icon :icon="['fas', 'phone']"/>
+      <span class="margin-right has-text-danger">
+        <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
       </span>
-      <span class="has-text-weight-medium margin-right">{{ 'TO BE IMPLIMENTED' }}</span>
-      <span class="margin-right">
-        <font-awesome-icon :icon="['fas', 'envelope']"/>
-      </span>
-      <!-- <span class="has-text-weight-medium">{{ group.fullname }}</span> -->
+      <span class="has-text-weight-medium margin-right">{{ confirmDeleteHeaderText }}</span>
     </h1>
 
     <div slot="body">
-      <p>wow</p>
+      <p>{{ confirmDeleteBodyText }}</p>
+      <p>
+        <span class="margin-right">
+          <font-awesome-icon :icon="['fas', 'user']"/>
+        </span>
+        <span class="has-text-weight-medium"><b>{{ group.fullname }}</b></span>
+      </p>
     </div>
 
     <div slot="footer">
@@ -46,8 +48,10 @@ export default {
   },
   data: () => {
     return {
-      'cancelDeleteGroupText': 'No',
-      'confirmDeleteGroupText': 'Yes'
+      'confirmDeleteHeaderText': 'Delete Group',
+      'confirmDeleteBodyText': 'Are you sure you want to delete the following group from the waiting list?',
+      'cancelDeleteGroupText': 'Cancel',
+      'confirmDeleteGroupText': 'Delete Group'
     }
   },
   props: {

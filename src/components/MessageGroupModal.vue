@@ -3,22 +3,32 @@
 
     <h1 slot="header" class="title is-4 message-group-header">
       <span class="margin-right">
-        <font-awesome-icon :icon="['fas', 'phone']"/>
-      </span>
-      <span class="has-text-weight-medium margin-right">{{ 'TO BE IMPLIMENTED' }}</span>
-      <span class="margin-right">
         <font-awesome-icon :icon="['fas', 'envelope']"/>
       </span>
-      <!-- <span class="has-text-weight-medium">{{ group.fullname }}</span> -->
+      <span class="has-text-weight-medium margin-right">{{ messageGroupHeaderText }}</span>
     </h1>
 
     <div slot="body">
-      <p>
-        Would you like to message <b>{{ group.fullname }}</b> at <b>{{ group.phonenumber }}</b>:
-      </p>
-      <p>
-        'We have your lanes available etc. etc.'?
-      </p>
+      <p class="has-text-left">{{ messageGroupBodyText }}</p>
+      <div class="text-area">
+        <div class="text-area-header">
+          <p class="has-text-left">
+            <span class="margin-right">
+              <font-awesome-icon :icon="['fas', 'user']"/>
+            </span>
+            <span class="has-text-weight-medium"><b>{{ group.fullname }}</b></span>
+          </p>
+          <p class="has-text-right">
+            <span class="margin-right">
+              <font-awesome-icon :icon="['fas', 'phone']"/>
+            </span>
+            <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
+          </p>
+        </div>
+        <textarea class="textarea">
+
+        </textarea>
+      </div>
     </div>
 
     <div slot="footer">
@@ -51,8 +61,10 @@ export default {
   },
   data: () => {
     return {
-      'cancelMessageGroupText': 'No',
-      'confirmMessageGroupText': 'Yes'
+      'messageGroupHeaderText': 'Message Group',
+      'messageGroupBodyText': 'Would you like to send the following message?',
+      'cancelMessageGroupText': 'Cancel',
+      'confirmMessageGroupText': 'Message Group'
     }
   },
   props: {
@@ -84,5 +96,15 @@ function cancelMessageGroup(vm) {
   height: 40px;
   display: flex;
   align-items: center;
+}
+.text-area {
+  padding-top: 16px;
+  display: flex;
+  flex-flow: column;
+}
+.text-area-header {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
 }
 </style>

@@ -13,14 +13,14 @@
     </section>
 
     <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
-    <NewGroupModal v-bind:showModal="showModal"
-        v-on:closeNewGroupModal="showModal = false"
+    <CreateGroupModal v-bind:showModal="showModal"
+        v-on:closeCreateGroupModal="showModal = false"
         v-on:newGroupCreated="addNewGroup"/>
 
     <div class="waiting-list-body">
       <div class="true-center" v-if="groups === [] || groups === null || groups.length === 0">
         <div>
-          <span>{{ noGroupsExistText }}</span>
+          <span class="has-text-grey-light">{{ noGroupsExistText }}</span>
         </div>
         <div>
           <span>
@@ -47,13 +47,13 @@
 </template>
 
 <script>
-import NewGroupModal from './NewGroupModal.vue';
+import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
 
 export default {
   name: 'WaitingList',
   components: {
-    NewGroupModal,
+    CreateGroupModal,
     GroupCard
   },
   data: () => {
@@ -112,6 +112,9 @@ function removeGroupFromGroups(vm, index) {
   justify-content: space-between;
   align-items: center;
   padding: 8px;
+  border-bottom: 1px solid #dbdbdb;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 .groups-header > .title {
   margin: 0;

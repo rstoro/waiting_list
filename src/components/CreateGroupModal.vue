@@ -85,7 +85,7 @@
 import Modal from './Modal.vue'
 
 export default {
-  name: 'NewGroupModal',
+  name: 'CreateGroupModal',
   props: {
     'showModal': false
   },
@@ -103,7 +103,7 @@ export default {
       },
       'fullnameRequiredText': 'Name is required.',
       'phonenumberRequiredText': 'Valid Phone Number is required.',
-      'newGroupText': 'New Group',
+      'newGroupText': 'Create Group',
       'addGroupText': 'Add Group',
       'cancelGroupText': 'Cancel'
     }
@@ -132,7 +132,7 @@ export default {
 
 function cancelNewGroup(vm) {
   resetModal(vm);
-  vm.$emit('closeNewGroupModal');
+  vm.$emit('closeCreateGroupModal');
 }
 
 function addNewGroup(vm) {

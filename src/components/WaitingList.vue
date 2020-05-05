@@ -29,8 +29,9 @@
         </div>
       </div>
       <section class="section" v-else>
-        <div class="container" v-dragula="groups" drake="group_cards">
-          <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
+        <div class="container" v-dragula="groups"  drake="group_cards">
+          <div v-bind:class="[group.messageSentAt === null ? '' : 'messaged']" 
+              v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
             <GroupCard v-bind:group="group" v-bind:uid="index"
                 v-on:deleteGroup="removeGroupFromGroups"
                 v-on:sendTextMessage="sendTextMessage"/>
@@ -55,6 +56,7 @@ import twilio_api from '../twilio_api';
 import twilio from 'twilio';
 
 //TODO: create logger...
+//TODO: disable drag and drop once messaged
 
 export default {
   name: 'WaitingList',
@@ -62,22 +64,40 @@ export default {
     CreateGroupModal,
     GroupCard
   },
-  data: () => {
+  data: function() {
     return {
-      'waitingListText': 'Waiting List',
-      'createNewGroupText': 'Create New Group',
-      'noGroupsExistText': 'There are currently no groups on the waiting list.',
-      'showModal': false,
-      'groups': (localStorage.getItem('groups')) ? JSON.parse(localStorage.getItem('groups')) : {}
+      waitingListText: 'Waiting List',
+      createNewGroupText: 'Create New Group',
+      noGroupsExistText: 'There are currently no groups on the waiting list.',
+      showModal: false,
+      groups: (localStorage.getItem('groups')) ? JSON.parse(localStorage.getItem('groups')) : {}
     }
   },
   methods: {
-    addNewGroup: function(newGroup) { return addNewGroup(this, newGroup) },
-    removeGroupFromGroups: function(index) { return removeGroupFromGroups(this, index) },
-    sendTextMessage: function(data) { return sendTextMessage(this, data) }
+    sendTextMessage(data) {
+      const vm = this;
+      //NOTE: chromium throws some header errors when sending this request.
+      //      just pretend like they are not there.
+      vm.client.messages.create({
+        body: data.message,
+        from: twilio_api.from_number,
+        to: data.phonenumber
+      }).then(message => {
+        //TODO: log this message
+      });
+    },
+    addNewGroup(newGroup) {
+      const vm = this;
+      newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
+      vm.groups.push(newGroup);
+    },
+    removeGroupFromGroups(index) {
+      const vm = this;
+      vm.groups.splice(index, 1);
+    }
   },
   watch: {
-    'groups': {
+    groups: {
       handler() {
         const vm = this;
         localStorage.setItem('groups', JSON.stringify(vm.groups));
@@ -87,31 +107,17 @@ export default {
   },
   created: function() {
     const vm = this;
+    
+    // create twilio client used for api call
     vm.client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
+    
+    // create dragula custom service
+    const service = vm.$dragula.$service;
+    service.options('group_cards', {
+      direction: 'verticle'
+    });
   }
 }
-
-function sendTextMessage(vm, data) {
-  //NOTE: chromium throws some header errors when sending this request.
-  //      just pretend like they are not there.
-  vm.client.messages.create({
-    body: data.message,
-    from: twilio_api.from_number,
-    to: data.phonenumber
-  }).then(message => {
-    //TODO: log this message
-  });
-}
-
-function addNewGroup(vm, newGroup) {
-  newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
-  vm.groups.push(newGroup);
-}
-
-function removeGroupFromGroups(vm, index) {
-  vm.groups.splice(index, 1);
-}
-
 </script>
 
 <style scoped>

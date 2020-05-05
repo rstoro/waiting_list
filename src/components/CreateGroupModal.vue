@@ -97,71 +97,65 @@ export default {
   components: {
     Modal
   },
-  data: () => {
+  data: function() {
     return {
-      'newFullname': null,  //NOTE: null is being treated as untouched...
-      'newPhonenumber': null,
-      'newNotes': '',
-      'errors': {
-        'fullname': true,
-        'phonenumber': true
+      newFullname: null,  //NOTE: null is being treated as untouched...
+      newPhonenumber: null,
+      newNotes: '',
+      errors: {
+        fullname: true,
+        phonenumber: true
       },
-      'fullnameRequiredText': 'Name is required.',
-      'phonenumberRequiredText': 'Valid Phone Number is required.',
-      'createGroupText': 'Create Group',
-      'addGroupText': 'Add Group',
-      'cancelGroupText': 'Cancel'
+      fullnameRequiredText: 'Name is required.',
+      phonenumberRequiredText: 'Valid Phone Number is required.',
+      createGroupText: 'Create Group',
+      addGroupText: 'Add Group',
+      cancelGroupText: 'Cancel'
     }
   },
   methods: {
-    cancelNewGroup: function() { return cancelNewGroup(this) },
-    addNewGroup: function() { return addNewGroup(this) }
+    cancelNewGroup() {
+      const vm = this;
+      vm.resetModal();
+      vm.$emit('closeCreateGroupModal');
+    },
+    addNewGroup() {
+      const vm = this;
+      vm.$emit('newGroupCreated', {
+        fullname: vm.newFullname, 
+        phonenumber: `+1${vm.newPhonenumber}`,
+        notes: vm.newNotes,
+        epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
+        messageSentEpoch: null
+      })
+      vm.cancelNewGroup(vm);
+    },
+    resetModal() {
+      const vm = this;
+      vm.newFullname = null;
+      vm.newPhonenumber = null;
+      vm.newNotes = null;
+      vm.errors.phonenumber = true;
+      vm.errors.fullname = true;
+    }
   },
   watch: {
-    'newFullname': {
-      handler(value) {
+    newFullname: {
+      handler(newValue, oldValue) {
         const vm = this;
-        vm.newFullname = value;
+        vm.newFullname = newValue;
         vm.errors.fullname = (vm.newFullname === '' || vm.newFullname === null);
       }
     },
-    'newPhonenumber': {
-      handler(value) {
+    newPhonenumber: {
+      handler(newValue, oldValue) {
         const vm = this;
-        vm.newPhonenumber = value;
+        vm.newPhonenumber = newValue;
         vm.errors.phonenumber = (vm.newPhonenumber === '' || vm.newPhonenumber === null || !vm.newPhonenumber.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/));
       }
     }
   }
 }
-
-function cancelNewGroup(vm) {
-  resetModal(vm);
-  vm.$emit('closeCreateGroupModal');
-}
-
-function addNewGroup(vm) {
-  vm.$emit('newGroupCreated', {
-    'fullname': vm.newFullname, 
-    'phonenumber': `+1${vm.newPhonenumber}`,
-    'notes': vm.newNotes,
-    'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created, something something premature micro-optimizations.
-    'secondsSinceEpoch': 0,
-    'messageSentAt': null
-  })
-  
-  //NOTE: should we notify user of successful addition?
-  cancelNewGroup(vm);
-}
-
-function resetModal(vm) {
-  vm.newFullname = null;
-  vm.newPhonenumber = null;
-  vm.newNotes = null;
-  vm.errors.phonenumber = true;
-  vm.errors.fullname = true;
-}
-
 </script>
 
 <style scoped>

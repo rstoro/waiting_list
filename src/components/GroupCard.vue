@@ -1,19 +1,24 @@
 <template>
   <div class="card group-card">
     <header class="card-header">
-      <p class="card-header-title">
+      <p class="card-header-title group-card-title">
         <span class="large-margin-right">{{ uid+1 }}</span>
         <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
         <span class="has-text-weight-medium">{{ group.fullname }}</span>
       </p>
-      <a href="#" class="card-header-icon" aria-label="more options" 
+      <div class="group-card-countdown">
+        <ProgressBar v-if="group.messageSentEpoch !== null" 
+            v-bind:countdown-length="60 * 17 * 1000"
+            v-bind:countdown-started-at="group.messageSentEpoch"/>
+      </div>
+      <a href="#" class="card-header-icon group-card-icon" aria-label="more options" 
           @click="isSelected = !isSelected">
         <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'clock']"/>
         </span>
-        <span class="time">{{ formatTime() }}</span>
+        <span class="time">{{ formatTime(secondsSinceEpoch) }}</span>
         <span class="icon rotate-icon" v-bind:class="{'rotate': isSelected}">
           <font-awesome-icon :icon="['fas', 'angle-right']"/>
         </span>
@@ -21,10 +26,10 @@
     </header>
 
     <transition name="accordion"
-        v-on:before-enter="beforeEnter" 
-        v-on:enter="enter"
-        v-on:before-leave="beforeLeave" 
-        v-on:leave="leave">
+        v-on:before-enter="removeHeight" 
+        v-on:enter="addScrollHeight"
+        v-on:before-leave="addScrollHeight" 
+        v-on:leave="removeHeight">
       <div v-if="isSelected" class="group-card-body">
         <div class="group-card-content">
           <textarea class="textarea" type="text" placeholder="Notes" 
@@ -34,10 +39,10 @@
         <div class="group-card-footer">
           <div class="group-card-info">
             <p class="is-size-7 has-text-weight-light has-text-left">
-              {{ formatMessagedOn() }}
+              {{ formatMessagedOn(group.messageSentEpoch) }}
             </p>
             <p class="is-size-7 has-text-weight-light has-text-left">
-              {{ formatAddedOn() }}
+              {{ formatAddedOn(group.epoch) }}
             </p>
           </div>
           <div class="group-card-buttons">
@@ -78,6 +83,7 @@
 <script>
 import MessageGroupModal from './MessageGroupModal.vue';
 import DeleteGroupModal from './DeleteGroupModal.vue';
+import ProgressBar from './ProgressBar.vue';
 
 import twilio_api from '../twilio_api';
 const twilio = require( 'twilio' );
@@ -87,90 +93,75 @@ export default {
   name: 'GroupCard',
   components: {
     MessageGroupModal,
-    DeleteGroupModal
-  },
-  data: () => {
-    return {
-      'isSelected': false,
-      'displayMessageGroupModal': false,
-      'displayDeleteGroupModal': false,
-      'displayTime': 0,
-      'counter': {},
-      'textText': 'Text',
-      'editText': 'Edit',
-      'deleteText': 'Delete',
-    }
+    DeleteGroupModal,
+    ProgressBar
   },
   props: {
-    'group': {},
-    'uid': 0
-  },
-  watch: {
-    //TODO: maybe unsubcribe this at some point?
-    'group.secondsSinceEpoch': {
-      handler(value) {
-        const vm = this;
-        
-        vm.counter = setTimeout(() => {
-          vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
-        }, 1000);
-      }, 
-      immediate: true
+    group: {
+      type: Object,
+      required: true
+    },
+    uid: {
+      type: Number,
+      required: true
     }
   },
+  data: function() {
+    const vm = this;
+
+    return {
+      isSelected: false,
+      displayMessageGroupModal: false,
+      displayDeleteGroupModal: false,
+      secondsSinceEpoch: (Date.now() / 1000 | 0) - (vm.group.epoch / 1000 | 0),
+      textText: 'Text',
+      editText: 'Edit',
+      deleteText: 'Delete',
+    }
+  },
+  mounted: function() {
+    const vm = this;
+
+    vm.epoch_timer = vm.$watch('secondsSinceEpoch', function(newValue, oldValue) {
+      setTimeout(() => {
+        vm.secondsSinceEpoch += 1; 
+      }, 1000);
+    }, {
+      immediate: true
+    });
+  },
   methods: {
-    formatTime: function() { return formatTime(this) },
-    formatAddedOn: function() { return formatAddedOn(this) },
-    formatMessagedOn: function() { return formatMessagedOn(this) },
-    deleteGroup: function(uid) { return deleteGroup(this, uid) },
-    messageGroup: function(data) { return messageGroup(this, data) },
-    beforeEnter: function(el) { return removeHeight(el) },
-    enter: function(el) { return addScrollHeight(el) },
-    beforeLeave: function(el) { addScrollHeight(el) },
-    leave: function(el) { removeHeight(el) }
+    formatTime(secondsSinceEpoch) {
+      //NOTE: this is pretty expensive...
+      return new Date(secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
+    },
+    formatAddedOn: function(epoch) {
+      return `Added ${new Date(epoch)}`;
+     },
+    formatMessagedOn: function(messageSentEpoch) {
+      return messageSentEpoch === null 
+        ? 'Has not been messaged.' 
+        : `Messaged ${new Date(messageSentEpoch)}`;
+    },
+    deleteGroup: function(uid) {
+      const vm = this;
+      vm.displayDeleteGroupModal = false;
+      vm.$emit('deleteGroup', uid);
+    },
+    messageGroup: function(data) {
+      const vm = this;
+      vm.displayMessageGroupModal = false;
+      vm.group.messageSentEpoch = Date.now();
+      vm.$emit('sendTextMessage', data);
+    },
+    removeHeight(el) {
+      el.style.height = '0';
+    },
+    addScrollHeight(el) {
+      el.style.height = el.scrollHeight + 'px';
+    }
   }
 }
-
-function formatTime(vm) {
-  //NOTE: this is pretty expensive...
-  return new Date(vm.group.secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
-}
-
-function formatAddedOn(vm) {
-  return `Added ${new Date(vm.group.epochInSeconds * 1000)}`;
-}
-
-function formatMessagedOn(vm) {
-  return vm.group.messageSentAt === null 
-    ? 'Has not been messaged.' 
-    : `Messaged ${new Date(vm.group.messageSentAt * 1000)}`;
-}
-
-function deleteGroup(vm) {
-  vm.displayDeleteGroupModal = false;
-  vm.$emit('deleteGroup', vm.uid);
-}
-
-function messageGroup(vm, data) {
-  vm.displayMessageGroupModal = false;
-  vm.group.messageSentAt = Date.now() / 1000 | 0;
-
-  vm.$emit('sendTextMessage', data);
-
-  // vm.counter = setTimeout(() => {
-  //         vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
-  //       }, 1000);
-  //TODO: countdown, 30 minutes until void
-}
-
-function removeHeight(el) {
-  el.style.height = '0';
-}
-
-function addScrollHeight(el) {
-  el.style.height = el.scrollHeight + 'px';
-}
-
 </script>
 
 <style scoped>
@@ -180,6 +171,23 @@ function addScrollHeight(el) {
 .group-card .time {
   padding-right: 16px;
 }
+.group-card .group-card-countdown {
+  display: flex;
+  flex: 3;
+  align-items: center;
+}
+
+.group-card .group-card-title {
+  flex-grow: 0;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.group-card .group-card-icon {
+  flex: 1;
+  justify-content: flex-end;
+}
+
 .group-card .card-header-icon .rotate-icon {
   transform: rotate(0deg);
   transition-duration: 0.3s;

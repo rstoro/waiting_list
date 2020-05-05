@@ -46,31 +46,40 @@ export default {
   components: {
     Modal
   },
-  data: () => {
+  data: function() {
     return {
-      'confirmDeleteHeaderText': 'Delete Group',
-      'confirmDeleteBodyText': 'Are you sure you want to delete the following group from the waiting list?',
-      'cancelDeleteGroupText': 'Cancel',
-      'confirmDeleteGroupText': 'Delete Group'
+      confirmDeleteHeaderText: 'Delete Group',
+      confirmDeleteBodyText: 'Are you sure you want to delete the following group from the waiting list?',
+      cancelDeleteGroupText: 'Cancel',
+      confirmDeleteGroupText: 'Delete Group'
     }
   },
   props: {
-    'group': {},
-    'showModal': false,
-    'uid': null
+    group: {
+      type: Object,
+      required: true
+    },
+    showModal: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    uid: {
+      type: Number,
+      required: true
+    }
   },
   methods: {
-    confirmDeleteGroup: function() { return confirmDeleteGroup(this) },
-    cancelDeleteGroup: function() { return cancelDeleteGroup(this) }
+    confirmDeleteGroup() {
+      const vm = this;
+      vm.$emit('closeDeleteGroupModal');
+      vm.$emit('confirmDeleteGroup', vm.uid);
+    },
+    cancelDeleteGroup() {
+      const vm = this;
+      vm.$emit('closeDeleteGroupModal');
+    }
   }
-}
-
-function confirmDeleteGroup(vm) {
-  vm.$emit('confirmDeleteGroup', vm.uid)
-}
-
-function cancelDeleteGroup(vm) {
-  vm.$emit('closeDeleteGroupModal');
 }
 
 </script>

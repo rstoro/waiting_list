@@ -25,7 +25,7 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText()" disabled></textarea>
+        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText(group.fullname)" disabled></textarea>
       </div>
     </div>
 
@@ -57,40 +57,41 @@ export default {
   components: {
     Modal
   },
-  data: () => {
+  data: function() {
     return {
-      'messageGroupHeaderText': 'Message Group',
-      'messageGroupBodyText': 'Would you like to send the following message?',
-      'cancelMessageGroupText': 'Cancel',
-      'confirmMessageGroupText': 'Message Group'
+      messageGroupHeaderText: 'Message Group',
+      messageGroupBodyText: 'Would you like to send the following message?',
+      cancelMessageGroupText: 'Cancel',
+      confirmMessageGroupText: 'Message Group'
     }
   },
   props: {
-    'group': {},
-    'showModal': false
+    group: {
+      type: Object,
+      required: true
+    },
+    showModal: {
+      type: Boolean,
+      required: true
+    }
   },
   methods: {
-    getMessageText: function() { return getMessageText(this) },
-    confirmMessageGroup: function() { return confirmMessageGroup(this) },
-    cancelMessageGroup: function() { return cancelMessageGroup(this) }
+    getMessageText(fullname) {
+      return `Hello ${ fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 30 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+    },
+    confirmMessageGroup() {
+      const vm = this;
+      vm.$emit('confirmMessageGroup', {
+        message: vm.getMessageText(vm.group.fullname), 
+        phonenumber: vm.group.phonenumber
+      });
+    },
+    cancelMessageGroup() {
+      const vm = this;
+      vm.$emit('closeMessageGroupModal');
+    }
   }
 }
-
-function getMessageText(vm) {
-  return `Hello ${ vm.group.fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 30 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
-}
-
-function confirmMessageGroup(vm) {
-  vm.$emit('confirmMessageGroup', {
-    'message': getMessageText(vm), 
-    'phonenumber': vm.group.phonenumber
-  });
-}
-
-function cancelMessageGroup(vm) {
-  vm.$emit('closeMessageGroupModal');
-}
-
 </script>
 
 <style scoped>

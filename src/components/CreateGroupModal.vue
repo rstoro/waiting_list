@@ -143,7 +143,7 @@ function cancelNewGroup(vm) {
 function addNewGroup(vm) {
   vm.$emit('newGroupCreated', {
     'fullname': vm.newFullname, 
-    'phonenumber': vm.newPhonenumber,
+    'phonenumber': `+1${vm.newPhonenumber}`,
     'notes': vm.newNotes,
     'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created, something something premature micro-optimizations.
     'secondsSinceEpoch': 0,

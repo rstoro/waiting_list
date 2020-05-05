@@ -58,13 +58,13 @@
     <MessageGroupModal v-bind:showModal="displayMessageGroupModal"
         v-bind:uid="uid"
         v-on:closeMessageGroupModal="displayMessageGroupModal = false"
-        v-on:confirmMessageGroup="messageGroup()"
+        v-on:confirmMessageGroup="messageGroup"
         v-bind:group="group"/>
     
     <DeleteGroupModal v-bind:showModal="displayDeleteGroupModal"
         v-bind:uid="uid"
         v-on:closeDeleteGroupModal="displayDeleteGroupModal = false"
-        v-on:confirmDeleteGroup="deleteGroup()"
+        v-on:confirmDeleteGroup="deleteGroup"
         v-bind:group="group"/>
       
   </div>
@@ -73,6 +73,10 @@
 <script>
 import MessageGroupModal from './MessageGroupModal.vue';
 import DeleteGroupModal from './DeleteGroupModal.vue';
+
+import twilio_api from '../twilio_api';
+const twilio = require( 'twilio' );
+const client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
 
 export default {
   name: 'GroupCard',
@@ -113,7 +117,7 @@ export default {
     formatTime: function() { return formatTime(this) },
     formatAddedOn: function() { return formatAddedOn(this) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
-    messageGroup: function() { return messageGroup(this) },
+    messageGroup: function(data) { return messageGroup(this, data) },
     beforeEnter: function(el) { return removeHeight(el) },
     enter: function(el) { return addScrollHeight(el) },
     beforeLeave: function(el) { addScrollHeight(el) },
@@ -135,16 +139,25 @@ function deleteGroup(vm) {
   vm.$emit('deleteGroup', vm.uid);
 }
 
-function messageGroup(vm) {
+function messageGroup(vm, data) {
   vm.displayMessageGroupModal = false;
   vm.group.messageSent = true;
   vm.group.messageSentAt = Date.now() / 1000 | 0;
+
+  //NOTE: chromium throws some header errors when sending this request.
+  //      just pretend like they are not there.
+  client.messages.create({
+    body: data.message,
+    from: twilio_api.from_number,
+    to: data.phonenumber
+  }).then(message => {
+    //TODO: log this message
+  });
 
   // vm.counter = setTimeout(() => {
   //         vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
   //       }, 1000);
   //TODO: countdown, 30 minutes until void
-  console.log('to be implimented');
 }
 
 function removeHeight(el) {

@@ -25,7 +25,7 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea" type="text" placeholder="Message" :value="getMessageText()"></textarea>
+        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText()" disabled></textarea>
       </div>
     </div>
 
@@ -81,7 +81,10 @@ function getMessageText(vm) {
 }
 
 function confirmMessageGroup(vm) {
-  vm.$emit('confirmMessageGroup')
+  vm.$emit('confirmMessageGroup', {
+    'message': getMessageText(vm), 
+    'phonenumber': vm.group.phonenumber
+  });
 }
 
 function cancelMessageGroup(vm) {

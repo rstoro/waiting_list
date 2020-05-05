@@ -155,19 +155,7 @@ function messageGroup(vm, data) {
   vm.displayMessageGroupModal = false;
   vm.group.messageSentAt = Date.now() / 1000 | 0;
 
-<<<<<<< HEAD
   vm.$emit('sendTextMessage', data);
-=======
-  //NOTE: chromium throws some header errors when sending this request.
-  //      just pretend like they are not there.
-  client.messages.create({
-    body: data.message,
-    from: twilio_api.from_number,
-    to: data.phonenumber
-  }).then(message => {
-    //TODO: log this message
-  });
->>>>>>> 3740a8f2ea58b3856c1cdd0b379c5196c0ac881a
 
   // vm.counter = setTimeout(() => {
   //         vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds

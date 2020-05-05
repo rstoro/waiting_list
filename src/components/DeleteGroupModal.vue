@@ -1,16 +1,16 @@
 <template>
   <Modal v-if="showModal">
 
-    <h1 slot="header" class="title is-4 message-group-header">
+    <h1 slot="header" class="title is-4 delete-group-header">
       <span class="small-margin-right has-text-danger">
         <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
       </span>
       <span>{{ confirmDeleteHeaderText }}</span>
     </h1>
 
-    <div slot="body">
+    <div slot="body" class="delete-group-body">
       <p>{{ confirmDeleteBodyText }}</p>
-      <p>
+      <p class="delete-group-name">
         <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
@@ -76,9 +76,16 @@ function cancelDeleteGroup(vm) {
 </script>
 
 <style scoped>
-.message-group-header {
+.delete-group-header {
   height: 40px;
   display: flex;
   align-items: center;
+}
+.delete-group-body {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.delete-group-name {
+  padding-top: 16px;
 }
 </style>

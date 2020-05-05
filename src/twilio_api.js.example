@@ -1,0 +1,5 @@
+export default {
+  account_sid: 'YOUR_ACCOUNT_SID',
+  auth_token: 'YOUR_AUTH_TOKEN',
+  from_number: 'YOUR_TWILIO_NUMBER'
+}

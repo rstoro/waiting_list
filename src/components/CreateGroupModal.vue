@@ -147,7 +147,6 @@ function addNewGroup(vm) {
     'notes': vm.newNotes,
     'epochInSeconds': Date.now() / 1000 | 0, //NOTE: prevents new date object from being created, something something premature micro-optimizations.
     'secondsSinceEpoch': 0,
-    'messageSent': false,
     'messageSentAt': null
   })
   

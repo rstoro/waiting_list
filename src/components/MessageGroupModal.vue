@@ -8,7 +8,7 @@
       <span>{{ messageGroupHeaderText }}</span>
     </h1>
 
-    <div slot="body">
+    <div slot="body" class="message-group-body">
       <p class="has-text-left">{{ messageGroupBodyText }}</p>
       <div class="text-area">
         <div class="text-area-header">
@@ -99,8 +99,12 @@ function cancelMessageGroup(vm) {
   display: flex;
   align-items: center;
 }
-.text-area {
+.message-group-body {
   padding-top: 16px;
+  padding-bottom: 16px;
+}
+.text-area {
+  padding-top: 32px;
   display: flex;
   flex-flow: column;
 }

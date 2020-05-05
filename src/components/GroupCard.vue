@@ -32,9 +32,14 @@
         </div>
 
         <div class="group-card-footer">
-          <p class="is-size-7 has-text-weight-light">
-            {{ formatAddedOn() }}
-          </p>
+          <div class="group-card-info">
+            <p class="is-size-7 has-text-weight-light has-text-left">
+              {{ formatMessagedOn() }}
+            </p>
+            <p class="is-size-7 has-text-weight-light has-text-left">
+              {{ formatAddedOn() }}
+            </p>
+          </div>
           <div class="group-card-buttons">
             <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
                 @click="displayDeleteGroupModal = true">
@@ -116,6 +121,7 @@ export default {
   methods: {
     formatTime: function() { return formatTime(this) },
     formatAddedOn: function() { return formatAddedOn(this) },
+    formatMessagedOn: function() { return formatMessagedOn(this) },
     deleteGroup: function(uid) { return deleteGroup(this, uid) },
     messageGroup: function(data) { return messageGroup(this, data) },
     beforeEnter: function(el) { return removeHeight(el) },
@@ -134,6 +140,12 @@ function formatAddedOn(vm) {
   return `Added ${new Date(vm.group.epochInSeconds * 1000)}`;
 }
 
+function formatMessagedOn(vm) {
+  return vm.group.messageSentAt === null 
+    ? 'Has not been messaged.' 
+    : `Messaged ${new Date(vm.group.messageSentAt * 1000)}`;
+}
+
 function deleteGroup(vm) {
   vm.displayDeleteGroupModal = false;
   vm.$emit('deleteGroup', vm.uid);
@@ -141,9 +153,11 @@ function deleteGroup(vm) {
 
 function messageGroup(vm, data) {
   vm.displayMessageGroupModal = false;
-  vm.group.messageSent = true;
   vm.group.messageSentAt = Date.now() / 1000 | 0;
 
+<<<<<<< HEAD
+  vm.$emit('sendTextMessage', data);
+=======
   //NOTE: chromium throws some header errors when sending this request.
   //      just pretend like they are not there.
   client.messages.create({
@@ -153,6 +167,7 @@ function messageGroup(vm, data) {
   }).then(message => {
     //TODO: log this message
   });
+>>>>>>> 3740a8f2ea58b3856c1cdd0b379c5196c0ac881a
 
   // vm.counter = setTimeout(() => {
   //         vm.group.secondsSinceEpoch = (Date.now() / 1000 | 0) - vm.group.epochInSeconds
@@ -192,6 +207,10 @@ function addScrollHeight(el) {
 .group-card .group-card-body .group-card-content {
   padding: 16px;
   display: flex;
+}
+.group-card .group-card-body .group-card-info {
+  display: flex;
+  flex-flow: column;
 }
 .group-card .group-card-footer {
   padding: 16px;

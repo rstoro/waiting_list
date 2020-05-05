@@ -12,11 +12,6 @@
       </div>
     </section>
 
-    <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
-    <CreateGroupModal v-bind:showModal="showModal"
-        v-on:closeCreateGroupModal="showModal = false"
-        v-on:newGroupCreated="addNewGroup"/>
-
     <div class="waiting-list-body">
       <div class="true-center" v-if="groups === [] || groups === null || groups.length === 0">
         <div>
@@ -37,18 +32,29 @@
         <div class="container" v-dragula="groups" drake="group_cards">
           <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
             <GroupCard v-bind:group="group" v-bind:uid="index"
-                v-on:deleteGroup="removeGroupFromGroups"/>
+                v-on:deleteGroup="removeGroupFromGroups"
+                v-on:sendTextMessage="sendTextMessage"/>
           </div>
         </div>
       </section>
     </div>
 
+    <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
+    <CreateGroupModal v-bind:showModal="showModal"
+        v-on:closeCreateGroupModal="showModal = false"
+        v-on:newGroupCreated="addNewGroup"/>
+
   </div>
+  
 </template>
 
 <script>
 import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
+import twilio_api from '../twilio_api';
+import twilio from 'twilio';
+
+//TODO: create logger...
 
 export default {
   name: 'WaitingList',
@@ -67,7 +73,8 @@ export default {
   },
   methods: {
     addNewGroup: function(newGroup) { return addNewGroup(this, newGroup) },
-    removeGroupFromGroups: function(index) { return removeGroupFromGroups(this, index) }
+    removeGroupFromGroups: function(index) { return removeGroupFromGroups(this, index) },
+    sendTextMessage: function(data) { return sendTextMessage(this, data) }
   },
   watch: {
     'groups': {
@@ -77,7 +84,23 @@ export default {
       },
       deep: true
     }
+  },
+  created: function() {
+    const vm = this;
+    vm.client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
   }
+}
+
+function sendTextMessage(vm, data) {
+  //NOTE: chromium throws some header errors when sending this request.
+  //      just pretend like they are not there.
+  vm.client.messages.create({
+    body: data.message,
+    from: twilio_api.from_number,
+    to: data.phonenumber
+  }).then(message => {
+    //TODO: log this message
+  });
 }
 
 function addNewGroup(vm, newGroup) {

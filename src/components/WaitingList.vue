@@ -105,7 +105,7 @@ export default {
       deep: true
     }
   },
-  created: function() {
+  created() {
     const vm = this;
     
     // create twilio client used for api call

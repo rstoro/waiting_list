@@ -58,7 +58,7 @@ export default {
     });
   },
   methods: {
-    formatTime: function(time) {
+    formatTime(time) {
       return new Date(time * 1000).toISOString().substr(11, 8); //hh:MM:ss
     }
   }

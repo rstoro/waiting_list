@@ -4,68 +4,16 @@
         v-bind:index="index" 
         v-bind:is-selected="isSelected"
         v-on:setGroupSelected="setGroupSelected"/>
-    <!-- <header class="card-header">
-      <p class="card-header-title group-card-title">
-        <span class="large-margin-right">{{ index+1 }}</span>
-        <span class="small-margin-right">
-          <font-awesome-icon :icon="['fas', 'user']"/>
-        </span>
-        <span class="has-text-weight-medium">{{ group.fullname }}</span>
-      </p>
-      <div class="group-card-countdown">
-        <GroupProgressBar v-if="group.messageSentEpoch !== null"
-            v-bind:started-at="group.messageSentEpoch"
-            v-bind:countdown-length="60 * 1000"/> 
-      </div>
-      <a href="#" class="card-header-icon group-card-icon" aria-label="more options" 
-          @click="isSelected = !isSelected">
-        <span class="small-margin-right">
-          <font-awesome-icon :icon="['fas', 'clock']"/>
-        </span>
-        <span class="time">{{ formatTime(secondsSinceEpoch) }}</span>
-        <span class="icon rotate-icon" v-bind:class="{'rotate': isSelected}">
-          <font-awesome-icon :icon="['fas', 'angle-right']"/>
-        </span>
-      </a>
-    </header> -->
 
     <transition name="accordion"
         v-on:before-enter="removeHeight" 
         v-on:enter="addScrollHeight"
         v-on:before-leave="addScrollHeight" 
         v-on:leave="removeHeight">
-      <div v-if="isSelected" class="group-card-body">
-        <div class="group-card-content">
-          <textarea class="textarea" type="text" placeholder="Notes" 
-              v-model="group.notes"></textarea>
-        </div>
-
-        <div class="group-card-footer">
-          <div class="group-card-info">
-            <p class="is-size-7 has-text-weight-light has-text-left">
-              {{ formatMessagedOn(group.messageSentEpoch) }}
-            </p>
-            <p class="is-size-7 has-text-weight-light has-text-left">
-              {{ formatAddedOn(group.epoch) }}
-            </p>
-          </div>
-          <div class="group-card-buttons">
-            <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
-                @click="displayDeleteGroupModal = true">
-              <span class="icon is-small">
-                <font-awesome-icon :icon="['fas', 'trash-alt']"/>
-              </span>
-              <span>{{ deleteText }}</span>
-            </button>
-            <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-                @click="displayMessageGroupModal = true">
-              <span class="icon is-small">
-                <font-awesome-icon :icon="['fas', 'envelope']"/>
-              </span>
-              <span>{{ textText }}</span>
-            </button>
-          </div>
-        </div>
+      <div v-if="isSelected" class="group-card-content">
+        <GroupCardContent v-bind:group="group"
+          v-on:setDisplayMessageGroupModal="setDisplayMessageGroupModal"
+          v-on:setDisplayDeleteGroupModal="setDisplayDeleteGroupModal"/>
       </div>
     </transition>
 
@@ -88,6 +36,7 @@
 import MessageGroupModal from './MessageGroupModal.vue';
 import DeleteGroupModal from './DeleteGroupModal.vue';
 import GroupCardHeader from './GroupCardHeader.vue';
+import GroupCardContent from './GroupCardContent.vue';
 
 import twilio_api from '../twilio_api';
 const twilio = require( 'twilio' );
@@ -98,7 +47,8 @@ export default {
   components: {
     MessageGroupModal,
     DeleteGroupModal,
-    GroupCardHeader
+    GroupCardHeader,
+    GroupCardContent
   },
   props: {
     group: {
@@ -117,19 +67,20 @@ export default {
       isSelected: false,
       displayMessageGroupModal: false,
       displayDeleteGroupModal: false,
-      textText: 'Text',
-      editText: 'Edit',
-      deleteText: 'Delete'
     }
   },
   methods: {
-    formatAddedOn(epoch) {
-      return `Added ${new Date(epoch)}`;
-     },
-    formatMessagedOn(messageSentEpoch) {
-      return messageSentEpoch === null 
-        ? 'Has not been messaged.' 
-        : `Messaged ${new Date(messageSentEpoch)}`;
+    setGroupSelected(value) {
+      const vm = this;
+      vm.isSelected = value;
+    },
+    setDisplayMessageGroupModal(value) {
+      const vm = this;
+      vm.displayMessageGroupModal = value;
+    },
+    setDisplayDeleteGroupModal(value) {
+      const vm = this;
+      vm.displayDeleteGroupModal = value;
     },
     deleteGroup(index) {
       const vm = this;
@@ -147,10 +98,6 @@ export default {
     },
     addScrollHeight(el) {
       el.style.height = el.scrollHeight + 'px';
-    },
-    setGroupSelected(value) {
-      const vm = this;
-      vm.isSelected = value;
     }
   }
 }
@@ -160,33 +107,8 @@ export default {
 .group-card {
   margin-bottom: 8px;
 }
-.group-card .group-card-body {
+.group-card-content {
   transition: all 0.3s ease-out;
   overflow: hidden;
-}
-.group-card .group-card-body .group-card-content {
-  padding: 16px;
-  display: flex;
-}
-.group-card .group-card-body .group-card-info {
-  display: flex;
-  flex-flow: column;
-}
-.group-card .group-card-footer {
-  padding: 16px;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: transparent;
-  border-top: 1px solid #ededed;
-}
-.group-card .group-card-footer > .group-card-buttons {
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-}
-.group-card .group-card-footer > .group-card-buttons > .group-card-button {
-  margin-left: 8px;
 }
 </style>

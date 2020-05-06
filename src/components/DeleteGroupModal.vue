@@ -46,7 +46,7 @@ export default {
   components: {
     Modal
   },
-  data: function() {
+  data() {
     return {
       confirmDeleteHeaderText: 'Delete Group',
       confirmDeleteBodyText: 'Are you sure you want to delete the following group from the waiting list?',

@@ -1,6 +1,6 @@
 <template>
 <div class="progress-bar-wrapper">
-  <div class="timer" v-bind:style="{'color': timerNumberColor}">{{formatTime(timerNumberInMs)}}</div>
+  <div class="display" v-bind:style="{'color': displayColor}">{{displayText}}</div>
   <div class="progress-bar-container">
     <div class="progress-bar" v-bind:style="{'width': `${ barPercentageComplete }%`, 'background-color': barColor}"></div>
   </div>
@@ -9,13 +9,14 @@
 
 <script>
 export default {
+  //TODO: add validator to colors
   name: 'ProgressBar',
   props: {
-    timerNumberInMs: {
-      type: Number,
-      default: 0
+    displayText: {
+      type: String,
+      default: '00:00:00'
     },
-    timerNumberColor: {
+    displayColor: {
       type: String,
       default: '#2793da'
     },
@@ -27,11 +28,6 @@ export default {
       type: String,
       default: '#2793da'
     }
-  },
-  methods: {
-    formatTime: function(time) {
-      return new Date(time * 1000).toISOString().substr(11, 8); //hh:MM:ss
-    }
   }
 }
 </script>
@@ -40,7 +36,7 @@ export default {
 .progress-bar-wrapper {
   width: 100%;
 }
-.progress-bar-wrapper > .timer {
+.progress-bar-wrapper > .display {
   font-weight: 550;
 }
 .progress-bar-wrapper > .progress-bar-container {

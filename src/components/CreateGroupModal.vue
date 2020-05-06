@@ -97,7 +97,7 @@ export default {
   components: {
     Modal
   },
-  data: function() {
+  data() {
     return {
       newFullname: null,  //NOTE: null is being treated as untouched...
       newPhonenumber: null,

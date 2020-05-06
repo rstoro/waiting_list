@@ -64,7 +64,7 @@ export default {
     CreateGroupModal,
     GroupCard
   },
-  data: function() {
+  data() {
     return {
       waitingListText: 'Waiting List',
       createNewGroupText: 'Create New Group',

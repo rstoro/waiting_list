@@ -57,7 +57,7 @@ export default {
   components: {
     Modal
   },
-  data: function() {
+  data() {
     return {
       messageGroupHeaderText: 'Message Group',
       messageGroupBodyText: 'Would you like to send the following message?',

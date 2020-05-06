@@ -64,7 +64,7 @@ export default {
       required: true,
       default: false
     },
-    uid: {
+    index: {
       type: Number,
       required: true
     }
@@ -73,7 +73,7 @@ export default {
     confirmDeleteGroup() {
       const vm = this;
       vm.$emit('closeDeleteGroupModal');
-      vm.$emit('confirmDeleteGroup', vm.uid);
+      vm.$emit('confirmDeleteGroup', vm.index);
     },
     cancelDeleteGroup() {
       const vm = this;

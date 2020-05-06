@@ -32,7 +32,7 @@
         <div class="container" v-dragula="groups"  drake="group_cards">
           <div v-bind:class="[group.messageSentAt === null ? '' : 'messaged']" 
               v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
-            <GroupCard v-bind:group="group" v-bind:uid="index"
+            <GroupCard v-bind:group="group" v-bind:index="index"
                 v-on:deleteGroup="removeGroupFromGroups"
                 v-on:sendTextMessage="sendTextMessage"/>
           </div>

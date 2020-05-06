@@ -1,8 +1,12 @@
 <template>
   <div class="card group-card">
-    <header class="card-header">
+    <GroupCardHeader v-bind:group="group" 
+        v-bind:index="index" 
+        v-bind:is-selected="isSelected"
+        v-on:setGroupSelected="setGroupSelected"/>
+    <!-- <header class="card-header">
       <p class="card-header-title group-card-title">
-        <span class="large-margin-right">{{ uid+1 }}</span>
+        <span class="large-margin-right">{{ index+1 }}</span>
         <span class="small-margin-right">
           <font-awesome-icon :icon="['fas', 'user']"/>
         </span>
@@ -23,7 +27,7 @@
           <font-awesome-icon :icon="['fas', 'angle-right']"/>
         </span>
       </a>
-    </header>
+    </header> -->
 
     <transition name="accordion"
         v-on:before-enter="removeHeight" 
@@ -66,13 +70,13 @@
     </transition>
 
     <MessageGroupModal v-bind:showModal="displayMessageGroupModal"
-        v-bind:uid="uid"
+        v-bind:index="index"
         v-on:closeMessageGroupModal="displayMessageGroupModal = false"
         v-on:confirmMessageGroup="messageGroup"
         v-bind:group="group"/>
     
     <DeleteGroupModal v-bind:showModal="displayDeleteGroupModal"
-        v-bind:uid="uid"
+        v-bind:index="index"
         v-on:closeDeleteGroupModal="displayDeleteGroupModal = false"
         v-on:confirmDeleteGroup="deleteGroup"
         v-bind:group="group"/>
@@ -83,7 +87,7 @@
 <script>
 import MessageGroupModal from './MessageGroupModal.vue';
 import DeleteGroupModal from './DeleteGroupModal.vue';
-import GroupProgressBar from './GroupProgressBar.vue';
+import GroupCardHeader from './GroupCardHeader.vue';
 
 import twilio_api from '../twilio_api';
 const twilio = require( 'twilio' );
@@ -94,14 +98,14 @@ export default {
   components: {
     MessageGroupModal,
     DeleteGroupModal,
-    GroupProgressBar
+    GroupCardHeader
   },
   props: {
     group: {
       type: Object,
       required: true
     },
-    uid: {
+    index: {
       type: Number,
       required: true
     }
@@ -113,42 +117,26 @@ export default {
       isSelected: false,
       displayMessageGroupModal: false,
       displayDeleteGroupModal: false,
-      secondsSinceEpoch: (Date.now() / 1000 | 0) - (vm.group.epoch / 1000 | 0),
       textText: 'Text',
       editText: 'Edit',
       deleteText: 'Delete'
     }
   },
-  mounted() {
-    const vm = this;
-
-    vm.epoch_timer = vm.$watch('secondsSinceEpoch', function(newValue, oldValue) {
-      setTimeout(() => {
-        vm.secondsSinceEpoch += 1; 
-      }, 1000);
-    }, {
-      immediate: true
-    });
-  },
   methods: {
-    formatTime(secondsSinceEpoch) {
-      //NOTE: this is pretty expensive...
-      return new Date(secondsSinceEpoch * 1000).toISOString().substr(11, 8); //hh:MM:ss
-    },
-    formatAddedOn: function(epoch) {
+    formatAddedOn(epoch) {
       return `Added ${new Date(epoch)}`;
      },
-    formatMessagedOn: function(messageSentEpoch) {
+    formatMessagedOn(messageSentEpoch) {
       return messageSentEpoch === null 
         ? 'Has not been messaged.' 
         : `Messaged ${new Date(messageSentEpoch)}`;
     },
-    deleteGroup: function(uid) {
+    deleteGroup(index) {
       const vm = this;
       vm.displayDeleteGroupModal = false;
-      vm.$emit('deleteGroup', uid);
+      vm.$emit('deleteGroup', index);
     },
-    messageGroup: function(data) {
+    messageGroup(data) {
       const vm = this;
       vm.displayMessageGroupModal = false;
       vm.group.messageSentEpoch = Date.now();
@@ -159,6 +147,10 @@ export default {
     },
     addScrollHeight(el) {
       el.style.height = el.scrollHeight + 'px';
+    },
+    setGroupSelected(value) {
+      const vm = this;
+      vm.isSelected = value;
     }
   }
 }
@@ -167,34 +159,6 @@ export default {
 <style scoped>
 .group-card {
   margin-bottom: 8px;
-}
-.group-card .time {
-  padding-right: 16px;
-}
-.group-card .group-card-countdown {
-  display: flex;
-  flex: 3;
-  align-items: center;
-}
-
-.group-card .group-card-title {
-  flex-grow: 0;
-  flex: 1;
-  justify-content: flex-start;
-}
-
-.group-card .group-card-icon {
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.group-card .card-header-icon .rotate-icon {
-  transform: rotate(0deg);
-  transition-duration: 0.3s;
-}
-.group-card .card-header-icon .rotate-icon.rotate {
-  transform: rotate(90deg);
-  transition-duration: 0.3s;
 }
 .group-card .group-card-body {
   transition: all 0.3s ease-out;

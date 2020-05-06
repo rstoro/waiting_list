@@ -1,5 +1,5 @@
 <template>
-  <Modal v-if="showModal">
+  <Modal id="create-group-modal" v-if="showModal">
     
     <h1 slot="header" class="title is-4 create-group-header">
       <span class="small-margin-right">

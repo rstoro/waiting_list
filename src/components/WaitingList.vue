@@ -118,7 +118,10 @@ export default {
     // create dragula custom service
     const service = vm.$dragula.$service;
     service.options('group_cards', {
-      direction: 'verticle'
+      direction: 'verticle',
+      invalid: function(el, handle) {
+        return el.id === 'create-group-modal' || el.id === 'message-group-modal' || el.id ==='delete-group-modal';
+      }
     });
   }
 }

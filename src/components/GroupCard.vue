@@ -10,7 +10,8 @@
         v-on:enter="addScrollHeight"
         v-on:before-leave="addScrollHeight" 
         v-on:leave="removeHeight">
-      <div v-if="isSelected" class="group-card-content">
+      <div class="group-card-content" 
+          v-if="isSelected">
         <GroupCardContent v-bind:group="group"
           v-on:setDisplayMessageGroupModal="setDisplayMessageGroupModal"
           v-on:setDisplayDeleteGroupModal="setDisplayDeleteGroupModal"/>

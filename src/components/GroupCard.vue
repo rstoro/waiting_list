@@ -10,8 +10,10 @@
       </p>
       <div class="group-card-countdown">
         <ProgressBar v-if="group.messageSentEpoch !== null" 
-            v-bind:countdown-length="60 * 17 * 1000"
-            v-bind:countdown-started-at="group.messageSentEpoch"/>
+            v-bind:timer-number-in-ms="60 * 1000"
+            v-bind:timer-number-color="'orange'"
+            v-bind:bar-percentage-complete="75"
+            v-bind:bar-color="'red'"/> 
       </div>
       <a href="#" class="card-header-icon group-card-icon" aria-label="more options" 
           @click="isSelected = !isSelected">
@@ -108,6 +110,10 @@ export default {
   },
   data: function() {
     const vm = this;
+    const countdownLength = 60; //seconds
+    const secondsSinceCountdownStarted = vm.group.messageSentEpoch === null
+      ? countdownLength
+      : (vm.group.messageSentEpoch / 1000 | 0) + (countdownLength / 1000 | 0) - (Date.now() / 1000 | 0);
 
     return {
       isSelected: false,
@@ -117,6 +123,7 @@ export default {
       textText: 'Text',
       editText: 'Edit',
       deleteText: 'Delete',
+      secondsRemaining: secondsSinceCountdownStarted <= 0 ? 0 : secondsSinceCountdownStarted
     }
   },
   mounted: function() {
@@ -153,6 +160,29 @@ export default {
       vm.displayMessageGroupModal = false;
       vm.group.messageSentEpoch = Date.now();
       vm.$emit('sendTextMessage', data);
+      vm.unwatch_countdown = vm.$watch('secondsRemaining', function(newValue, oldValue) {
+        // early out unsub
+        if (newValue < oldValue && vm.secondsRemaining <= 0) {
+          vm.unwatch_countdown();
+          vm.secondsRemaining = 0;
+          return;
+        }
+
+        //subtract from time
+        setTimeout(() => {
+          vm.secondsRemaining -= 1;
+        }, 1000)
+
+        // determine bar width
+        console.log(vm.$refs['progress-bar'].stlyes);
+
+        // determine bar color
+        // 72 199 116
+        // 255 221 87
+        // 241 70 104
+      }, {
+        immediate: true
+      });
     },
     removeHeight(el) {
       el.style.height = '0';

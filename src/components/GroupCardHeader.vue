@@ -1,7 +1,7 @@
 <template>
   <header class="card-header group-card-header">
     <p class="card-header-title group-card-title">
-      <span class="large-margin-right">{{ index }}</span>
+      <span class="large-margin-right">{{ index + 1 }}</span>
       <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'user']"/>
       </span>

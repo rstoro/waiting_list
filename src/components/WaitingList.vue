@@ -2,7 +2,12 @@
   <div class="waiting-list">
     <section class="hero waiting-list-header">
       <div class="hero-body groups-header">
-        <h1 class="title">{{ waitingListText }}</h1>
+        <h1 class="title">
+          <span class="small-margin-right">
+            <font-awesome-icon :icon="['fas', 'list']"/>
+          </span>
+          <span>{{ waitingListText }}</span>
+        </h1>
         <a class="card-header-icon" @click="showModal = true">
           <span class="small-margin-right">
             <font-awesome-icon :icon="['fas', 'users']"/>

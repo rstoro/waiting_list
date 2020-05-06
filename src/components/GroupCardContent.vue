@@ -23,11 +23,12 @@
           <span>{{ deleteText }}</span>
         </button>
         <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-            @click="displayMessageGroupModal(true)">
+            @click="displayMessageGroupModal(true)"
+            v-bind:disabled="group.messageSentEpoch != null">
           <span class="icon is-small">
             <font-awesome-icon :icon="['fas', 'envelope']"/>
           </span>
-          <span>{{ textText }}</span>
+          <span>{{ messageText }}</span>
         </button>
       </div>
     </div>
@@ -45,7 +46,7 @@ export default {
   },
   data() {
     return {
-      textText: 'Text',
+      messageText: 'Message',
       editText: 'Edit',
       deleteText: 'Delete'
     }

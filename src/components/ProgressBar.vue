@@ -47,6 +47,8 @@ export default {
 }
 .progress-bar-wrapper > .display {
   font-weight: 550;
+  display: flex;
+  justify-content: center;
 }
 .progress-bar-wrapper > .progress-bar-container {
   width: 100%;

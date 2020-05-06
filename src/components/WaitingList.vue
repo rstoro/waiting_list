@@ -34,10 +34,10 @@
         </div>
       </div>
       <section class="section" v-else>
-        <div class="container" v-dragula="groups"  drake="group_cards">
-          <div v-bind:class="[group.messageSentAt === null ? '' : 'messaged']" 
-              v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
-            <GroupCard v-bind:group="group" v-bind:index="index"
+        <div class="container" v-dragula="groups" drake="group_cards">
+          <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
+            <GroupCard v-bind:group="group" 
+                v-bind:index="index"
                 v-on:deleteGroup="removeGroupFromGroups"
                 v-on:sendTextMessage="sendTextMessage"/>
           </div>
@@ -61,7 +61,6 @@ import twilio_api from '../twilio_api';
 import twilio from 'twilio';
 
 //TODO: create logger...
-//TODO: disable drag and drop once messaged
 
 export default {
   name: 'WaitingList',

@@ -36,7 +36,7 @@ export default {
     return {
       secondsRemaining: secondsRemaining,
       barPercent: Math.floor(secondsRemaining / (vm.countdownLength / 1000 | 0) * 100),
-      barAndDisplayColor: secondsRemaining <= 0 ? vm.end_color : vm.start_color
+      barAndDisplayColor: secondsRemaining <= 0 ? { ...vm.end_color } : { ...vm.start_color }
     }
   },
   mounted() {
@@ -56,6 +56,7 @@ export default {
         vm.secondsRemaining -= 1;
         
         vm.barPercent = Math.floor(vm.secondsRemaining / (vm.countdownLength / 1000 | 0) * 100);
+        console.log(vm.start_color['r'], vm.mid_color['r'], vm.barAndDisplayColor['r'], (100 -vm.barPercent) * 2);
 
         if (vm.secondsRemaining > (vm.countdownLength / 1000 | 0) * 0.5) {
           vm.barAndDisplayColor['r'] = get_color_difference(vm.start_color['r'], vm.mid_color['r'], (100 - vm.barPercent) * 2);

@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     getMessageText(fullname) {
-      return `Hello ${ fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 30 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+      return `Hello ${ fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 20 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
     },
     confirmMessageGroup() {
       const vm = this;

@@ -78,7 +78,8 @@ export default {
     }
   },
   methods: {
-    sendTextMessage(data) {
+    //TODO: error checking on this
+    sendTextMessage(data, index) {
       const vm = this;
       //NOTE: chromium throws some header errors when sending this request.
       //      just pretend like they are not there.
@@ -87,7 +88,11 @@ export default {
         from: twilio_api.from_number,
         to: data.phonenumber
       }).then(message => {
-        //TODO: log this message
+        //TODO: toast success
+        vm.groups[index].messageSentEpoch = Date.now();
+      }).catch(error => {
+        //TODO: toast error
+        vm.groups[index].messageSentEpoch = null;
       });
     },
     addNewGroup(newGroup) {

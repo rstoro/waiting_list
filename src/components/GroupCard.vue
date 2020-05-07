@@ -91,8 +91,7 @@ export default {
     messageGroup(data) {
       const vm = this;
       vm.displayMessageGroupModal = false;
-      vm.group.messageSentEpoch = Date.now();
-      vm.$emit('sendTextMessage', data);
+      vm.$emit('sendTextMessage', data, vm.index);
     },
     removeHeight(el) {
       el.style.height = '0';

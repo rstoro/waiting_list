@@ -25,7 +25,7 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText(group.fullname)" disabled></textarea>
+        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText(group.fullname, waitTime, holdTime)" disabled></textarea>
       </div>
     </div>
 
@@ -62,7 +62,9 @@ export default {
       messageGroupHeaderText: 'Message Group',
       messageGroupBodyText: 'Would you like to send the following message?',
       cancelMessageGroupText: 'Cancel',
-      confirmMessageGroupText: 'Message Group'
+      confirmMessageGroupText: 'Message Group',
+      waitTime: 15,
+      holdTime: 5
     }
   },
   props: {
@@ -76,13 +78,13 @@ export default {
     }
   },
   methods: {
-    getMessageText(fullname) {
-      return `Hello ${ fullname }, this is Station 300!  In approximately 15 minutes your lane(s) will be ready.  If you are not here within 20 minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+    getMessageText(fullname, waitTime, holdTime) {
+      return `Hello ${ fullname }, this is Station 300!  In approximately ${waitTime} minutes your lane(s) will be ready.  If you are not here within ${waitTime + holdTime} minutes, the reservation will be canceled.  We look forward to seeing you soon!`
     },
     confirmMessageGroup() {
       const vm = this;
       vm.$emit('confirmMessageGroup', {
-        message: vm.getMessageText(vm.group.fullname), 
+        message: vm.getMessageText(vm.group.fullname, vm.waitTime, vm.holdTime), 
         phonenumber: vm.group.phonenumber
       });
     },

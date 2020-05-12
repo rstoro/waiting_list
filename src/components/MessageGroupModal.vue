@@ -82,15 +82,13 @@ export default {
       return `Hello ${ fullname }, this is Station 300!  In approximately ${waitTime} minutes your lane(s) will be ready.  If you are not here within ${waitTime + holdTime} minutes, the reservation will be canceled.  We look forward to seeing you soon!`
     },
     confirmMessageGroup() {
-      const vm = this;
-      vm.$emit('confirmMessageGroup', {
-        message: vm.getMessageText(vm.group.fullname, vm.waitTime, vm.holdTime), 
-        phonenumber: vm.group.phonenumber
+      this.$emit('confirmMessageGroup', {
+        message: this.getMessageText(this.group.fullname, this.waitTime, this.holdTime), 
+        phonenumber: this.group.phonenumber
       });
     },
     cancelMessageGroup() {
-      const vm = this;
-      vm.$emit('closeMessageGroupModal');
+      this.$emit('closeMessageGroupModal');
     }
   }
 }

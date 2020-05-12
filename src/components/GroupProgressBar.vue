@@ -24,48 +24,45 @@ export default {
     }
   },
   data() {
-    const vm = this;
+    this.start_color = { r: 72, g: 199, b: 116 };
+    this.mid_color = { r: 255, g: 221, b: 87 };
+    this.end_color = { r: 241, g: 70, b: 104 };
 
-    vm.start_color = { r: 72, g: 199, b: 116 };
-    vm.mid_color = { r: 255, g: 221, b: 87 };
-    vm.end_color = { r: 241, g: 70, b: 104 };
-
-    const timeRemaining = (vm.startedAt / 1000 | 0) + (vm.countdownLength / 1000 | 0) - (Date.now() / 1000 | 0);
+    const timeRemaining = (this.startedAt / 1000 | 0) + (this.countdownLength / 1000 | 0) - (Date.now() / 1000 | 0);
     const secondsRemaining = timeRemaining <= 0 ? 0 : timeRemaining; 
     
     return {
       secondsRemaining: secondsRemaining,
-      barPercent: Math.floor(secondsRemaining / (vm.countdownLength / 1000 | 0) * 100),
-      barAndDisplayColor: secondsRemaining <= 0 ? { ...vm.end_color } : { ...vm.start_color }
+      barPercent: Math.floor(secondsRemaining / (this.countdownLength / 1000 | 0) * 100),
+      barAndDisplayColor: secondsRemaining <= 0 ? { ...this.end_color } : { ...this.start_color }
     }
   },
   mounted() {
-    const vm = this;
     const get_color_difference = (c_start, c_end, percent_transitioned) => Math.ceil(c_start + ((c_end - c_start) * (percent_transitioned / 100)));
 
-    vm.unwatch_countdown = vm.$watch('secondsRemaining', function(newValue, oldValue) {
-      if (vm.secondsRemaining <= 0) {
-        if (vm.unwatch_countdown != null) {
-          vm.unwatch_countdown();
+    this.unwatch_countdown = this.$watch('secondsRemaining', function(newValue, oldValue) {
+      if (this.secondsRemaining <= 0) {
+        if (this.unwatch_countdown != null) {
+          this.unwatch_countdown();
         }
 
         return;
       }
 
       setTimeout(() => {
-        vm.secondsRemaining -= 1;
+        this.secondsRemaining -= 1;
         
-        vm.barPercent = Math.floor(vm.secondsRemaining / (vm.countdownLength / 1000 | 0) * 100);
+        this.barPercent = Math.floor(this.secondsRemaining / (this.countdownLength / 1000 | 0) * 100);
 
-        if (vm.secondsRemaining > (vm.countdownLength / 1000 | 0) * 0.5) {
-          vm.barAndDisplayColor['r'] = get_color_difference(vm.start_color['r'], vm.mid_color['r'], (100 - vm.barPercent) * 2);
-          vm.barAndDisplayColor['g'] = get_color_difference(vm.start_color['g'], vm.mid_color['g'], (100 - vm.barPercent) * 2);
-          vm.barAndDisplayColor['b'] = get_color_difference(vm.start_color['b'], vm.mid_color['b'], (100 - vm.barPercent) * 2);  
+        if (this.secondsRemaining > (this.countdownLength / 1000 | 0) * 0.5) {
+          this.barAndDisplayColor['r'] = get_color_difference(this.start_color['r'], this.mid_color['r'], (100 - this.barPercent) * 2);
+          this.barAndDisplayColor['g'] = get_color_difference(this.start_color['g'], this.mid_color['g'], (100 - this.barPercent) * 2);
+          this.barAndDisplayColor['b'] = get_color_difference(this.start_color['b'], this.mid_color['b'], (100 - this.barPercent) * 2);  
         }
         else {
-          vm.barAndDisplayColor['r'] = get_color_difference(vm.mid_color['r'], vm.end_color['r'], (100 - vm.barPercent - 50) * 2);
-          vm.barAndDisplayColor['g'] = get_color_difference(vm.mid_color['g'], vm.end_color['g'], (100 - vm.barPercent - 50) * 2);
-          vm.barAndDisplayColor['b'] = get_color_difference(vm.mid_color['b'], vm.end_color['b'], (100 - vm.barPercent - 50) * 2);
+          this.barAndDisplayColor['r'] = get_color_difference(this.mid_color['r'], this.end_color['r'], (100 - this.barPercent - 50) * 2);
+          this.barAndDisplayColor['g'] = get_color_difference(this.mid_color['g'], this.end_color['g'], (100 - this.barPercent - 50) * 2);
+          this.barAndDisplayColor['b'] = get_color_difference(this.mid_color['b'], this.end_color['b'], (100 - this.barPercent - 50) * 2);
         }
       }, 1000)
     }, {

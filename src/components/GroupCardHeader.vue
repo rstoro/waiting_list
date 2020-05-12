@@ -50,10 +50,8 @@ export default {
     }
   },
   data() {
-    const vm = this;
-
     return {
-      secondsSinceEpoch: (Date.now() / 1000 | 0) - (vm.group.epoch / 1000 | 0),
+      secondsSinceEpoch: (Date.now() / 1000 | 0) - (this.group.epoch / 1000 | 0),
     }
   },
   methods: {
@@ -62,16 +60,13 @@ export default {
       return new Date(time * 1000).toISOString().substr(11, 8); //hh:MM:ss
     },
     toggleSelected() {
-      const vm = this;
-      vm.$emit('setGroupSelected', !vm.isSelected);
+      this.$emit('setGroupSelected', !this.isSelected);
     }
   },
   mounted() {
-    const vm = this;
-
-    vm.epoch_timer = vm.$watch('secondsSinceEpoch', function(newValue, oldValue) {
+    this.epoch_timer = this.$watch('secondsSinceEpoch', function(newValue, oldValue) {
       setTimeout(() => {
-        vm.secondsSinceEpoch += 1; 
+        this.secondsSinceEpoch += 1; 
       }, 1000);
     }, {
       immediate: true

@@ -62,8 +62,6 @@ export default {
     }
   },
   data() {
-    const vm = this;
-
     return {
       isSelected: false,
       displayMessageGroupModal: false,
@@ -72,26 +70,21 @@ export default {
   },
   methods: {
     setGroupSelected(value) {
-      const vm = this;
-      vm.isSelected = value;
+      this.isSelected = value;
     },
     setDisplayMessageGroupModal(value) {
-      const vm = this;
-      vm.displayMessageGroupModal = value;
+      this.displayMessageGroupModal = value;
     },
     setDisplayDeleteGroupModal(value) {
-      const vm = this;
-      vm.displayDeleteGroupModal = value;
+      this.displayDeleteGroupModal = value;
     },
     deleteGroup(index) {
-      const vm = this;
-      vm.displayDeleteGroupModal = false;
-      vm.$emit('deleteGroup', index);
+      this.displayDeleteGroupModal = false;
+      this.$emit('deleteGroup', index);
     },
     messageGroup(data) {
-      const vm = this;
-      vm.displayMessageGroupModal = false;
-      vm.$emit('sendTextMessage', data, vm.index);
+      this.displayMessageGroupModal = false;
+      this.$emit('sendTextMessage', data, this.index);
     },
     removeHeight(el) {
       el.style.height = '0';

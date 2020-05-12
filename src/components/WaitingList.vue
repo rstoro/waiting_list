@@ -35,7 +35,7 @@
       </div>
       <section class="section" v-else>
         <div class="container" v-dragula="groups" drake="group_cards">
-          <div v-for="(group, index) in groups" :key="`${group.fullname}_${index}`">
+          <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
             <GroupCard v-bind:group="group" 
                 v-bind:index="index"
                 v-on:deleteGroup="removeGroupFromGroups"
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { openNotificationAlert } from './NotificationAlert.vue'
 import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
 import twilio_api from '../twilio_api';
@@ -66,7 +67,10 @@ export default {
   name: 'WaitingList',
   components: {
     CreateGroupModal,
-    GroupCard
+    GroupCard,
+  },
+  mounted() {
+    openNotificationAlert({message:'wow'});
   },
   data() {
     return {
@@ -80,48 +84,42 @@ export default {
   methods: {
     //TODO: error checking on this
     sendTextMessage(data, index) {
-      const vm = this;
       //NOTE: chromium throws some header errors when sending this request.
       //      just pretend like they are not there.
-      vm.client.messages.create({
+      this.client.messages.create({
         body: data.message,
         from: twilio_api.from_number,
         to: data.phonenumber
       }).then(message => {
         //TODO: toast success
-        vm.groups[index].messageSentEpoch = Date.now();
+        this.groups[index].messageSentEpoch = Date.now();
       }).catch(error => {
         //TODO: toast error
-        vm.groups[index].messageSentEpoch = null;
+        this.groups[index].messageSentEpoch = null;
       });
     },
     addNewGroup(newGroup) {
-      const vm = this;
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
-      vm.groups.push(newGroup);
+      this.groups.push(newGroup);
     },
     removeGroupFromGroups(index) {
-      const vm = this;
-      vm.groups.splice(index, 1);
+      this.groups.splice(index, 1);
     }
   },
   watch: {
     groups: {
       handler() {
-        const vm = this;
-        localStorage.setItem('groups', JSON.stringify(vm.groups));
+        localStorage.setItem('groups', JSON.stringify(this.groups));
       },
       deep: true
     }
   },
   created() {
-    const vm = this;
-    
     // create twilio client used for api call
-    vm.client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
+    this.client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
     
     // create dragula custom service
-    const service = vm.$dragula.$service;
+    const service = this.$dragula.$service;
     service.options('group_cards', {
       direction: 'verticle',
       invalid: function(el, handle) {

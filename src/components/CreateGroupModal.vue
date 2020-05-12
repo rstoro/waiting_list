@@ -115,43 +115,38 @@ export default {
   },
   methods: {
     cancelNewGroup() {
-      const vm = this;
-      vm.resetModal();
-      vm.$emit('closeCreateGroupModal');
+      this.resetModal();
+      this.$emit('closeCreateGroupModal');
     },
     addNewGroup() {
-      const vm = this;
-      vm.$emit('newGroupCreated', {
-        fullname: vm.newFullname, 
-        phonenumber: `+1${vm.newPhonenumber}`,
-        notes: vm.newNotes,
+      this.$emit('newGroupCreated', {
+        fullname: this.newFullname, 
+        phonenumber: `+1${this.newPhonenumber}`,
+        notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null
       })
-      vm.cancelNewGroup(vm);
+      this.cancelNewGroup(vm);
     },
     resetModal() {
-      const vm = this;
-      vm.newFullname = null;
-      vm.newPhonenumber = null;
-      vm.newNotes = null;
-      vm.errors.phonenumber = true;
-      vm.errors.fullname = true;
+      this.newFullname = null;
+      this.newPhonenumber = null;
+      this.newNotes = null;
+      this.errors.phonenumber = true;
+      this.errors.fullname = true;
     }
   },
   watch: {
     newFullname: {
       handler(newValue, oldValue) {
-        const vm = this;
-        vm.newFullname = newValue;
-        vm.errors.fullname = (vm.newFullname === '' || vm.newFullname === null);
+        this.newFullname = newValue;
+        this.errors.fullname = (this.newFullname === '' || this.newFullname === null);
       }
     },
     newPhonenumber: {
       handler(newValue, oldValue) {
-        const vm = this;
-        vm.newPhonenumber = newValue;
-        vm.errors.phonenumber = (vm.newPhonenumber === '' || vm.newPhonenumber === null || !vm.newPhonenumber.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/));
+        this.newPhonenumber = newValue;
+        this.errors.phonenumber = (this.newPhonenumber === '' || this.newPhonenumber === null || !this.newPhonenumber.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/));
       }
     }
   }

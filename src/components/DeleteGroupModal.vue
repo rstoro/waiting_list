@@ -71,13 +71,11 @@ export default {
   },
   methods: {
     confirmDeleteGroup() {
-      const vm = this;
-      vm.$emit('closeDeleteGroupModal');
-      vm.$emit('confirmDeleteGroup', vm.index);
+      this.$emit('closeDeleteGroupModal');
+      this.$emit('confirmDeleteGroup', this.index);
     },
     cancelDeleteGroup() {
-      const vm = this;
-      vm.$emit('closeDeleteGroupModal');
+      this.$emit('closeDeleteGroupModal');
     }
   }
 }

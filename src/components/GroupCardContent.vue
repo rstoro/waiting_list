@@ -53,12 +53,10 @@ export default {
   },
   methods: {
     displayDeleteGroupModal(value) {
-      const vm = this;
-      vm.$emit('setDisplayDeleteGroupModal', value);
+      this.$emit('setDisplayDeleteGroupModal', value);
     },
     displayMessageGroupModal(value) {
-      const vm = this;
-      vm.$emit('setDisplayMessageGroupModal', value);
+      this.$emit('setDisplayMessageGroupModal', value);
     },
     formatAddedOn(epoch) {
       return `Added ${new Date(epoch)}`;

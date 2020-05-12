@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    //TODO: error checking on this
+    //TODO: more robust error checking on this
     sendTextMessage(data, index) {
       //NOTE: chromium throws some header errors when sending this request.
       //      just pretend like they are not there.
@@ -88,32 +88,43 @@ export default {
         from: twilio_api.from_number,
         to: data.phonenumber
       }).then(message => {
-        //TODO: toast success
         this.groups[index].messageSentEpoch = Date.now();
-        console.log(message);
         openNotificationAlert({
           message: `Message successfully sent to ${this.groups[index].fullname}.`,
-          colour: 'success'
+          colour: 'success',
+          duration: 5000
         });
       }).catch(error => {
-        //TODO: toast error
         this.groups[index].messageSentEpoch = null;
         openNotificationAlert({
           message: `${error['name']}: ${error['message']}`,
           colour: 'danger',
-          duration: 5000
+          duration: 10000
         });
-        openNotificationAlert({
-          message: `Message failed to send to ${this.groups[index].fullname}.`,
-          colour: 'danger'
-        });
+        setTimeout(() => {
+          openNotificationAlert({
+            message: `Message failed to send to ${this.groups[index].fullname}.`,
+            colour: 'danger',
+            duration: 5000
+          });
+        }, 1500);
       });
     },
     addNewGroup(newGroup) {
+      openNotificationAlert({
+        message: `Successfuly created group ${newGroup.fullname}.`,
+        colour: 'success',
+        duration: 5000
+      });
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
       this.groups.push(newGroup);
     },
     removeGroupFromGroups(index) {
+      openNotificationAlert({
+        message: `Successfuly deleted group ${this.groups[index].fullname}.`,
+        colour: 'success',
+        duration: 5000
+      });
       this.groups.splice(index, 1);
     }
   },

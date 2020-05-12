@@ -69,9 +69,6 @@ export default {
     CreateGroupModal,
     GroupCard,
   },
-  mounted() {
-    openNotificationAlert({message:'wow'});
-  },
   data() {
     return {
       waitingListText: 'Waiting List',
@@ -93,9 +90,23 @@ export default {
       }).then(message => {
         //TODO: toast success
         this.groups[index].messageSentEpoch = Date.now();
+        console.log(message);
+        openNotificationAlert({
+          message: `Message successfully sent to ${this.groups[index].fullname}.`,
+          colour: 'success'
+        });
       }).catch(error => {
         //TODO: toast error
         this.groups[index].messageSentEpoch = null;
+        openNotificationAlert({
+          message: `${error['name']}: ${error['message']}`,
+          colour: 'danger',
+          duration: 5000
+        });
+        openNotificationAlert({
+          message: `Message failed to send to ${this.groups[index].fullname}.`,
+          colour: 'danger'
+        });
       });
     },
     addNewGroup(newGroup) {

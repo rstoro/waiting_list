@@ -126,7 +126,7 @@ export default {
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null
       })
-      this.cancelNewGroup(vm);
+      this.cancelNewGroup();
     },
     resetModal() {
       this.newFullname = null;

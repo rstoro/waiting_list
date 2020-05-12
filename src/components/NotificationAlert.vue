@@ -166,6 +166,6 @@ export default NotificationAlert;
   overflow-wrap: break-word;
   max-width: 50%;
   margin-top: 16px;
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 </style>

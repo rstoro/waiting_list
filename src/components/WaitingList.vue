@@ -18,7 +18,7 @@
     </section>
 
     <div class="waiting-list-body">
-      <div class="true-center" v-if="groups === [] || groups === null || groups.length === 0">
+      <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
         <div>
           <span class="has-text-grey-light">{{ noGroupsExistText }}</span>
         </div>
@@ -76,7 +76,7 @@ export default {
       createNewGroupText: 'Create New Group',
       noGroupsExistText: 'There are currently no groups on the waiting list.',
       showModal: false,
-      groups: (localStorage.getItem('groups')) ? JSON.parse(localStorage.getItem('groups')) : {}
+      groups: localStorage.getItem('groups') == null ? [] : JSON.parse(localStorage.getItem('groups'))
     }
   },
   methods: {

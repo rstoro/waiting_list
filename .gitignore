@@ -1,5 +1,4 @@
 node_modules/
 dist_electron/
-dist_electron/*
 .vscode/
 /src/local_vars.js

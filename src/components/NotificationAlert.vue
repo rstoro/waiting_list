@@ -151,11 +151,11 @@ export default NotificationAlert;
 }
 .fade-up-enter {
   opacity: 0;
-  transform: translate3d(0, 50px, 0);
+  transform: translate3d(0, 32px, 0);
 }
 .fade-up-leave-to {
   opacity: 0;
-  transform: translate3d(0, -50px, 0);
+  transform: translate3d(0, -64px, 0);
 }
 .fade-up-enter-to,
 .fade-up-leave {

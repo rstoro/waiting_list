@@ -91,7 +91,7 @@ export default {
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
         openNotificationAlert({
-          message: `Message successfully sent to ${this.groups[index].fullname}.`,
+          message: `Message successfully sent to "${this.groups[index].fullname}".`,
           colour: 'success',
           duration: 5000
         });
@@ -104,7 +104,7 @@ export default {
         });
         setTimeout(() => {
           openNotificationAlert({
-            message: `Message failed to send to ${this.groups[index].fullname}.`,
+            message: `Message failed to send to "${this.groups[index].fullname}".`,
             colour: 'danger',
             duration: 5000
           });
@@ -113,7 +113,7 @@ export default {
     },
     addNewGroup(newGroup) {
       openNotificationAlert({
-        message: `Successfuly created group ${newGroup.fullname}.`,
+        message: `Successfuly created group "${newGroup.fullname}".`,
         colour: 'success',
         duration: 5000
       });
@@ -122,7 +122,7 @@ export default {
     },
     removeGroupFromGroups(index) {
       openNotificationAlert({
-        message: `Successfuly deleted group ${this.groups[index].fullname}.`,
+        message: `Successfuly deleted group "${this.groups[index].fullname}".`,
         colour: 'success',
         duration: 5000
       });

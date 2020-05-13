@@ -1,22 +1,25 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
 
-          <div class="modal-header">
-            <slot name="header"></slot>
-          </div>
+        <div class="modal-wrapper">
+          <div class="modal-container">
 
-          <div class="modal-body">
-            <slot name="body"></slot>
-          </div>
+            <div class="modal-header">
+              <slot name="header"></slot>
+            </div>
 
-          <div class="modal-footer">
-            <slot name="footer"></slot>
+            <div class="modal-body">
+              <slot name="body"></slot>
+            </div>
+
+            <div class="modal-footer">
+              <slot name="footer"></slot>
+            </div>
+
           </div>
         </div>
-      </div>
+
     </div>
   </transition>
 </template>
@@ -37,7 +40,6 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity 0.3s ease;
 }
 .modal-wrapper {
   display: table-cell;
@@ -49,7 +51,6 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
   position: relative;
 }
 .modal-header,
@@ -77,13 +78,12 @@ export default {
 .modal-leave-to {
   opacity: 0;
 }
-.modal-leave,
+.modal-leave
 .modal-enter-to {
   opacity: 1;
 }
-.modal-enter-active .modal-container,
-.modal-leave-active .modal-container {
-  transform: translate3d(0, -100%, 0) scale(0);
-
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity .3s ease;
 }
 </style>

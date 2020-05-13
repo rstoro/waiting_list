@@ -60,7 +60,7 @@ const NotificationAlert = {
     }
   },
   computed: {
-    colourClass: function() {
+    colourClass() {
       //NOTE: this syntax is really disgusting... thanks ES6.
       return {
         [`is-${this.colour}`]: true,

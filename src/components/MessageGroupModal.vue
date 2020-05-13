@@ -25,7 +25,7 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText(group.fullname, waitTime, holdTime)" disabled></textarea>
+        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText" disabled></textarea>
       </div>
     </div>
 
@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import Modal from './Modal.vue'
+import Modal from './Modal.vue';
+import { companyData } from '../local_vars.js';
 
 export default {
   name: 'MessageGroupModal',
@@ -63,8 +64,9 @@ export default {
       messageGroupBodyText: 'Would you like to send the following message?',
       cancelMessageGroupText: 'Cancel',
       confirmMessageGroupText: 'Message Group',
-      waitTime: 15,
-      holdTime: 5
+      companyName: companyData.companyName,
+      waitTime: companyData.waitTime,
+      holdTime: companyData.holdTime
     }
   },
   props: {
@@ -78,18 +80,20 @@ export default {
     }
   },
   methods: {
-    getMessageText(fullname, waitTime, holdTime) {
-      return `Hello ${ fullname }, this is Station 300!  In approximately ${waitTime} minutes your lane(s) will be ready.  If you are not here within ${waitTime + holdTime} minutes, the reservation will be canceled.  We look forward to seeing you soon!`
-    },
     confirmMessageGroup() {
       this.$emit('confirmMessageGroup', {
-        message: this.getMessageText(this.group.fullname, this.waitTime, this.holdTime), 
+        message: this.getMessageText, 
         phonenumber: this.group.phonenumber
       });
     },
     cancelMessageGroup() {
       this.$emit('closeMessageGroupModal');
     }
+  },
+  computed: {
+    getMessageText() {
+      return `Hello ${ this.group.fullname }, this is ${ this.companyName }!  In approximately ${ this.waitTime } minutes your reservation will be ready.  If you are not here within ${ this.waitTime + this.holdTime } minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+    },
   }
 }
 </script>

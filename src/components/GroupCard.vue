@@ -39,10 +39,6 @@ import DeleteGroupModal from './DeleteGroupModal.vue';
 import GroupCardHeader from './GroupCardHeader.vue';
 import GroupCardContent from './GroupCardContent.vue';
 
-import twilio_api from '../twilio_api';
-const twilio = require( 'twilio' );
-const client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
-
 export default {
   name: 'GroupCard',
   components: {

@@ -58,8 +58,9 @@
 import { openNotificationAlert } from './NotificationAlert.vue'
 import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
-import twilio_api from '../twilio_api';
+
 import twilio from 'twilio';
+import { twilioData } from '../local_vars.js';
 
 //TODO: create logger...
 
@@ -85,7 +86,7 @@ export default {
       //      just pretend like they are not there.
       this.client.messages.create({
         body: data.message,
-        from: twilio_api.from_number,
+        from: twilioData.fromNumber,
         to: data.phonenumber
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
@@ -99,7 +100,7 @@ export default {
         openNotificationAlert({
           message: `${error['name']}: ${error['message']}`,
           colour: 'danger',
-          duration: 10000
+          duration: 5000
         });
         setTimeout(() => {
           openNotificationAlert({
@@ -138,7 +139,7 @@ export default {
   },
   created() {
     // create twilio client used for api call
-    this.client = new twilio( twilio_api.account_sid, twilio_api.auth_token );
+    this.client = new twilio( twilioData.accountSid, twilioData.authToken );
     
     // create dragula custom service
     const service = this.$dragula.$service;

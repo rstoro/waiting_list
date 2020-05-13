@@ -5,6 +5,7 @@ import {
   createProtocol,
   /* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib'
+import path from 'path'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -22,7 +23,7 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: `${__dirname}\\..\\src\\assets\\logo.png`,
+    icon: path.join(__static, 'icon.png'),
     title: 'Waiting List'
   })
 

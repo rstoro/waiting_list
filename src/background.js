@@ -24,7 +24,8 @@ function createWindow () {
       nodeIntegration: true
     },
     icon: path.join(__static, 'icon.png'),
-    title: 'Waiting List'
+    title: 'Waiting List',
+    autoHideMenuBar: true
   })
 
   // Prevent page title changes from being reverted.

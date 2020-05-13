@@ -1,9 +1,9 @@
 {
-  "name": "WaitingList",
+  "name": "waiting_list",
   "version": "0.1.0",
   "author": "Ryan Storo <ryanstoro@gmail.com>",
   "description": "A waiting list that is used to send SMS messages.",
-  "icon": "resource://wwaiting_listaiting_list/src/assets/logo.png",
+  "icon": "resource://waiting_list/build/icons/icon.ico",
   "id": "com.station300.waitinglist",
   "private": true,
   "scripts": {

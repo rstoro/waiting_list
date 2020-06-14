@@ -26,5 +26,3 @@ fetch(process.env.BASE_URL + 'config.json').then( response => {
     }).$mount('#app');
   });
 });
-
-//begin again

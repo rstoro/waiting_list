@@ -16,7 +16,7 @@ Vue.config.productionTip = false;
 
 fetch(process.env.BASE_URL + 'config.json').then( response => {
   if (!response.ok) {
-    throw new Error(`HTTP Error${response.status}`);
+    throw new Error(`HTTP Error: ${response.status}`);
   }
 
   response.json().then( config => {

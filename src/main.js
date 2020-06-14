@@ -14,6 +14,17 @@ Vue.use(Vue2Dragula);
 
 Vue.config.productionTip = false;
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+fetch(process.env.BASE_URL + 'config.json').then( response => {
+  if (!response.ok) {
+    throw new Error(`HTTP Error${response.status}`);
+  }
+
+  response.json().then( config => {
+    Vue.prototype.$waitingListConfig = config;
+    new Vue({
+      render: h => h(App),
+    }).$mount('#app');
+  });
+});
+
+//begin again

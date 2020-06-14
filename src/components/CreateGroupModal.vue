@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Modal from './Modal.vue'
+import Modal from './Modal.vue';
 
 export default {
   name: 'CreateGroupModal',
@@ -119,12 +119,17 @@ export default {
       this.$emit('closeCreateGroupModal');
     },
     addNewGroup() {
+      // NOTE: companyData wait and hold times should be 'copied' into
+      //       the group object to be later bound and modified as needed.
       this.$emit('newGroupCreated', {
         fullname: this.newFullname, 
         phonenumber: `+1${this.newPhonenumber}`,
         notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
-        messageSentEpoch: null
+        messageSentEpoch: null,
+        waitTime: this.$waitingListConfig.companyData.waitTime,
+        holdTime: this.$waitingListConfig.companyData.holdTime
+
       })
       this.cancelNewGroup();
     },

@@ -1,0 +1,12 @@
+{
+  "twilioData": {
+    "accountSid": "YOUR_ACCOUNT_SID",
+    "authToken": "YOUR_AUTH_TOKEN",
+    "fromNumber": "YOUR_TWILIO_NUMBER",
+  },
+  "companyData": {
+    "companyName": "YOUR_COMPANY_NAME",
+    "waitTime": "YOUR_WAIT_TIME",
+    "holdTime": "YOUR_HOLD_TIME"
+  }
+}

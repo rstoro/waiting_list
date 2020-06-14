@@ -60,7 +60,6 @@ import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
 
 import twilio from 'twilio';
-import { twilioData } from '../local_vars.js';
 
 //TODO: create logger...
 
@@ -86,7 +85,7 @@ export default {
       //      just pretend like they are not there.
       this.client.messages.create({
         body: data.message,
-        from: twilioData.fromNumber,
+        from: this.$waitingListConfig.twilioData.fromNumber,
         to: data.phonenumber
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
@@ -139,7 +138,10 @@ export default {
   },
   created() {
     // create twilio client used for api call
-    this.client = new twilio( twilioData.accountSid, twilioData.authToken );
+    this.client = new twilio( 
+      this.$waitingListConfig.twilioData.accountSid, 
+      this.$waitingListConfig.twilioData.authToken 
+    );
     
     // create dragula custom service
     const service = this.$dragula.$service;

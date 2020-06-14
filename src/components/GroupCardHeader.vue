@@ -12,7 +12,7 @@
       <!-- (waitTime + holdTime) * secondsInMinute * MillisecondsInSecond -->
       <GroupProgressBar v-if="group.messageSentEpoch !== null"
           v-bind:started-at="group.messageSentEpoch"
-          v-bind:countdown-length="(15 + 5) * 60 * 1000"/> 
+          v-bind:countdown-length="(group.waitTime + group.holdTime) * 60 * 1000"/> 
     </div>
     <a href="#" class="card-header-icon group-card-icon" aria-label="more options" 
         @click="toggleSelected()">

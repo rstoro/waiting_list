@@ -51,7 +51,6 @@
 
 <script>
 import Modal from './Modal.vue';
-import { companyData } from '../local_vars.js';
 
 export default {
   name: 'MessageGroupModal',
@@ -64,9 +63,7 @@ export default {
       messageGroupBodyText: 'Would you like to send the following message?',
       cancelMessageGroupText: 'Cancel',
       confirmMessageGroupText: 'Message Group',
-      companyName: companyData.companyName,
-      waitTime: companyData.waitTime,
-      holdTime: companyData.holdTime
+      companyName: this.$waitingListConfig.companyData.companyName
     }
   },
   props: {
@@ -92,7 +89,7 @@ export default {
   },
   computed: {
     getMessageText() {
-      return `Hello ${ this.group.fullname }, this is ${ this.companyName }!  In approximately ${ this.waitTime } minutes your reservation will be ready.  If you are not here within ${ this.waitTime + this.holdTime } minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+      return `Hello ${ this.group.fullname }, this is ${ this.$waitingListConfig.companyData.companyName }!  In approximately ${ this.group.waitTime } minutes your reservation will be ready.  If you are not here within ${ this.group.waitTime + this.group.holdTime } minutes, the reservation will be canceled.  We look forward to seeing you soon!`
     },
   }
 }

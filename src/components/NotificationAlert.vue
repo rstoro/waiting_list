@@ -63,7 +63,7 @@ const NotificationAlert = {
     colourClass() {
       //NOTE: this syntax is really disgusting... thanks ES6.
       return {
-        [`is-${this.colour}`]: true,
+        [`is-${ this.colour }`]: true,
         'is-light': this.colourIsLight
       };
     }

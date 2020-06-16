@@ -20,9 +20,7 @@ function createWindow () {
   win = new BrowserWindow({ 
     width: 1200, 
     height: 800, 
-    webPreferences: {
-      nodeIntegration: true
-    },
+    webPreferences: { nodeIntegration: true },
     icon: path.join(__static, 'icon.png'),
     title: 'Waiting List',
     autoHideMenuBar: true

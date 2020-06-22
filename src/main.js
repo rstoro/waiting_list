@@ -2,8 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import config from '../public/config.json';
 
+// NOTE: we are customizing the scss in WaitingList.vue
 // bulma
-import './../node_modules/bulma/css/bulma.css';
+//import './../node_modules/bulma/css/bulma.css';
 
 // font-awesome
 import { library } from '@fortawesome/fontawesome-svg-core';

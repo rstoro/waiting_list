@@ -15,7 +15,21 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+/* CUSTOM BULMA */
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+$input-placeholder-color: $grey;
+
+// TODO: what can we cut down on?
+@import "../node_modules/bulma/sass/utilities/_all.sass";
+@import "../node_modules/bulma/sass/base/_all.sass";
+@import "../node_modules/bulma/sass/elements/_all.sass";
+@import "../node_modules/bulma/sass/form/_all.sass";
+@import "../node_modules/bulma/sass/components/_all.sass";
+@import "../node_modules/bulma/sass/layout/_all.sass";
+
+/* CUSTOM */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -20,7 +20,7 @@
     <div class="waiting-list-body">
       <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
         <div>
-          <span class="has-text-grey-light">{{ noGroupsExistText }}</span>
+          <span class="has-text-grey">{{ noGroupsExistText }}</span>
         </div>
         <div>
           <span>

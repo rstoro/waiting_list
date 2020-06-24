@@ -51,7 +51,6 @@ export default {
 
       setTimeout(() => {
         this.secondsRemaining -= 1;
-        
         this.barPercent = Math.floor(this.secondsRemaining / (this.countdownLength / 1000 | 0) * 100);
 
         if (this.secondsRemaining > (this.countdownLength / 1000 | 0) * 0.5) {

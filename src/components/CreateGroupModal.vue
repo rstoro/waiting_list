@@ -129,7 +129,6 @@ export default {
         messageSentEpoch: null,
         waitTime: this.$waitingListConfig.companyData.waitTime,
         holdTime: this.$waitingListConfig.companyData.holdTime
-
       })
       this.cancelNewGroup();
     },

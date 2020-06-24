@@ -2,7 +2,7 @@
   <transition name="fade-up">
     <div v-if="display" class="notification notification-alert" v-bind:class="colourClass">
       <button class="delete" @click="closeNotification()"></button>
-      <p>{{message}}</p>
+      <p>{{ message }}</p>
     </div>
   </transition>
 </template>

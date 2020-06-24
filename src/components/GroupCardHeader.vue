@@ -8,8 +8,6 @@
       <span class="has-text-weight-medium">{{ group.fullname }}</span>
     </p>
     <div class="group-card-countdown">
-      <!-- TODO: make this a part of the group object so it can be modified by the user in the message modal -->
-      <!-- (waitTime + holdTime) * secondsInMinute * MillisecondsInSecond -->
       <GroupProgressBar v-if="group.messageSentEpoch !== null"
           v-bind:started-at="group.messageSentEpoch"
           v-bind:countdown-length="(group.waitTime + group.holdTime) * 60 * 1000"/> 

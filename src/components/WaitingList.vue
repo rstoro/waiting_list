@@ -55,11 +55,10 @@
 </template>
 
 <script>
+import twilio from 'twilio';
 import { openNotificationAlert } from './NotificationAlert.vue'
 import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
-
-import twilio from 'twilio';
 
 //TODO: create logger...
 
@@ -90,20 +89,20 @@ export default {
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
         openNotificationAlert({
-          message: `Message successfully sent to "${this.groups[index].fullname}".`,
+          message: `Message successfully sent to "${ this.groups[index].fullname }".`,
           colour: 'success',
           duration: 5000
         });
       }).catch(error => {
         this.groups[index].messageSentEpoch = null;
         openNotificationAlert({
-          message: `${error['name']}: ${error['message']}`,
+          message: `${ error['name'] }: ${ error['message'] }`,
           colour: 'danger',
           duration: 5000
         });
         setTimeout(() => {
           openNotificationAlert({
-            message: `Message failed to send to "${this.groups[index].fullname}".`,
+            message: `Message failed to send to "${ this.groups[index].fullname }".`,
             colour: 'danger',
             duration: 5000
           });
@@ -112,7 +111,7 @@ export default {
     },
     addNewGroup(newGroup) {
       openNotificationAlert({
-        message: `Successfuly created group "${newGroup.fullname}".`,
+        message: `Successfuly created group "${ newGroup.fullname }".`,
         colour: 'success',
         duration: 5000
       });
@@ -121,7 +120,7 @@ export default {
     },
     removeGroupFromGroups(index) {
       openNotificationAlert({
-        message: `Successfuly deleted group "${this.groups[index].fullname}".`,
+        message: `Successfuly deleted group "${ this.groups[index].fullname }".`,
         colour: 'success',
         duration: 5000
       });

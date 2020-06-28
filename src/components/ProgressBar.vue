@@ -1,6 +1,6 @@
 <template>
   <div class="progress-bar-wrapper">
-    <div class="display" v-bind:style="{'color': `rgb(${displayColor['r']},${displayColor['g']},${displayColor['b']})`}">{{displayText}}</div>
+    <div class="display" v-bind:style="{'color': `rgb(${displayColor['r']},${displayColor['g']},${displayColor['b']})`}">{{ displayText }}</div>
     <div class="progress-bar-container">
       <div class="progress-bar" v-bind:style="{'width': `${ barPercentageComplete }%`, 'background-color': `rgb(${barColor['r']},${barColor['g']},${barColor['b']})`}"></div>
     </div>

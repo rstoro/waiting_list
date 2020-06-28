@@ -16,7 +16,7 @@
             <span class="icon is-small is-left has-text-danger">
               <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
             </span>
-            {{fullnameRequiredText}}
+            {{ fullnameRequiredText }}
           </p>
           <p class="control has-icons-left has-icons-right">
             <input class="input" type="text" placeholder="Full Name" 
@@ -40,7 +40,7 @@
             <span class="icon is-small is-left has-text-danger">
               <font-awesome-icon :icon="['fas', 'exclamation-circle']"/>
             </span>
-            {{phonenumberRequiredText}}
+            {{ phonenumberRequiredText }}
           </p>
           <div class="control has-icons-left has-icons-right">
             <input class="input" type="tel" placeholder="Phone Number" 
@@ -123,7 +123,7 @@ export default {
       //       the group object to be later bound and modified as needed.
       this.$emit('newGroupCreated', {
         fullname: this.newFullname, 
-        phonenumber: `+1${this.newPhonenumber}`,
+        phonenumber: `+1${ this.newPhonenumber }`,
         notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null,

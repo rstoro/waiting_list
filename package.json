@@ -4,7 +4,7 @@
   "author": "Ryan Storo <ryanstoro@gmail.com>",
   "description": "A waiting list that is used to send SMS messages.",
   "icon": "resource://waiting_list/build/icons/icon.ico",
-  "id": "com.station300.waitinglist",
+  "id": "com.companyname.waitinglist",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

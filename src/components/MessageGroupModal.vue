@@ -25,7 +25,8 @@
             <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
           </p>
         </div>
-        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" :value="getMessageText" disabled></textarea>
+        <textarea class="textarea has-fixed-size" type="text" placeholder="Message" v-bind:value="getMessageText" 
+            v-bind:disabled="$waitingListConfig.companyData.isMessageEditable ? false : true"></textarea>
       </div>
     </div>
 

@@ -7,6 +7,7 @@
   "companyData": {
     "companyName": "YOUR_COMPANY_NAME",
     "waitTime": "YOUR_WAIT_TIME",
-    "holdTime": "YOUR_HOLD_TIME"
+    "holdTime": "YOUR_HOLD_TIME",
+    "isMessageEditable": "IF_THE_MESSAGE_SENT_IS_EDITABLE"
   }
 }

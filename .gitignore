@@ -1,7 +1,7 @@
 node_modules/
 dist_electron/
 .vscode/
-public/config.json
-public/icon.png
+/public/config.json
+/public/icon.png
 *.swp
 build/

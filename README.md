@@ -48,7 +48,7 @@ Company Data contains all of the information pertaining to the settings of the a
 
 ### Icon
 
-Save a `.png` image within the `./public/` folder as `icon.png`.  After this run the `./generate_icon.bat` script.
+Save a `.png` image within the `./public/` folder as `icon.png`.  After this run the `./generate_icons.bat` script.
 
 ## Building
 
@@ -56,6 +56,6 @@ Execute the `./build.bat` script.  **Currently this is only built for Windows.**
 
 ## TODO
 
-- [ ] Make full text message configurable
+- [ ] Make the entire message sent configurable
 - [ ] Add accessibility options
 

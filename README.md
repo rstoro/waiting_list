@@ -2,6 +2,8 @@
 
 This is a simple waiting list app using Vue.js, Bulma, Electron, and Twilio.  
 
+![Waiting List Example](./etc/WaitingListExample.gif)
+
 ## Table of Content
 - [Custom Configuration](#custom-configuration)
   - [Twilio Data](#twilio-data)
@@ -9,9 +11,6 @@ This is a simple waiting list app using Vue.js, Bulma, Electron, and Twilio.
   - [Icon](#icon)
 - [Building](#building)
 - [Todo](#todo)
-
-
-![Waiting List Example](./etc/WaitingListExample.gif)
 
 ## Custom Configuration
 
@@ -35,17 +34,17 @@ The application allows for the configuration from a public configuration file `.
 ### Twilio Data
 
 Twilio Data contains all of the information required to send a message through their API.
-- **accountSid** -> * *String* * : The SID of your Twilio account
-- **authToken** -> * *String* * : The authentication token from your Twilio account
-- **fromNumber** -> * *String* * : The phone number associated with your Twilio account
+- **accountSid** -> *String* : The SID of your Twilio account
+- **authToken** -> *String* : The authentication token from your Twilio account
+- **fromNumber** -> *String* : The phone number associated with your Twilio account
 
 ### Company Data
 
 Company Data contains all of the information pertaining to the settings of the application specific to your company.
-- **companyName** -> * *String* * : The name of your company
-- **waitTime** -> * *Number* * : The amount of time until their reservation will be ready
-- **holdTime** -> * *Number* * : The amount of time the reservation will be held
-- **isMessageEditable** -> * *Boolean* * : Whether the text message sent is editable or not
+- **companyName** -> *String* : The name of your company
+- **waitTime** -> *Number* : The amount of time until their reservation will be ready
+- **holdTime** -> *Number* : The amount of time the reservation will be held
+- **isMessageEditable** -> *Boolean* : Whether the text message sent is editable or not
 
 ### Icon
 

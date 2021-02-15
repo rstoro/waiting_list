@@ -64,7 +64,8 @@ export default {
       messageGroupBodyText: 'Would you like to send the following message?',
       cancelMessageGroupText: 'Cancel',
       confirmMessageGroupText: 'Message Group',
-      companyName: this.$waitingListConfig.companyData.companyName
+      companyName: this.$waitingListConfig.companyData.companyName,
+      message: this.$waitingListConfig.companyData.message
     }
   },
   props: {
@@ -90,7 +91,7 @@ export default {
   },
   computed: {
     getMessageText() {
-      return `Hello ${ this.group.fullname }, this is ${ this.$waitingListConfig.companyData.companyName }!  Your lane is now available!  If you are not here within ${ this.group.holdTime } minutes, your reservation will be lost.  We look forward to seeing you soon!`
+      return `Hello ${ this.group.fullname }, this is ${ this.companyName }!  ${ this.message }`
     },
   }
 }

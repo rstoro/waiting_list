@@ -127,9 +127,8 @@ export default {
         notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null,
-        waitTime: this.$waitingListConfig.companyData.waitTime,
-        holdTime: this.$waitingListConfig.companyData.holdTime
-      })
+        waitTime: this.$waitingListConfig.companyData.waitTime
+      });
       this.cancelNewGroup();
     },
     resetModal() {

@@ -26,8 +26,8 @@ The application allows for the configuration from a public configuration file `.
   "companyData": {
     "companyName": "YOUR_COMPANY_NAME",
     "waitTime": "YOUR_WAIT_TIME",
-    "holdTime": "YOUR_HOLD_TIME",
-    "isMessageEditable": "IF_THE_MESSAGE_SENT_IS_EDITABLE"
+    "isMessageEditable": "IF_THE_MESSAGE_SENT_IS_EDITABLE",
+    "message": "THE_MESSAGE_TO_BE_SENT"
   }
 }
 ```
@@ -44,8 +44,8 @@ Twilio Data contains all of the information required to send a message through t
 Company Data contains all of the information pertaining to the settings of the application specific to your company.
 - **companyName** -> *String* : The name of your company
 - **waitTime** -> *Number* : The amount of time until their reservation will be ready
-- **holdTime** -> *Number* : The amount of time the reservation will be held
 - **isMessageEditable** -> *Boolean* : Whether the text message sent is editable or not
+- **message** -> *String* : The text message body that will be sent
 
 ### Testing
 
@@ -61,6 +61,5 @@ Execute the `npm run electron:build -- --win nsis --x64 --ia32` script.  **Curre
 
 ## TODO
 
-- [ ] Make the entire message sent configurable
 - [ ] Add accessibility options
 

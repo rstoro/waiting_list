@@ -1,6 +1,6 @@
 {
   "name": "waiting_list",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Ryan Storo <ryanstoro@gmail.com>",
   "description": "A waiting list that is used to send SMS messages.",
   "icon": "resource://waiting_list/build/icons/icon.ico",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
-    "electron": "^11.2.3",
+    "electron": "^7.2.4",
     "electron-icon-builder": "^1.0.2",
     "sass": "^1.26.8",
     "sass-loader": "^8.0.2",

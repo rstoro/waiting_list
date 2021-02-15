@@ -1,48 +1,39 @@
 <template>
   <div class="waiting-list">
-    <section class="hero waiting-list-header">
-      <div class="hero-body groups-header">
-        <h1 class="title">
-          <span class="small-margin-right">
-            <font-awesome-icon :icon="['fas', 'list']"/>
-          </span>
-          <span>{{ waitingListText }}</span>
-        </h1>
-        <a class="card-header-icon" @click="showModal = true">
-          <span class="small-margin-right">
-            <font-awesome-icon :icon="['fas', 'users']"/>
-          </span>
-          <span class="has-icons-left">{{ createNewGroupText }}</span>
-        </a>
-      </div>
-    </section>
+    <a class="create-group-btn" @click="showModal = true">
+      <span class="small-margin-right">
+        <font-awesome-icon :icon="['fas', 'users']"/>
+      </span>
+      <span class="has-icons-left">{{ createNewGroupText }}</span>
+    </a>
 
-    <div class="waiting-list-body">
-      <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
-        <div>
-          <span class="has-text-grey">{{ noGroupsExistText }}</span>
-        </div>
-        <div>
-          <span>
-            <a @click="showModal = true">
-              <span class="small-margin-right">
-                <font-awesome-icon :icon="['fas', 'users']"/>
-              </span>
-              <span class="has-icons-left">{{ createNewGroupText }}</span>
-            </a>
-          </span>
+    <div class="line-wrapper"><div class="line"></div></div>
+
+    <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
+      <div>
+        <span class="has-text-grey">{{ noGroupsExistText }}</span>
+      </div>
+      <div>
+        <span>
+          <a @click="showModal = true">
+            <span class="small-margin-right">
+              <font-awesome-icon :icon="['fas', 'users']"/>
+            </span>
+            <span class="has-icons-left">{{ createNewGroupText }}</span>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div class="waiting-list-content" v-else>
+      <div class="container" v-dragula="groups" drake="group_cards">
+        <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
+          <GroupCard v-bind:group="group" 
+              v-bind:index="index"
+              v-on:deleteGroup="removeGroupFromGroups"
+              v-on:sendTextMessage="sendTextMessage"/>
         </div>
       </div>
-      <section class="section" v-else>
-        <div class="container" v-dragula="groups" drake="group_cards">
-          <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
-            <GroupCard v-bind:group="group" 
-                v-bind:index="index"
-                v-on:deleteGroup="removeGroupFromGroups"
-                v-on:sendTextMessage="sendTextMessage"/>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
@@ -159,34 +150,28 @@ export default {
   display: flex;
   flex-flow: column;
   height: 100%;
+  overflow: hidden;
 }
-.waiting-list-header {
+.create-group-btn {
   display: flex;
-  flex-flow: row;
+  justify-content: flex-end;
+  padding: 0 16px;
 }
-.waiting-list-body {
-  display: flex;
-  flex-flow: column;
-  flex: 1;
-  overflow: auto;
-}
-.groups-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid #dbdbdb;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-.groups-header > .title {
-  margin: 0;
-  padding: 8px;
+.waiting-list-content {
+  padding: 0 16px;
+  overflow-y: scroll;
 }
 .true-center {
   display:flex;
   flex-flow: column;
   height:100%;
   justify-content: center;
+}
+.line-wrapper {
+  padding: 16px;
+}
+.line {
+  border-top: 2px solid rgb(10, 10, 10, 0.1);
+  font-size: 1px;
 }
 </style>

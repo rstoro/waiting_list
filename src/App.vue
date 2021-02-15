@@ -1,16 +1,57 @@
 <template>
   <div id="app">
-    <WaitingList/>
+
+    <div class="tabs is-boxed is-fullwidth">
+      <ul>
+        <li v-bind:class="{'is-active': isSelected('waitingList')}" 
+            @click="select('waitingList')">
+          <a>
+            <span class="small-margin-right">
+              <font-awesome-icon :icon="['fas', 'list']"/>
+            </span>
+            <span>Waiting List</span>
+          </a>
+        </li>
+        <li v-bind:class="{'is-active': isSelected('audit')}" 
+            @click="select('audit')">
+          <a>
+            <span class="small-margin-right">
+              <font-awesome-icon :icon="['fas', 'chart-bar']"/>
+            </span>
+            <span>Audit</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <WaitingList v-if="isSelected('waitingList')" />
+    <Audit v-if="isSelected('audit')" />
+
   </div>
 </template>
 
 <script>
 import WaitingList from './components/WaitingList.vue';
+import Audit from './components/Audit.vue';
 
 export default {
   name: 'App',
   components: {
-    WaitingList
+    WaitingList,
+    Audit
+  },
+  data() {
+    return {
+      selection: 'waitingList'
+    }
+  },
+  methods: {
+    select(name) {
+      this.selection = name;
+    },
+    isSelected(name) {
+      return name === this.selection;
+    }
   }
 }
 </script>
@@ -66,8 +107,6 @@ body,
 #app {
   height: 100%;
   width: 100%;
-}
-body {
   overflow: hidden;
 }
 .small-margin-right {
@@ -75,5 +114,9 @@ body {
 }
 .large-margin-right {
   margin-right: 32px;
+}
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
 }
 </style>

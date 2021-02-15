@@ -22,7 +22,7 @@
             <span class="small-margin-right">
               <font-awesome-icon :icon="['fas', 'phone']"/>
             </span>
-            <span class="has-text-weight-medium"><b>{{ group.phonenumber }}</b></span>
+            <span class="has-text-weight-medium"><b>{{ formatPhoneNumber(group.phonenumber) }}</b></span>
           </p>
         </div>
         <textarea class="textarea has-fixed-size" type="text" placeholder="Message" v-bind:value="getMessageText" 
@@ -87,12 +87,15 @@ export default {
     },
     cancelMessageGroup() {
       this.$emit('closeMessageGroupModal');
+    },
+    formatPhoneNumber(phonenumber) {
+        return `+${phonenumber.substr(0,1)} (${phonenumber.substr(1,3)}) ${phonenumber.substr(4,3)}-${phonenumber.substr(7)}`
     }
   },
   computed: {
     getMessageText() {
       return `Hello ${ this.group.fullname }, this is ${ this.companyName }!  ${ this.message }`
-    },
+    }
   }
 }
 </script>

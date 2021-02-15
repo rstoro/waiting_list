@@ -13,6 +13,9 @@
         <p class="is-size-7 has-text-weight-light has-text-left">
           {{ formatAddedOn(group.epoch) }}
         </p>
+        <p class="is-size-7 has-text-weight-light has-text-left">
+          {{ formatPhoneNumber(group.phonenumber) }}
+        </p>
       </div>
       <div class="group-card-buttons">
         <button class="button group-card-button is-outlined is-normal is-danger button-margin-left" 
@@ -60,7 +63,10 @@ export default {
     },
     formatAddedOn(epoch) {
       return `Added ${new Date(epoch)}`;
-     },
+    },
+    formatPhoneNumber(phonenumber) {
+      return `+${phonenumber.substr(0,1)} (${phonenumber.substr(1,3)}) ${phonenumber.substr(4,3)}-${phonenumber.substr(7)}`;
+    },
     formatMessagedOn(messageSentEpoch) {
       return messageSentEpoch === null 
         ? 'Has not been messaged.' 

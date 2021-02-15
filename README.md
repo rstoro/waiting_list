@@ -9,6 +9,7 @@ This is a simple waiting list app using Vue.js, Bulma, Electron, and Twilio.
   - [Twilio Data](#twilio-data)
   - [Company Data](#company-data)
   - [Icon](#icon)
+- [Testing](#testing)
 - [Building](#building)
 - [Todo](#todo)
 
@@ -46,13 +47,17 @@ Company Data contains all of the information pertaining to the settings of the a
 - **holdTime** -> *Number* : The amount of time the reservation will be held
 - **isMessageEditable** -> *Boolean* : Whether the text message sent is editable or not
 
+### Testing
+
+Run `npm run electron:serve` to host a local development environment.
+
 ### Icon
 
-Save a `.png` image within the `./public/` folder as `icon.png`.  After this run the `./generate_icons.bat` script.
+Save a `.png` image within the `./public/` folder as `icon.png`.  After this run the `npm run electron:generate-icons` script.
 
 ## Building
 
-Execute the `./build.bat` script.  **Currently this is only built for Windows.**
+Execute the `npm run electron:build -- --win nsis --x64 --ia32` script.  **Currently this is only built for Windows.**
 
 ## TODO
 

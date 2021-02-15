@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     getMessageText() {
-      return `Hello ${ this.group.fullname }, this is ${ this.$waitingListConfig.companyData.companyName }!  In approximately ${ this.group.waitTime } minutes your reservation will be ready.  If you are not here within ${ this.group.waitTime + this.group.holdTime } minutes, the reservation will be canceled.  We look forward to seeing you soon!`
+      return `Hello ${ this.group.fullname }, this is ${ this.$waitingListConfig.companyData.companyName }!  Your lane is now available!  If you are not here within ${ this.group.holdTime } minutes, your reservation will be lost.  We look forward to seeing you soon!`
     },
   }
 }

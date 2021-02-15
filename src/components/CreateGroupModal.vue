@@ -119,9 +119,14 @@ export default {
       this.$emit('closeCreateGroupModal');
     },
     addNewGroup() {
+      const uuidv4 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+
       // NOTE: companyData wait and hold times should be 'copied' into
       //       the group object to be later bound and modified as needed.
       this.$emit('newGroupCreated', {
+        id: uuidv4,
         fullname: this.newFullname, 
         phonenumber: `+1${ this.newPhonenumber }`,
         notes: this.newNotes,

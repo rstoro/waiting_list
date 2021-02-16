@@ -50,6 +50,7 @@ import twilio from 'twilio';
 import { openNotificationAlert } from './NotificationAlert.vue'
 import CreateGroupModal from './CreateGroupModal.vue';
 import GroupCard from './GroupCard.vue';
+import storage from '../mixins/storage.js';
 
 //TODO: create logger...
 
@@ -134,14 +135,16 @@ export default {
     );
     
     // create dragula custom service
-    const service = this.$dragula.$service;
-    service.options('group_cards', {
-      direction: 'verticle',
-      invalid: function(el, handle) {
-        return el.id === 'create-group-modal' || el.id === 'message-group-modal' || el.id ==='delete-group-modal';
-      }
-    });
+    if (!this.$dragula.$service.find('group_cards')) {
+      this.$dragula.$service.options('group_cards', {
+        direction: 'verticle',
+        invalid: function(el, handle) {
+          return el.id === 'create-group-modal' || el.id === 'message-group-modal' || el.id ==='delete-group-modal';
+        }
+      });
+    }
   }
+    
 }
 </script>
 
@@ -168,7 +171,7 @@ export default {
   justify-content: center;
 }
 .line-wrapper {
-  padding: 16px;
+  padding: 24px 16px;
 }
 .line {
   border-top: 2px solid rgb(10, 10, 10, 0.1);

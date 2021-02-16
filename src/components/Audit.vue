@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import storage from '../mixins/storage.js';
+
 export default {
   name: 'Audit',
   components: {},
@@ -17,7 +19,10 @@ export default {
     }
   },
   methods: {},
+  mixins: [ storage ],
   created() {
+    let test = this.loadFile('test');
+    console.log(test);
     console.log('created')
   }
 }

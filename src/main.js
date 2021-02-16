@@ -24,9 +24,7 @@ Vue.use(Vue2Dragula);
 Vue.config.productionTip = false;
     
 // custom config
-// fs.writeFileSync('test.txt', JSON.stringify({'wow': [1, 2, 3]}), 'utf-8');
-const config = JSON.parse(fs.readFileSync('./public/config.json'));
-Vue.prototype.$waitingListConfig = config;
+Vue.prototype.$waitingListConfig = JSON.parse(fs.readFileSync('./public/config.json'));
     
 // create vue
 new Vue({

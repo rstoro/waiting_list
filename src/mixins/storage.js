@@ -3,25 +3,24 @@ const basePath = './data/';
 
 export default {
   methods: {
-    loadFile(name) {
-      const filePath = basePath + name + '.json';
+    loadFile(fileName) {
+      const filePath = basePath + fileName;
       if (!fs.existsSync(filePath)) {
-        this.saveFile(name, []);
-        console.log('file created');
+        this.saveFile(fileName, JSON.stringify([]));
       }
-      
-      console.log(JSON.parse(fs.readFileSync(filePath)));
-      return JSON.parse(fs.readFileSync(filePath));
+
+      return fs.readFileSync(filePath);
     },
-    saveFile(name, data) {
-      const filePath = basePath + name + '.json';
+    saveFile(fileName, data) {
+      const filePath = basePath + fileName;
       fs.writeFileSync(filePath, data);
     },
-    appendFile(name, newData) {
-      const filePath = basePath + name + '.json';
-      const data = JSON.parse(fs.readFileSync(filePath));
-      data.push(newData);
-      fs.appendFileSync(filePath, data);
+    log(action, id) {
+      const d = new Date();
+      const fileName = `./logs/${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}.log`;
+      const filePath = basePath + fileName;
+      const data = `${id},${action},${d.toTimeString()}\n`;
+      fs.appendFileSync(filePath, data)
     }
   }
 }

@@ -67,7 +67,7 @@ export default {
       createNewGroupText: 'Create New Group',
       noGroupsExistText: 'There are currently no groups on the waiting list.',
       showModal: false,
-      groups: this.loadFile('groups')
+      groups: JSON.parse(this.loadFile('groups.json'))
     }
   },
   methods: {
@@ -81,6 +81,7 @@ export default {
         to: data.phonenumber
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
+        this.log('SENT', this.groups[index].id);
         openNotificationAlert({
           message: `Message successfully sent to "${ this.groups[index].fullname }".`,
           colour: 'success',
@@ -88,6 +89,7 @@ export default {
         });
       }).catch(error => {
         this.groups[index].messageSentEpoch = null;
+        this.log('FAILED', this.groups[index].id);
         openNotificationAlert({
           message: `${ error['name'] }: ${ error['message'] }`,
           colour: 'danger',
@@ -103,6 +105,7 @@ export default {
       });
     },
     addNewGroup(newGroup) {
+      this.log('CREATE', newGroup.id);
       openNotificationAlert({
         message: `Successfuly created group "${ newGroup.fullname }".`,
         colour: 'success',
@@ -110,12 +113,9 @@ export default {
       });
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
       this.groups.push(newGroup);
-      console.log(this.groups);
     },
     removeGroupFromGroups(index) {
-      const d = new Date(this.groups[index].epoch);
-      const filename = `${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}`;
-      this.appendFile(filename, this.groups[index]);
+      this.log('DELETE', this.groups[index].id);
       openNotificationAlert({
         message: `Successfuly deleted group "${ this.groups[index].fullname }".`,
         colour: 'success',
@@ -127,7 +127,7 @@ export default {
   watch: {
     groups: {
       handler() {
-        this.saveFile('groups', JSON.stringify(this.groups));
+        this.saveFile('groups.json', JSON.stringify(this.groups));
       },
       deep: true
     }

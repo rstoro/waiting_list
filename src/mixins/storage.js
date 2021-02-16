@@ -10,11 +10,18 @@ export default {
         console.log('file created');
       }
       
+      console.log(JSON.parse(fs.readFileSync(filePath)));
       return JSON.parse(fs.readFileSync(filePath));
     },
     saveFile(name, data) {
       const filePath = basePath + name + '.json';
-      fs.writeFileSync(filePath, JSON.stringify(data));
+      fs.writeFileSync(filePath, data);
+    },
+    appendFile(name, newData) {
+      const filePath = basePath + name + '.json';
+      const data = JSON.parse(fs.readFileSync(filePath));
+      data.push(newData);
+      fs.appendFileSync(filePath, data);
     }
   }
 }

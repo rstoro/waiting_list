@@ -110,8 +110,12 @@ export default {
       });
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
       this.groups.push(newGroup);
+      console.log(this.groups);
     },
     removeGroupFromGroups(index) {
+      const d = new Date(this.groups[index].epoch);
+      const filename = `${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}`;
+      this.appendFile(filename, this.groups[index]);
       openNotificationAlert({
         message: `Successfuly deleted group "${ this.groups[index].fullname }".`,
         colour: 'success',

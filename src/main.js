@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import App from './App.vue';
-import config from '../public/config.json';
+import fs from 'fs';
+
+// NOTE: we are reading this in with fs so it can be modified after compilation
+// import config from '../public/config.json';
 
 // NOTE: we are customizing the scss in WaitingList.vue
 // bulma
@@ -8,9 +11,9 @@ import config from '../public/config.json';
 
 // font-awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList);
+library.add(faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // dragula
@@ -21,6 +24,8 @@ Vue.use(Vue2Dragula);
 Vue.config.productionTip = false;
     
 // custom config
+// fs.writeFileSync('test.txt', JSON.stringify({'wow': [1, 2, 3]}), 'utf-8');
+const config = JSON.parse(fs.readFileSync('./public/config.json'));
 Vue.prototype.$waitingListConfig = config;
     
 // create vue

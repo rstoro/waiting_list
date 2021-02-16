@@ -158,7 +158,7 @@ export default {
   padding: 0 16px;
 }
 .waiting-list-content {
-  padding: 0 16px;
+  padding: 0 16px 64px 16px;
   overflow-y: scroll;
 }
 .true-center {

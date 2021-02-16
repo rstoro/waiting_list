@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <div class="tabs is-boxed is-fullwidth">
+    <div class="tabs is-boxed is-centered">
       <ul>
         <li v-bind:class="{'is-active': isSelected('waitingList')}" 
             @click="select('waitingList')">
@@ -16,9 +16,18 @@
             @click="select('audit')">
           <a>
             <span class="small-margin-right">
-              <font-awesome-icon :icon="['fas', 'chart-bar']"/>
+              <font-awesome-icon :icon="['fas', 'search']"/>
             </span>
             <span>Audit</span>
+          </a>
+        </li>
+        <li v-bind:class="{'is-active': isSelected('analytics')}" 
+            @click="select('analytics')">
+          <a>
+            <span class="small-margin-right">
+              <font-awesome-icon :icon="['fas', 'chart-bar']"/>
+            </span>
+            <span>Analytics</span>
           </a>
         </li>
       </ul>
@@ -26,6 +35,7 @@
 
     <WaitingList v-if="isSelected('waitingList')" />
     <Audit v-if="isSelected('audit')" />
+    <Analytics v-if="isSelected('analytics')" />
 
   </div>
 </template>
@@ -33,12 +43,14 @@
 <script>
 import WaitingList from './components/WaitingList.vue';
 import Audit from './components/Audit.vue';
+import Analytics from './components/Analytics.vue';
 
 export default {
   name: 'App',
   components: {
     WaitingList,
-    Audit
+    Audit,
+    Analytics
   },
   data() {
     return {
@@ -114,9 +126,5 @@ body,
 }
 .large-margin-right {
   margin-right: 32px;
-}
-::-webkit-scrollbar {
-  display: none;
-  width: 0px;
 }
 </style>

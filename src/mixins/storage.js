@@ -6,7 +6,7 @@ export default {
     loadFile(name) {
       const filePath = basePath + name + '.json';
       if (!fs.existsSync(filePath)) {
-        this.saveFile(name, {});
+        this.saveFile(name, []);
         console.log('file created');
       }
       

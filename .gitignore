@@ -3,5 +3,6 @@ dist_electron/
 .vscode/
 /public/config.json
 /public/icon.png
+/data/*
 *.swp
 build/

@@ -60,13 +60,14 @@ export default {
     CreateGroupModal,
     GroupCard,
   },
+  mixins: [ storage ],
   data() {
     return {
       waitingListText: 'Waiting List',
       createNewGroupText: 'Create New Group',
       noGroupsExistText: 'There are currently no groups on the waiting list.',
       showModal: false,
-      groups: localStorage.getItem('groups') == null ? [] : JSON.parse(localStorage.getItem('groups'))
+      groups: this.loadFile('groups')
     }
   },
   methods: {
@@ -122,7 +123,7 @@ export default {
   watch: {
     groups: {
       handler() {
-        localStorage.setItem('groups', JSON.stringify(this.groups));
+        this.saveFile('groups', JSON.stringify(this.groups));
       },
       deep: true
     }

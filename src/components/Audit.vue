@@ -13,17 +13,14 @@ import storage from '../mixins/storage.js';
 export default {
   name: 'Audit',
   components: {},
+  mixins: [ storage ],
   data() {
     return {
       auditText: 'Audit'
     }
   },
   methods: {},
-  mixins: [ storage ],
   created() {
-    let test = this.loadFile('test');
-    console.log(test);
-    console.log('created')
   }
 }
 </script>

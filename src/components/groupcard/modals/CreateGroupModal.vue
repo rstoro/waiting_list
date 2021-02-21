@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import Modal from '../../base/Modal.vue';
 
 export default {
   name: 'CreateGroupModal',
@@ -119,6 +119,7 @@ export default {
       this.$emit('closeCreateGroupModal');
     },
     addNewGroup() {
+      // TODO: should this just be the phone number?
       const uuidv4 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       );
@@ -132,6 +133,7 @@ export default {
         notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null,
+        arrivalEpoch: null,
         waitTime: this.$waitingListConfig.companyData.waitTime
       });
       this.cancelNewGroup();

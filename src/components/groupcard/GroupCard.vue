@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import MessageGroupModal from './MessageGroupModal.vue';
-import DeleteGroupModal from './DeleteGroupModal.vue';
-import GroupCardHeader from './GroupCardHeader.vue';
-import GroupCardContent from './GroupCardContent.vue';
+import MessageGroupModal from './modals/MessageGroupModal.vue';
+import DeleteGroupModal from './modals/DeleteGroupModal.vue';
+import GroupCardHeader from './components/GroupCardHeader.vue';
+import GroupCardContent from './components/GroupCardContent.vue';
 
 export default {
   name: 'GroupCard',

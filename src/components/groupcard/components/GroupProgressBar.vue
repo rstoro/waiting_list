@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ProgressBar from './ProgressBar.vue';
+import ProgressBar from '../../base/ProgressBar.vue';
 
 export default {
   name: 'GroupProgressBar',

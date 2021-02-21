@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import Modal from '../../base/Modal.vue';
 
 export default {
   name: 'MessageGroupModal',

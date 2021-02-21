@@ -33,9 +33,11 @@
       </ul>
     </div>
 
-    <WaitingList v-if="isSelected('waitingList')" />
-    <Audit v-if="isSelected('audit')" />
-    <Analytics v-if="isSelected('analytics')" />
+    <div id="app-content">
+      <WaitingList v-if="isSelected('waitingList')" />
+      <Audit v-if="isSelected('audit')" />
+      <Analytics v-if="isSelected('analytics')" />
+    </div>
 
   </div>
 </template>
@@ -80,6 +82,7 @@ $input-placeholder-color: $grey;
 @import "../node_modules/bulma/sass/elements/_all.sass";
 @import "../node_modules/bulma/sass/form/_all.sass";
 @import "../node_modules/bulma/sass/components/_all.sass";
+@import "../node_modules/bulma/sass/grid/_all.sass";
 @import "../node_modules/bulma/sass/layout/_all.sass";
 
 /* CUSTOM */
@@ -89,6 +92,8 @@ $input-placeholder-color: $grey;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+  flex-direction: column;
 }
 /* REQUIRED FOR DRAGULA */
 .gu-mirror {
@@ -119,6 +124,10 @@ body,
 #app {
   height: 100%;
   width: 100%;
+  overflow: hidden;
+}
+#app-content {
+  flex: 1;
   overflow: hidden;
 }
 .small-margin-right {

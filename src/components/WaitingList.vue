@@ -1,62 +1,63 @@
 <template>
-  <div class="waiting-list">
-    <a class="create-group-btn" @click="showModal = true">
+  <Page>
+    <a slot="header" class="create-group-btn" @click="showModal = true">
       <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'users']"/>
       </span>
       <span class="has-icons-left">{{ createNewGroupText }}</span>
     </a>
 
-    <div class="line-wrapper"><div class="line"></div></div>
-
-    <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
-      <div>
-        <span class="has-text-grey">{{ noGroupsExistText }}</span>
-      </div>
-      <div>
-        <span>
-          <a @click="showModal = true">
-            <span class="small-margin-right">
-              <font-awesome-icon :icon="['fas', 'users']"/>
-            </span>
-            <span class="has-icons-left">{{ createNewGroupText }}</span>
-          </a>
-        </span>
-      </div>
-    </div>
-
-    <div class="waiting-list-content" v-else>
-      <div class="container" v-dragula="groups" drake="group_cards">
-        <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
-          <GroupCard v-bind:group="group" 
-              v-bind:index="index"
-              v-on:deleteGroup="removeGroupFromGroups"
-              v-on:sendTextMessage="sendTextMessage"/>
+    <div slot="body">
+      <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
+        <div>
+          <span class="has-text-grey">{{ noGroupsExistText }}</span>
+        </div>
+        <div>
+          <span>
+            <a @click="showModal = true">
+              <span class="small-margin-right">
+                <font-awesome-icon :icon="['fas', 'users']"/>
+              </span>
+              <span class="has-icons-left">{{ createNewGroupText }}</span>
+            </a>
+          </span>
         </div>
       </div>
+
+      <div v-else>
+        <div class="container" v-dragula="groups" drake="group_cards">
+          <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
+            <GroupCard v-bind:group="group" 
+                v-bind:index="index"
+                v-on:deleteGroup="removeGroupFromGroups"
+                v-on:sendTextMessage="sendTextMessage"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- HACK: redesign modal component to NOT REQUIRED -->
+      <!-- showModal prop for animations -->
+      <CreateGroupModal v-bind:showModal="showModal"
+          v-on:closeCreateGroupModal="showModal = false"
+          v-on:newGroupCreated="addNewGroup"/>
     </div>
 
-    <!-- HACK: redesign modal component to NOT REQUIRED showModal prop for animations -->
-    <CreateGroupModal v-bind:showModal="showModal"
-        v-on:closeCreateGroupModal="showModal = false"
-        v-on:newGroupCreated="addNewGroup"/>
-
-  </div>
+  </Page>
   
 </template>
 
 <script>
 import twilio from 'twilio';
-import { openNotificationAlert } from './NotificationAlert.vue'
-import CreateGroupModal from './CreateGroupModal.vue';
-import GroupCard from './GroupCard.vue';
+import { openNotificationAlert } from './base/NotificationAlert.vue';
+import Page from './base/Page.vue';
+import CreateGroupModal from './groupcard/modals/CreateGroupModal.vue';
+import GroupCard from './groupcard/GroupCard.vue';
 import storage from '../mixins/storage.js';
-
-//TODO: create logger...
 
 export default {
   name: 'WaitingList',
   components: {
+    Page,
     CreateGroupModal,
     GroupCard,
   },
@@ -154,32 +155,14 @@ export default {
 </script>
 
 <style scoped>
-.waiting-list {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  overflow: hidden;
-}
 .create-group-btn {
   display: flex;
   justify-content: flex-end;
-  padding: 0 16px;
-}
-.waiting-list-content {
-  padding: 0 16px 64px 16px;
-  overflow-y: scroll;
 }
 .true-center {
   display:flex;
   flex-flow: column;
   height:100%;
   justify-content: center;
-}
-.line-wrapper {
-  padding: 24px 16px;
-}
-.line {
-  border-top: 2px solid rgb(10, 10, 10, 0.1);
-  font-size: 1px;
 }
 </style>

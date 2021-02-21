@@ -27,11 +27,20 @@
         </button>
         <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
             @click="displayMessageGroupModal(true)"
-            v-bind:disabled="group.messageSentEpoch != null">
+            v-if="group.messageSentEpoch == null">
           <span class="icon is-small">
             <font-awesome-icon :icon="['fas', 'envelope']"/>
           </span>
           <span>{{ messageText }}</span>
+        </button>
+        <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
+            @click=""
+            v-bind:disabled="group.arrivalEpoch != null"
+            v-else>
+          <span class="icon is-small">
+            <font-awesome-icon :icon="['fas', 'check']"/>
+          </span>
+          <span>{{ arrivedText }}</span>
         </button>
       </div>
     </div>
@@ -51,7 +60,8 @@ export default {
     return {
       messageText: 'Message',
       editText: 'Edit',
-      deleteText: 'Delete'
+      deleteText: 'Delete',
+      arrivedText: 'Arrived'
     }
   },
   methods: {

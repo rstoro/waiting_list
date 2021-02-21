@@ -1,6 +1,6 @@
 <template>
   <div class="analytics">
-    <div class="analytics-body">
+    <div slot="body">
       
     </div>
   </div>
@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import Page from './base/Page.vue';
+
 export default {
   name: 'Analytics',
   components: {},
@@ -27,12 +29,6 @@ export default {
   display: flex;
   flex-flow: column;
   height: 100%;
-}
-.analytics-body {
-  display: flex;
-  flex-flow: column;
-  flex: 1;
-  overflow: auto;
 }
 .true-center {
   display:flex;

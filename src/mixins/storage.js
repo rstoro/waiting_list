@@ -17,7 +17,7 @@ export default {
     },
     log(action, id) {
       const d = new Date();
-      const fileName = `./logs/${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}.log`;
+      const fileName = `logs/${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}.log`;
       const filePath = basePath + fileName;
       const data = `${id},${action},${d.toTimeString()}\n`;
       fs.appendFileSync(filePath, data)

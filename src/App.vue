@@ -75,8 +75,9 @@ export default {
 /* CUSTOM BULMA */
 @import "../node_modules/bulma/sass/utilities/initial-variables";
 $input-placeholder-color: $grey;
+$primary: #3273dc;
 
-// TODO: what can we cut down on?
+/* TODO: what can we cut down on? */
 @import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../node_modules/bulma/sass/base/_all.sass";
 @import "../node_modules/bulma/sass/elements/_all.sass";
@@ -84,6 +85,10 @@ $input-placeholder-color: $grey;
 @import "../node_modules/bulma/sass/components/_all.sass";
 @import "../node_modules/bulma/sass/grid/_all.sass";
 @import "../node_modules/bulma/sass/layout/_all.sass";
+
+/* CALENDAR */
+@import "../node_modules/bulma-calendar/src/sass/index.sass";
+@import "../node_modules/bulma-calendar/src/sass/timepicker.sass";
 
 /* CUSTOM */
 #app {

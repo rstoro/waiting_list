@@ -1,14 +1,10 @@
 <template>
+
   <Page>
+    <div slot="header">
+      <Calendar v-on:dateSelected="getLogData"/>
+    </div>
     <div slot="body">
-      <aside class="menu">
-        <p class="menu-label">Dates</p>
-        <ul class="menu-list">
-          <li v-for="(name, index) in files" v-bind:key="`${name}_${index}`">
-            <a>{{ name }}</a>
-          </li>
-        </ul>
-      </aside>
     </div>
   </Page>
   
@@ -17,20 +13,25 @@
 <script>
 import storage from '../mixins/storage.js';
 import Page from './base/Page.vue';
+import Calendar from './calendar/Calendar.vue';
 
 export default {
   name: 'Audit',
-  components: { Page },
+  components: { 
+    Page,
+    Calendar
+  },
   mixins: [ storage ],
   data() {
     return {
       auditText: 'Audit',
-      files: []
     }
   },
-  methods: {},
-  created() {
-    this.files = this.getLogFilenames()
+  methods: {
+    getLogData(logDate) {
+      console.log(logDate);
+    }
+    //this.years.push(...this.listDir('logs'));
   }
 }
 </script>

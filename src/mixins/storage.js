@@ -23,31 +23,14 @@ export default {
       const data = `${id},${action},${d.toTimeString()}\n`;
       this.saveFile(filePath, data)
     },
-    getLogFilenames() {
-      const logFiles = {};
-      const logDir = `${baseDir}logs/`;
-      this.mkdirSafe(logDir);
-
-      fs.readdirSync(logDir).forEach(year => {
-        logFiles[year] = []
-        const yearDir = `${logDir}${year}/`;
-
-        fs.readdirSync(yearDir).forEach(month => {
-          logFiles[year][month] = []
-          const monthDir = `${yearDir}${month}/`;
-
-          fs.readdirSync(monthDir).forEach(day => {
-            logFiles[year][month].push(day);
-          });
-        });
-      });
-
-      console.log(logFiles);
-    },
     mkdirSafe(dir) {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
+    },
+    listDir(dirPath) {
+      const fullPath = baseDir + dirPath;
+      return fs.existsSync(fullPath) ? fs.readdirSync(fullPath) : []
     }
   }
 }

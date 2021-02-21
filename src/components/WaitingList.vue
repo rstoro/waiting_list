@@ -7,7 +7,7 @@
       <span class="has-icons-left">{{ createNewGroupText }}</span>
     </a>
 
-    <div slot="body">
+    <div slot="body" class="waiting-list-body">
       <div class="true-center" v-if="groups === [] || groups === {} || groups === null || groups.length === 0">
         <div>
           <span class="has-text-grey">{{ noGroupsExistText }}</span>
@@ -25,7 +25,7 @@
       </div>
 
       <div v-else>
-        <div class="container" v-dragula="groups" drake="group_cards">
+        <div v-dragula="groups" drake="group_cards">
           <div v-for="(group, index) in groups" v-bind:key="`${group.fullname}_${index}`">
             <GroupCard v-bind:group="group" 
                 v-bind:index="index"
@@ -158,6 +158,9 @@ export default {
 .create-group-btn {
   display: flex;
   justify-content: flex-end;
+}
+.waiting-list-body {
+  height: 100%;
 }
 .true-center {
   display:flex;

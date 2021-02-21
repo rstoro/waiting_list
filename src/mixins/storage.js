@@ -1,26 +1,53 @@
 import fs from 'fs';
-const basePath = './data/';
+const baseDir = './data/';
 
 export default {
   methods: {
-    loadFile(fileName) {
-      const filePath = basePath + fileName;
-      if (!fs.existsSync(filePath)) {
-        this.saveFile(fileName, JSON.stringify([]));
+    loadFile(filePath) {
+      const fullPath = baseDir + filePath;
+      if (!fs.existsSync(fullPath)) {
+        this.saveFile(filePath, JSON.stringify([]));
       }
 
-      return fs.readFileSync(filePath);
+      return fs.readFileSync(fullPath);
     },
-    saveFile(fileName, data) {
-      const filePath = basePath + fileName;
-      fs.writeFileSync(filePath, data);
+    saveFile(filePath, data) {
+      const fullPath = baseDir + filePath;
+      const fileDir = fullPath.split('/').slice(0, -1).join('/');
+      this.mkdirSafe(fileDir);
+      fs.writeFileSync(fullPath, data);
     },
     log(action, id) {
       const d = new Date();
-      const fileName = `logs/${d.getUTCFullYear()}${d.getUTCMonth() + 1}${d.getUTCDate()}.log`;
-      const filePath = basePath + fileName;
+      const filePath = `logs/${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}.log`;
       const data = `${id},${action},${d.toTimeString()}\n`;
-      fs.appendFileSync(filePath, data)
+      this.saveFile(filePath, data)
+    },
+    getLogFilenames() {
+      const logFiles = {};
+      const logDir = `${baseDir}logs/`;
+      this.mkdirSafe(logDir);
+
+      fs.readdirSync(logDir).forEach(year => {
+        logFiles[year] = []
+        const yearDir = `${logDir}${year}/`;
+
+        fs.readdirSync(yearDir).forEach(month => {
+          logFiles[year][month] = []
+          const monthDir = `${yearDir}${month}/`;
+
+          fs.readdirSync(monthDir).forEach(day => {
+            logFiles[year][month].push(day);
+          });
+        });
+      });
+
+      console.log(logFiles);
+    },
+    mkdirSafe(dir) {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
     }
   }
 }

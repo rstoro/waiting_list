@@ -2,9 +2,10 @@
 
   <Page>
     <div slot="header">
-      <Calendar v-on:dateSelected="getLogData"/>
+      <Calendar v-on:dateSelected="setLogData"/>
     </div>
     <div slot="body">
+      {{ logData }}
     </div>
   </Page>
   
@@ -25,13 +26,20 @@ export default {
   data() {
     return {
       auditText: 'Audit',
+      logData: []
     }
   },
   methods: {
-    getLogData(logDate) {
-      console.log(logDate);
+    setLogData(logDate) {
+      const dirPath = `logs/${logDate.getUTCFullYear()}/${logDate.getUTCMonth() + 1}/${logDate.getUTCDate()}`;
+      const fileName = 'log';
+      this.logData = (this.listDir(dirPath) || []).includes(fileName)
+        ? ('' + this.loadFile(`${dirPath}/${fileName}`)).split(/\r?\n/)
+        : [];
     }
-    //this.years.push(...this.listDir('logs'));
+  },
+  created() {
+    this.setLogData(new Date());
   }
 }
 </script>

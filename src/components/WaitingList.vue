@@ -68,7 +68,16 @@ export default {
       createNewGroupText: 'Create New Group',
       noGroupsExistText: 'There are currently no groups on the waiting list.',
       showModal: false,
-      groups: JSON.parse(this.loadFile('groups.json'))
+      groups: []
+    }
+  },
+  mounted() {
+    const loadedGroups = JSON.parse(this.loadFile('groups.json') || '[]');
+    if (loadedGroups === null) {
+      this.createFile('groups.json');
+    }
+    else {
+      this.groups.push(...loadedGroups);
     }
   },
   methods: {
@@ -128,7 +137,7 @@ export default {
   watch: {
     groups: {
       handler() {
-        this.saveFile('groups.json', JSON.stringify(this.groups));
+        this.saveFile('groups.json', JSON.stringify(this.groups) || []);
       },
       deep: true
     }

@@ -26,7 +26,7 @@
         </span>
         <span>{{ cancelArrivedGroupText }}</span>
       </button>
-      <button class="button is-outlined is-normal is-success" 
+      <button class="button is-outlined is-normal is-warning" 
           @click="confirmArrivedGroup()">
         <span class="icon is-small">
           <font-awesome-icon :icon="['fas', 'check']"/>

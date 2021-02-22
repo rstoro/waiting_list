@@ -33,7 +33,7 @@
           </span>
           <span>{{ messageText }}</span>
         </button>
-        <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
+        <button class="button group-card-button is-outlined is-normal is-warning button-margin-left" 
             @click="displayArrivedGroupModal(true)"
             v-bind:disabled="group.arrivalEpoch != null"
             v-else>

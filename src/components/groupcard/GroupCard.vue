@@ -82,7 +82,6 @@ export default {
       this.displayMessageGroupModal = value;
     },
     setDisplayArrivedGroupModal(value) {
-      console.log('hit');
       this.displayArrivedGroupModal = value;
     },
     setDisplayDeleteGroupModal(value) {

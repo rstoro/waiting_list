@@ -91,7 +91,13 @@ export default {
         to: data.phonenumber
       }).then(message => {
         this.groups[index].messageSentEpoch = Date.now();
-        this.log('SENT', this.groups[index].id);
+
+        this.log('SENT', { 
+          'id': this.groups[index].id, 
+          'fullname': this.groups[index].fullname, 
+          'phonenumber': this.groups[index].phonenumber 
+        });
+
         openNotificationAlert({
           message: `Message successfully sent to "${ this.groups[index].fullname }".`,
           colour: 'success',
@@ -99,12 +105,19 @@ export default {
         });
       }).catch(error => {
         this.groups[index].messageSentEpoch = null;
-        this.log('FAILED', this.groups[index].id);
+
+        this.log('FAILED', { 
+          'id': this.groups[index].id, 
+          'fullname': this.groups[index].fullname, 
+          'phonenumber': this.groups[index].phonenumber 
+        });
+
         openNotificationAlert({
           message: `${ error['name'] }: ${ error['message'] }`,
           colour: 'danger',
           duration: 5000
         });
+
         setTimeout(() => {
           openNotificationAlert({
             message: `Message failed to send to "${ this.groups[index].fullname }".`,
@@ -115,27 +128,34 @@ export default {
       });
     },
     addNewGroup(newGroup) {
-      this.log('CREATE', newGroup.id);
-      this.storeUser(newGroup.id, JSON.stringify({ 
-        'id': newGroup.id,
-        'fullname': newGroup.fullname,
-        'phonenumber': newGroup.phonenumber
-      }));
+      this.log('CREATE', { 
+        'id': newGroup.id, 
+        'fullname': newGroup.fullname, 
+        'phonenumber': newGroup.phonenumber 
+      });
+
       openNotificationAlert({
         message: `Successfuly created group "${ newGroup.fullname }".`,
         colour: 'success',
         duration: 5000
       });
+
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
       this.groups.push(newGroup);
     },
     removeGroupFromGroups(index) {
-      this.log('DELETE', this.groups[index].id);
+      this.log('DELETE', { 
+        'id': this.groups[index].id, 
+        'fullname': this.groups[index].fullname, 
+        'phonenumber': this.groups[index].phonenumber 
+      });
+
       openNotificationAlert({
         message: `Successfuly deleted group "${ this.groups[index].fullname }".`,
         colour: 'success',
         duration: 5000
       });
+
       this.groups.splice(index, 1);
     }
   },

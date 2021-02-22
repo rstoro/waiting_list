@@ -12,17 +12,21 @@
       <p class="has-text-left">{{ messageGroupBodyText }}</p>
       <div class="text-area">
         <div class="text-area-header">
-          <p class="has-text-left">
-            <span class="small-margin-right">
-              <font-awesome-icon :icon="['fas', 'user']"/>
+          <p class="has-text-left overflow-protect">
+            <span class="has-text-weight-medium no-wrap">
+              <span class="small-margin-right">
+                <font-awesome-icon :icon="['fas', 'user']"/>
+              </span>
+              <b>{{ group.fullname }}</b>
             </span>
-            <span class="has-text-weight-medium"><b>{{ group.fullname }}</b></span>
           </p>
-          <p class="has-text-right">
-            <span class="small-margin-right">
-              <font-awesome-icon :icon="['fas', 'phone']"/>
+          <p class="has-text-right overflow-protect">
+            <span class="has-text-weight-medium">
+              <span class="small-margin-right no-wrap">
+                <font-awesome-icon :icon="['fas', 'phone']"/>
+              </span>
+              <b>{{ formatPhoneNumber(group.phonenumber) }}</b>
             </span>
-            <span class="has-text-weight-medium"><b>{{ formatPhoneNumber(group.phonenumber) }}</b></span>
           </p>
         </div>
         <textarea class="textarea has-fixed-size" type="text" placeholder="Message" v-bind:value="getMessageText" 
@@ -109,6 +113,14 @@ export default {
 .message-group-body {
   padding-top: 16px;
   padding-bottom: 16px;
+}
+.overflow-protect {
+  overflow: hidden;
+  width: 50%;
+  text-overflow: ellipsis;
+}
+.no-wrap {
+  white-space: nowrap;
 }
 .text-area {
   padding-top: 32px;

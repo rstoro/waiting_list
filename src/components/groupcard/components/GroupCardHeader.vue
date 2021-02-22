@@ -5,7 +5,7 @@
       <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'user']"/>
       </span>
-      <span class="has-text-weight-medium">{{ group.fullname }}</span>
+      <span class="has-text-weight-medium group-card-name">{{ group.fullname }}</span>
     </p>
     <div class="group-card-countdown">
       <GroupProgressBar v-if="group.messageSentEpoch !== null"
@@ -81,9 +81,14 @@ export default {
 }
 
 .group-card .group-card-title {
-  flex-grow: 0;
-  flex: 1;
+  max-width: 25%;
   justify-content: flex-start;
+}
+
+.group-card .group-card-title .group-card-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .group-card .group-card-icon {

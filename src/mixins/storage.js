@@ -35,16 +35,24 @@ export default {
         fs.mkdirSync(dir, { recursive: true });
       }
     },
-    log(action, id) {
+    log(action, params) {
       const d = new Date();
-      const filePath = `logs/${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/log`;
-      const data = `${id},${action},${d.toTimeString()}\n`;
+      const filePath = `logs/${this.getDate(d)}.log`;
+      const data = JSON.stringify(
+        { 'action': action, 'time': d.toTimeString(), ...params }
+      ) + '\n';
       this.appendFile(filePath, data);
     },
-    storeUser(id, data) {
-      const d = new Date();
-      const filePath = `logs/${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/${id}`;
-      this.saveFile(filePath, data);
+    getLog(d) {
+      const relPath = `logs/${this.getDate(d)}.log`;
+      const files = this.loadFile(relPath)
+      return files !== null 
+        ? files.split(/\r?\n/).filter(u => u !== '').map(JSON.parse) 
+        : null;
+    },
+    getDate(d) {
+      const newD = new Date(d.getTime() - (d.getTimezoneOffset()*60*1000));
+      return newD.toISOString().split('T')[0].replace(/-/g, '/');
     }
   }
 }

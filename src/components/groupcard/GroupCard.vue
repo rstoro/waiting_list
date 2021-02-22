@@ -14,6 +14,7 @@
           v-if="isSelected">
         <GroupCardContent v-bind:group="group"
           v-on:setDisplayMessageGroupModal="setDisplayMessageGroupModal"
+          v-on:setDisplayArrivedGroupModal="setDisplayArrivedGroupModal"
           v-on:setDisplayDeleteGroupModal="setDisplayDeleteGroupModal"/>
       </div>
     </transition>
@@ -22,6 +23,12 @@
         v-bind:index="index"
         v-on:closeMessageGroupModal="displayMessageGroupModal = false"
         v-on:confirmMessageGroup="messageGroup"
+        v-bind:group="group"/>
+
+    <ArrivedGroupModal v-bind:showModal="displayArrivedGroupModal"
+        v-bind:index="index"
+        v-on:closeArrivedGroupModal="displayArrivedGroupModal = false"
+        v-on:confirmArrivedGroup="logArrival"
         v-bind:group="group"/>
     
     <DeleteGroupModal v-bind:showModal="displayDeleteGroupModal"
@@ -35,6 +42,7 @@
 
 <script>
 import MessageGroupModal from './modals/MessageGroupModal.vue';
+import ArrivedGroupModal from './modals/ArrivedGroupModal.vue';
 import DeleteGroupModal from './modals/DeleteGroupModal.vue';
 import GroupCardHeader from './components/GroupCardHeader.vue';
 import GroupCardContent from './components/GroupCardContent.vue';
@@ -43,6 +51,7 @@ export default {
   name: 'GroupCard',
   components: {
     MessageGroupModal,
+    ArrivedGroupModal,
     DeleteGroupModal,
     GroupCardHeader,
     GroupCardContent
@@ -61,7 +70,8 @@ export default {
     return {
       isSelected: false,
       displayMessageGroupModal: false,
-      displayDeleteGroupModal: false,
+      displayArrivedGroupModal: false,
+      displayDeleteGroupModal: false
     }
   },
   methods: {
@@ -71,8 +81,16 @@ export default {
     setDisplayMessageGroupModal(value) {
       this.displayMessageGroupModal = value;
     },
+    setDisplayArrivedGroupModal(value) {
+      console.log('hit');
+      this.displayArrivedGroupModal = value;
+    },
     setDisplayDeleteGroupModal(value) {
       this.displayDeleteGroupModal = value;
+    },
+    logArrival(index) {
+      this.displayArrivedGroupModal = false;
+      this.$emit('groupArrived', index);
     },
     deleteGroup(index) {
       this.displayDeleteGroupModal = false;

@@ -34,11 +34,11 @@
           <span>{{ messageText }}</span>
         </button>
         <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-            @click="logArrival()"
+            @click="displayArrivedGroupModal(true)"
             v-bind:disabled="group.arrivalEpoch != null"
             v-else>
           <span class="icon is-small">
-            <font-awesome-icon :icon="['fas', 'check']"/>
+            <font-awesome-icon :icon="['fas', 'taxi']"/>
           </span>
           <span>{{ arrivedText }}</span>
         </button>
@@ -48,10 +48,8 @@
 </template>
 
 <script>
-import Storage from '../../../mixins/storage.js';
 export default {
   name: 'GroupCardContent',
-  mixins: [ Storage ],
   props: {
     group: {
       type: Object,
@@ -73,6 +71,9 @@ export default {
     displayMessageGroupModal(value) {
       this.$emit('setDisplayMessageGroupModal', value);
     },
+    displayArrivedGroupModal(value) {
+      this.$emit('setDisplayArrivedGroupModal', value);
+    },
     formatAddedOn(epoch) {
       return `Added ${new Date(epoch)}`;
     },
@@ -83,14 +84,6 @@ export default {
       return messageSentEpoch === null 
         ? 'Has not been messaged.' 
         : `Messaged ${new Date(messageSentEpoch)}`;
-    },
-    logArrival() {
-      this.group.arrivalEpoch = Date.now();
-      this.log('ARRIVED', {
-        'id': this.group.id,
-        'fullname': this.group.fullname,
-        'phonenumber': this.group.phonenumber
-      });
     }
   }
 }

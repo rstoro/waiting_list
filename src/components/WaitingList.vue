@@ -30,6 +30,7 @@
             <GroupCard v-bind:group="group" 
                 v-bind:index="index"
                 v-on:deleteGroup="removeGroupFromGroups"
+                v-on:groupArrived="logArrivalAndRemoveFromGroups"
                 v-on:sendTextMessage="sendTextMessage"/>
           </div>
         </div>
@@ -142,6 +143,15 @@ export default {
 
       newGroup.phonenumber = newGroup.phonenumber.replace(/\D+/g, '');
       this.groups.push(newGroup);
+    },
+    logArrivalAndRemoveFromGroups(index) {
+      this.log('ARRIVED', { 
+        'id': this.groups[index].id, 
+        'fullname': this.groups[index].fullname, 
+        'phonenumber': this.groups[index].phonenumber 
+      });
+
+      this.removeGroupFromGroups(index);
     },
     removeGroupFromGroups(index) {
       this.log('DELETE', { 

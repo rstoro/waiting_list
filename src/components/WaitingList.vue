@@ -52,7 +52,7 @@ import { openNotificationAlert } from './base/NotificationAlert.vue';
 import Page from './base/Page.vue';
 import CreateGroupModal from './groupcard/modals/CreateGroupModal.vue';
 import GroupCard from './groupcard/GroupCard.vue';
-import storage from '../mixins/storage.js';
+import Storage from '../mixins/storage.js';
 
 export default {
   name: 'WaitingList',
@@ -61,7 +61,7 @@ export default {
     CreateGroupModal,
     GroupCard,
   },
-  mixins: [ storage ],
+  mixins: [ Storage ],
   data() {
     return {
       waitingListText: 'Waiting List',

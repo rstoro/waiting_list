@@ -54,7 +54,7 @@
               <td>{{ user.phonenumber }}</td>
               <td>{{ getLogAttr(user.id, 'CREATE') }}</td>
               <td>{{ getLogAttr(user.id, 'SENT') }}</td>
-              <td>{{ getLogAttr(user.id, 'ARRIVE') }}</td>
+              <td>{{ getLogAttr(user.id, 'ARRIVED') }}</td>
               <!-- <td>{{ getLogAttr(user.id, 'FAILED') }}</td> -->
             </tr>
           </tbody>

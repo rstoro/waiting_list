@@ -34,7 +34,7 @@
           <span>{{ messageText }}</span>
         </button>
         <button class="button group-card-button is-outlined is-normal is-success button-margin-left" 
-            @click=""
+            @click="logArrival()"
             v-bind:disabled="group.arrivalEpoch != null"
             v-else>
           <span class="icon is-small">
@@ -48,8 +48,10 @@
 </template>
 
 <script>
+import Storage from '../../../mixins/storage.js';
 export default {
   name: 'GroupCardContent',
+  mixins: [ Storage ],
   props: {
     group: {
       type: Object,
@@ -82,6 +84,14 @@ export default {
         ? 'Has not been messaged.' 
         : `Messaged ${new Date(messageSentEpoch)}`;
     },
+    logArrival() {
+      this.group.arrivalEpoch = Date.now();
+      this.log('ARRIVED', {
+        'id': this.group.id,
+        'fullname': this.group.fullname,
+        'phonenumber': this.group.phonenumber
+      });
+    }
   }
 }
 </script>

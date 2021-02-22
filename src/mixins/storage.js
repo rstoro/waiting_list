@@ -37,13 +37,13 @@ export default {
     },
     log(action, id) {
       const d = new Date();
-      const filePath = `logs/${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}/log`;
+      const filePath = `logs/${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/log`;
       const data = `${id},${action},${d.toTimeString()}\n`;
       this.appendFile(filePath, data);
     },
     storeUser(id, data) {
       const d = new Date();
-      const filePath = `logs/${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}/${id}`;
+      const filePath = `logs/${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/${id}`;
       this.saveFile(filePath, data);
     }
   }

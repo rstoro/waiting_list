@@ -11,9 +11,9 @@ import fs from 'fs';
 
 // font-awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList } from '@fortawesome/free-solid-svg-icons';
+import { faTaxi, faHourglassHalf, faFilter, faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList);
+library.add(faTaxi, faHourglassHalf, faFilter, faSearch, faChartBar, faCheck, faBan, faUser, faUsers, faPhone, faAngleDown, faAngleRight, faClock, faTrashAlt, faEnvelope, faExclamationCircle, faList);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // dragula

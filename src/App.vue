@@ -76,6 +76,7 @@ export default {
 @import "../node_modules/bulma/sass/utilities/initial-variables";
 $input-placeholder-color: $grey;
 $primary: #3273dc;
+$calendar-date-color: $primary;
 
 /* TODO: what can we cut down on? */
 @import "../node_modules/bulma/sass/utilities/_all.sass";

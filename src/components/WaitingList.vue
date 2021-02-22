@@ -116,6 +116,11 @@ export default {
     },
     addNewGroup(newGroup) {
       this.log('CREATE', newGroup.id);
+      this.storeUser(newGroup.id, JSON.stringify({ 
+        'id': newGroup.id,
+        'fullname': newGroup.fullname,
+        'phonenumber': newGroup.phonenumber
+      }));
       openNotificationAlert({
         message: `Successfuly created group "${ newGroup.fullname }".`,
         colour: 'success',

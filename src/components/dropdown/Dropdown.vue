@@ -1,27 +1,29 @@
 <template>
 
-  <div class="dropdown" v-bind:class="{'is-active': isActive}">
+  <div class="custom-dropdown">
+    <div class="dropdown" v-bind:class="{'is-active': isActive}">
 
-    <div class="dropdown-trigger">
-      <button class="button" v-bind:disabled="isDisabled" @click="toggleIsActive()">
-        <span>{{ buttonText }}</span>
-        <span class="icon rotate-icon" v-bind:class="{'rotate': isActive}">
-          <font-awesome-icon :icon="['fas', 'angle-right']"/>
-        </span>
-      </button>
-    </div>
-
-    <div class="dropdown-menu">
-      <div class="dropdown-content">
-        <a class="dropdown-item" 
-          v-bind:class="{'is-active': val === value}"
-          v-for="val in values" 
-          @click="select(val)">
-          {{ val }}
-        </a>
+      <div class="dropdown-trigger">
+        <button class="button" v-bind:disabled="isDisabled" @click="toggleIsActive()">
+          <span>{{ buttonText }}</span>
+          <span class="icon rotate-icon" v-bind:class="{'rotate': isActive}">
+            <font-awesome-icon :icon="['fas', 'angle-right']"/>
+          </span>
+        </button>
       </div>
-    </div>
 
+      <div class="dropdown-menu">
+        <div class="dropdown-content">
+          <a class="dropdown-item" 
+            v-bind:class="{'is-active': val === value}"
+            v-for="val in values" 
+            @click="select(val)">
+            {{ val }}
+          </a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </template>
@@ -67,11 +69,11 @@ export default {
 </script>
 
 <style scoped>
-.true-center {
-  display:flex;
-  flex-flow: column;
-  height:100%;
-  justify-content: center;
+.custom-dropdown,
+.custom-dropdown > .dropdown,
+.custom-dropdown > .dropdown > .dropdown-trigger,
+.custom-dropdown > .dropdown > .dropdown-trigger > .button {
+  width: 100%;
 }
 .rotate-icon {
   transform: rotate(0deg);

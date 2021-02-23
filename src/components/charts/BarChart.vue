@@ -11,11 +11,11 @@ export default {
           {
             label: 'test',
             borderWidth: 1,
-            data: [100, 700, 300],
-            borderColor: '#48c774',
-            backgroundColor: [ '#3273dc', '#ffdd57', '#f14668' ],
-            pointBorderColor: '#48c774',
-            pointBackgroundColor: [ '#3273dc', '#ffdd57', '#f14668' ],
+            data: [100, 300, 700],
+            borderColor: '#3273dc',
+            backgroundColor: [ '#48c774', '#ffdd57', '#f14668' ],
+            pointBorderColor: '#3273dc',
+            pointBackgroundColor: [ '#48c774', '#ffdd57', '#f14668' ],
           }
         ]
       },

@@ -1,5 +1,7 @@
 <template>
-  <button ref="calendarTrigger" type="button">Change</button>
+  <div class="calendar">
+    <button ref="calendarTrigger" type="button">Change</button>
+  </div>
 </template>
 
 <script>
@@ -51,5 +53,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+ .calendar .datetimepicker-dummy .datetimepicker-dummy-wrapper {
+  border-radius: 4px;
+  border-color: #dbdbdb;
+  box-shadow: inset 0 0.0625em 0.125em rgba(10, 10, 10, 0.05);
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
 
   <Page>
-    <div slot="header">
+    <div slot="header" class="audit-header">
       <Calendar v-on:dateSelected="get"/>
       <div class="filter field">
         <p class="control has-icons-left">
@@ -139,15 +139,27 @@ export default {
 </script>
 
 <style scoped>
+.audit-header {
+  display: flex;
+}
+.audit-header > * {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.audit-header > *:not(:last-child) {
+  padding-right: 8px;
+}
+.audit-header > *:not(:first-child) {
+  padding-left: 8px;
+}
 .audit-content {
   height: 100%;
 }
+.audit-content table { 
+  width: 100%; 
+}
 .audit-table {
   table-layout: fixed;
-}
-table { width: 100%; }
-.filter {
-  padding-top: 16px;
 }
 .fitler-icon {
   padding-left: 4px;

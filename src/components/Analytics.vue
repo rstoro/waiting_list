@@ -2,19 +2,23 @@
 
   <Page>
     <div slot="header">
-      <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
-      <div class="display-selection">
-        <Dropdown class="display-selection-dropdown"
-                  v-bind:values="['test1', 'test2', 'test3']" 
-                  v-bind:buttonText="'Comparison Type'"
-                  v-bind:value="comparisonType"
-                  v-on:input="setComparisonType"
-                  />
-        <Dropdown class="display-selection-dropdown"
-                  v-bind:values="['test1', 'test2', 'test3']" 
-                  v-bind:isDisabled="comparisonType === ''"
-                  v-bind:buttonText="'Chart Type'"
-                  v-model="chartType"/>
+      <div class="analytics-header">
+        <div class="analytics-header-row">
+          <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
+        </div>
+        <div class="analytics-header-row">
+          <Dropdown class="pad-right display-selection-dropdown"
+                    v-bind:values="['test1', 'test2', 'test3']" 
+                    v-bind:buttonText="'Comparison Type'"
+                    v-bind:value="comparisonType"
+                    v-on:input="setComparisonType"
+                    />
+          <Dropdown class="pad-left display-selection-dropdown"
+                    v-bind:values="['test1', 'test2', 'test3']" 
+                    v-bind:isDisabled="comparisonType === ''"
+                    v-bind:buttonText="'Chart Type'"
+                    v-model="chartType"/>
+        </div>
       </div>
     </div>
     <div slot="body">
@@ -81,12 +85,21 @@ export default {
 </script>
 
 <style scoped>
-.display-selection {
+.analytics-header > *:not(:first-child) {
   padding-top: 16px;
+}
+.analytics-header > .analytics-header-row {
   display: flex;
 }
-.display-selection-dropdown {
-  padding-right: 16px;
+.analytics-header > .analytics-header-row > * {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.analytics-header > .analytics-header-row > *:not(:first-child) {
+  padding-left: 8px;
+}
+.analytics-header > .analytics-header-row > *:not(:last-child) {
+  padding-right: 8px;
 }
 .true-center {
   display:flex;

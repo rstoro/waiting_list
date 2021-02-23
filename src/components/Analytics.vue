@@ -7,10 +7,12 @@
         <Dropdown class="display-selection-dropdown"
                   v-bind:values="['test1', 'test2', 'test3']" 
                   v-bind:buttonText="'Comparison Type'"
-                  v-model="comparisonType" />
+                  v-bind:value="comparisonType"
+                  v-on:input="setComparisonType"
+                  />
         <Dropdown class="display-selection-dropdown"
                   v-bind:values="['test1', 'test2', 'test3']" 
-                  v-bind:isDisabled="true"
+                  v-bind:isDisabled="comparisonType === ''"
                   v-bind:buttonText="'Chart Type'"
                   v-model="chartType"/>
       </div>
@@ -64,6 +66,14 @@ export default {
     },
     resetSelections() {
       this.comparisonType = '';
+      this.chartType = '';
+    },
+    setComparisonType(e) {
+      if (e === this.comparisonType) {
+        return
+      }
+
+      this.comparisonType = e;
       this.chartType = '';
     }
   }

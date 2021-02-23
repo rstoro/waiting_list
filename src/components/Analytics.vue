@@ -1,23 +1,42 @@
 <template>
-  <div class="analytics">
-    <div slot="body">
-      
+
+  <Page>
+    <div slot="header">
+      <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
     </div>
-  </div>
-  
+    <div slot="body">
+      <bar-chart></bar-chart>
+      <line-chart></line-chart>
+    </div>
+  </Page>
+
 </template>
 
 <script>
 import Page from './base/Page.vue';
+import Storage from '../mixins/storage.js';
+import Calendar from './calendar/Calendar.vue';
+import LineChart from './charts/LineChart.vue';
+import BarChart from './charts/BarChart.vue';
 
 export default {
   name: 'Analytics',
-  components: {},
+  mixins: [ Storage ],
+  components: {
+    Page,
+    Calendar,
+    LineChart,
+    BarChart
+  },
   data() {
     return {
     }
   },
-  methods: {},
+  methods: {
+    getLogData(newDate) {
+      console.log(newDate);
+    }
+  },
   created() {
     console.log('created')
   }
@@ -25,11 +44,6 @@ export default {
 </script>
 
 <style scoped>
-.analytics {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
 .true-center {
   display:flex;
   flex-flow: column;

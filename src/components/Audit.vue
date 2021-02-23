@@ -92,12 +92,13 @@ export default {
     getLogData(newLogdate) {
       logdate = newLogdate;
       this.users = [];
-      const loadedUsers = []
+
       const files = this.getLog(logdate);
       if (files === null) {
         return;
       }
 
+      const loadedUsers = []
       files.forEach(log => {
         const loadedUser = loadedUsers.find(user => user.id === log.id);
         if (loadedUser === null || loadedUser === undefined) {
@@ -119,7 +120,7 @@ export default {
       return this.users.find(user => user.id === id).actions[action] || 'N/A';
     },
     noLogsExistText() {
-      return `There are no logs for ${logdate.toDateString()}.`;
+      return `There are no logs for ${new Date(logdate).toDateString()}.`;
     }
   },
   computed: {
@@ -133,9 +134,6 @@ export default {
         return nameMatch || phoneMatch;
       });
     }
-  },
-  created() {
-    this.getLogData(new Date());
   }
 }
 </script>

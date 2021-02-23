@@ -7,21 +7,37 @@ import bulmaCalendar from '../../../node_modules/bulma-calendar/dist/js/bulma-ca
 
 export default {
   name: 'Calendar',
+  props: {
+    isRange: {
+      type: Boolean,
+      default: false
+    }
+  },
   mounted() {
-    let prevDate = new Date();
+    const getValue = () => {
+      const mmDDyyyy = calendar.value().split('/');
+      mmDDyyyy.push(mmDDyyyy.shift());
+      mmDDyyyy.push(mmDDyyyy.shift());
+      return mmDDyyyy.join('/');
+    }
 
     const calendar = bulmaCalendar.attach(
       this.$refs.calendarTrigger, { 
-        startDate: prevDate,
+        startDate: new Date(),
         type: 'date',
+        isRange: this.isRange,
         showFooter: false
       }
     )[0];
 
+    let prevDate = getValue();
+    this.$emit('dateSelected', prevDate);
+
     calendar.on('select', () => {
-      if (prevDate.toDateString() !== calendar.date.start.toDateString()) {
-        prevDate = calendar.date.start;
-        this.$emit('dateSelected', calendar.date.start);
+      const newVal = getValue();
+      if (prevDate !== newVal) {
+        prevDate = newVal;
+        this.$emit('dateSelected', newVal);
       }
     });
   }

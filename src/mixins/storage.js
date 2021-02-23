@@ -43,8 +43,9 @@ export default {
       ) + '\n';
       this.appendFile(filePath, data);
     },
-    getLog(d) {
-      const relPath = `logs/${this.getDate(d)}.log`;
+    getLog(path) {
+      const relPath = `logs/${path}.log`;
+      console.log(relPath);
       const files = this.loadFile(relPath)
       return files !== null 
         ? files.split(/\r?\n/).filter(u => u !== '').map(JSON.parse) 

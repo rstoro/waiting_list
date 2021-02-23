@@ -45,7 +45,6 @@ export default {
     },
     getLog(path) {
       const relPath = `logs/${path}.log`;
-      console.log(relPath);
       const files = this.loadFile(relPath)
       return files !== null 
         ? files.split(/\r?\n/).filter(u => u !== '').map(JSON.parse) 

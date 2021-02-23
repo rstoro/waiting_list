@@ -12,8 +12,7 @@
           v-bind:started-at="group.messageSentEpoch"
           v-bind:countdown-length="(group.waitTime) * 60 * 1000"/> 
     </div>
-    <a href="#" class="card-header-icon group-card-icon" aria-label="more options" 
-        @click="toggleSelected()">
+    <a href="#" class="card-header-icon group-card-icon" @click="toggleSelected()">
       <span class="small-margin-right">
         <font-awesome-icon :icon="['fas', 'clock']"/>
       </span>

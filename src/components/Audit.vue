@@ -2,7 +2,7 @@
 
   <Page>
     <div slot="header">
-      <Calendar v-on:dateSelected="getLogData"/>
+      <Calendar v-on:dateSelected="get"/>
       <div class="filter field">
         <p class="control has-icons-left">
           <span class="filter-icon icon has-text-info is-left">
@@ -89,17 +89,17 @@ export default {
     }
   },
   methods: {
-    getLogData(newLogdate) {
+    get(newLogdate) {
       logdate = newLogdate;
       this.users = [];
 
-      const files = this.getLog(logdate);
-      if (files === null) {
+      const logdata = this.getLog(logdate);
+      if (logdata === null) {
         return;
       }
 
       const loadedUsers = []
-      files.forEach(log => {
+      logdata.forEach(log => {
         const loadedUser = loadedUsers.find(user => user.id === log.id);
         if (loadedUser === null || loadedUser === undefined) {
           loadedUsers.push({

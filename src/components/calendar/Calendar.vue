@@ -41,7 +41,8 @@ export default {
 
     calendar.on('select', () => {
       const newVal = getValue();
-      if (prevDate !== newVal) {
+      // HACK: this can be an array or a string, this checks comparison for both
+      if (JSON.stringify(prevDate) !== JSON.stringify(newVal)) {
         prevDate = newVal;
         this.$emit('dateSelected', newVal);
       }

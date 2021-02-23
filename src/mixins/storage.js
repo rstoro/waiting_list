@@ -45,10 +45,29 @@ export default {
     },
     getLog(path) {
       const relPath = `logs/${path}.log`;
-      const files = this.loadFile(relPath)
+      const files = this.loadFile(relPath);
       return files !== null 
         ? files.split(/\r?\n/).filter(u => u !== '').map(JSON.parse) 
         : null;
+    },
+    getLogs(sPath, ePath) {
+      // NOTE: these are expected to be date like paths (i.e. 2021/10/23)
+      const sDate = new Date(sPath);
+      const eDate = new Date(ePath);
+      const dates = [];
+      for (const dt = new Date(sDate); dt <= eDate; dt.setDate(dt.getDate()+1)) {
+        dates.push(this.getDate(dt));
+      }
+
+      const logs = [];
+      dates.forEach(date => {
+        const curLog = this.getLog(date);
+        if (curLog !== null) {
+          logs.push(curLog);
+        }
+      });
+
+      return logs;
     },
     getDate(d) {
       const newD = new Date(d.getTime() - (d.getTimezoneOffset()*60*1000));

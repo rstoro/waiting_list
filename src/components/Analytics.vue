@@ -11,8 +11,7 @@
                     v-bind:values="['test1', 'test2', 'test3']" 
                     v-bind:buttonText="'Comparison Type'"
                     v-bind:value="comparisonType"
-                    v-on:input="setComparisonType"
-                    />
+                    v-on:input="setComparisonType"/>
           <Dropdown class="pad-left display-selection-dropdown"
                     v-bind:values="['test1', 'test2', 'test3']" 
                     v-bind:isDisabled="comparisonType === ''"
@@ -58,14 +57,8 @@ export default {
     getLogData(dateRange) {
       const startDate = dateRange[0];
       const endDate = dateRange[1];
-
-      const startLogdata = this.getLog(startDate);
-      console.log(startLogdata);
-
-      if (startDate !== endDate) {
-        const startLogdata = this.getLog(startDate);
-      }
-
+      const logData = this.getLogs(startDate, endDate);
+      console.log(logData);
       this.resetSelections();
     },
     resetSelections() {

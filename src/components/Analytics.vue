@@ -36,9 +36,6 @@ export default {
     getLogData(newDate) {
       console.log(newDate);
     }
-  },
-  created() {
-    console.log('created')
   }
 }
 </script>

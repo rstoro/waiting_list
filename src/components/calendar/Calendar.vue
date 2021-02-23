@@ -15,15 +15,21 @@ export default {
   },
   mounted() {
     const getValue = () => {
-      const mmDDyyyy = calendar.value().split('/');
-      mmDDyyyy.push(mmDDyyyy.shift());
-      mmDDyyyy.push(mmDDyyyy.shift());
-      return mmDDyyyy.join('/');
+      const dates = [];
+      calendar.value().split(' - ').forEach(d => {
+          const newD = d.split('/');
+          newD.push(newD.shift());
+          newD.push(newD.shift());
+          dates.push(newD.join('/'));
+        });
+
+      return dates.length === 1 ? dates[0] : dates;
     }
 
     const calendar = bulmaCalendar.attach(
       this.$refs.calendarTrigger, { 
         startDate: new Date(),
+        endDate: new Date(),
         type: 'date',
         isRange: this.isRange,
         showFooter: false

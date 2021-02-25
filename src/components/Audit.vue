@@ -131,7 +131,16 @@ export default {
             .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const nameMatch = user.fullname.toLowerCase().match(escapedMatchingStr);
         const phoneMatch = user.phonenumber.toLowerCase().match(escapedMatchingStr);
-        return nameMatch || phoneMatch;
+        const createdMatch = this.getLogAttr(user.id, 'CREATE')
+            .toLowerCase()
+            .match(escapedMatchingStr);
+        const sentMatch = this.getLogAttr(user.id, 'SENT')
+            .toLowerCase()
+            .match(escapedMatchingStr);
+        const arrivedMatch = this.getLogAttr(user.id, 'ARRIVED')
+            .toLowerCase()
+            .match(escapedMatchingStr);
+        return nameMatch || phoneMatch || createdMatch || sentMatch || arrivedMatch;
       });
     }
   }

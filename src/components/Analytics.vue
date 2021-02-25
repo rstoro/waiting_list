@@ -1,21 +1,29 @@
 <template>
-
-  <Page>
+  <div style="height: 100%;">
+  <div class="true-center">
+    Not yet implemented.
+  </div>
+  <Page v-if="false">
     <div slot="header">
       <div class="analytics-header">
         <div class="analytics-header-row">
           <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
         </div>
         <div class="analytics-header-row">
-          <Dropdown class="pad-right display-selection-dropdown"
+          <Dropdown class="display-selection-dropdown"
                     v-bind:values="['test1', 'test2', 'test3']" 
-                    v-bind:buttonText="'Comparison Type'"
+                    v-bind:buttonText="'Chart Type'"
                     v-bind:value="comparisonType"
                     v-on:input="setComparisonType"/>
-          <Dropdown class="pad-left display-selection-dropdown"
+          <Dropdown class="display-selection-dropdown"
                     v-bind:values="['test1', 'test2', 'test3']" 
                     v-bind:isDisabled="comparisonType === ''"
-                    v-bind:buttonText="'Chart Type'"
+                    v-bind:buttonText="'X Axis'"
+                    v-model="chartType"/>
+          <Dropdown class="display-selection-dropdown"
+                    v-bind:values="['test1', 'test2', 'test3']" 
+                    v-bind:isDisabled="comparisonType === ''"
+                    v-bind:buttonText="'Y Axis'"
                     v-model="chartType"/>
         </div>
       </div>
@@ -25,6 +33,7 @@
       <line-chart></line-chart>
     </div>
   </Page>
+  </div>
 
 </template>
 
@@ -59,6 +68,7 @@ export default {
       const endDate = dateRange[1];
       const logData = this.getLogs(startDate, endDate);
       console.log(logData);
+      // TODO: populate charts from data
       this.resetSelections();
     },
     resetSelections() {

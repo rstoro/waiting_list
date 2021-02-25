@@ -1,9 +1,6 @@
 <template>
-  <div style="height: 100%;">
-  <div class="true-center">
-    Not yet implemented.
-  </div>
-  <Page v-if="false">
+
+  <Page>
     <div slot="header">
       <div class="analytics-header">
         <div class="analytics-header-row">
@@ -11,20 +8,20 @@
         </div>
         <div class="analytics-header-row">
           <Dropdown class="display-selection-dropdown"
-                    v-bind:values="['test1', 'test2', 'test3']" 
+                    v-bind:values="chartTypes" 
                     v-bind:buttonText="'Chart Type'"
-                    v-bind:value="comparisonType"
-                    v-on:input="setComparisonType"/>
+                    v-bind:value="chartType"
+                    v-on:input="setChartType"/>
           <Dropdown class="display-selection-dropdown"
-                    v-bind:values="['test1', 'test2', 'test3']" 
-                    v-bind:isDisabled="comparisonType === ''"
+                    v-bind:values="xAxisDataTypes"
+                    v-bind:isDisabled="chartType === ''"
                     v-bind:buttonText="'X Axis'"
-                    v-model="chartType"/>
+                    v-model="xAxisDataType"/>
           <Dropdown class="display-selection-dropdown"
-                    v-bind:values="['test1', 'test2', 'test3']" 
-                    v-bind:isDisabled="comparisonType === ''"
+                    v-bind:values="yAxisDataTypes"
+                    v-bind:isDisabled="chartType === ''"
                     v-bind:buttonText="'Y Axis'"
-                    v-model="chartType"/>
+                    v-model="yAxisDataType"/>
         </div>
       </div>
     </div>
@@ -33,7 +30,6 @@
       <line-chart></line-chart>
     </div>
   </Page>
-  </div>
 
 </template>
 
@@ -56,10 +52,19 @@ export default {
     BarChart
   },
   data() {
+    // TODO: chart data types: time, date, wait:message, message:arrival, wait:arrival
+    //                         show:no-show
+    //       chart types: bar, graph, doughnut, scatter with best fit (do we need others?)
+    //       data to be displayed: averages (what else?)
     return {
-      chartData: {},
       chartType: '',
-      comparisonType: ''
+      chartTypes: [],
+      xAxisDataType: '',
+      xAxisDataTypes: [],
+      yAxisDataType: '',
+      yAxisDataTypes: [],
+      xAxisData: [],
+      yAxisData: []
     }
   },
   methods: {
@@ -72,16 +77,20 @@ export default {
       this.resetSelections();
     },
     resetSelections() {
-      this.comparisonType = '';
       this.chartType = '';
+      this.resetAxisData();
     },
-    setComparisonType(e) {
-      if (e === this.comparisonType) {
+    resetAxisData() {
+      this.xAxisData = [];
+      this.yAxisData = [];
+    },
+    setChartType(e) {
+      if (e === this.chartType) {
         return
       }
 
-      this.comparisonType = e;
-      this.chartType = '';
+      this.chartType = e;
+      this.resetAxisData();
     }
   }
 }

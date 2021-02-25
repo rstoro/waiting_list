@@ -53,11 +53,11 @@ Run `npm run electron:serve` to host a local development environment.
 
 ### Icon
 
-Save a `.png` image within the `./public/` folder as `icon.png`.  After this run the `npm run electron:generate-icons` script.
+Save a `.png` image within the `./public/` folder as `icon.png`.  After this run `npm run electron:generate-icons`.
 
 ## Building
 
-Execute the `npm run electron:build -- --win nsis --x64 --ia32` script.  **Currently this is only built for Windows.**
+Run `npm run electron:build -- --win nsis --x64 --ia32`.  **Currently this is only built for Windows.**
 
 ## TODO
 

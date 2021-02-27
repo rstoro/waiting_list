@@ -88,9 +88,13 @@
 
 <script>
 import Modal from '../../base/Modal.vue';
+import Uuid from '../../../mixins/uuid.js';
 
 export default {
   name: 'CreateGroupModal',
+  mixins: [
+    Uuid
+  ],
   props: {
     'showModal': false
   },
@@ -119,15 +123,10 @@ export default {
       this.$emit('closeCreateGroupModal');
     },
     addNewGroup() {
-      // TODO: should this just be the phone number?
-      const uuidv4 = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-
       // NOTE: companyData wait and hold times should be 'copied' into
       //       the group object to be later bound and modified as needed.
       this.$emit('newGroupCreated', {
-        id: uuidv4,
+        id: this.uuidv4(),
         fullname: this.newFullname, 
         phonenumber: `+1${ this.newPhonenumber.replace(/\(|\)|-|\s/g,'') }`,
         notes: this.newNotes,

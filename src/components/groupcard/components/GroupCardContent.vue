@@ -77,8 +77,8 @@ export default {
     formatAddedOn(epoch) {
       return `Added ${new Date(epoch)}`;
     },
-    formatPhoneNumber(phonenumber) {
-      return `+${phonenumber.substr(0,1)} (${phonenumber.substr(1,3)}) ${phonenumber.substr(4,3)}-${phonenumber.substr(7)}`;
+    formatPhoneNumber(pn) {
+      return `+${pn.substr(0,1)} (${pn.substr(1,3)}) ${pn.substr(4,3)}-${pn.substr(7)}`;
     },
     formatMessagedOn(messageSentEpoch) {
       return messageSentEpoch === null 

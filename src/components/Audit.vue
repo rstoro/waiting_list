@@ -16,45 +16,28 @@
       <table class="table is-striped audit-table" v-if="users.length !== 0">
           <thead>
             <tr>
-              <th>
-                <span class="small-margin-right">
-                  <font-awesome-icon :icon="['fas', 'user']"/>
-                </span>
-                <span class="has-icons-left">Name</span>
-              </th>
-              <th>
-                <span class="small-margin-right">
-                  <font-awesome-icon :icon="['fas', 'phone']"/>
-                </span>
-                <span class="has-icons-left">Phonenumber</span>
-              </th>
-              <th>
-                <span class="small-margin-right">
-                  <font-awesome-icon :icon="['fas', 'clock']"/>
-                </span>
-                <span class="has-icons-left">Created</span>
-              </th>
-              <th>
-                <span class="small-margin-right">
-                  <font-awesome-icon :icon="['fas', 'hourglass-half']"/>
-                </span>
-                <span class="has-icons-left">Messaged</span>
-              </th>
-              <th>
-                <span class="small-margin-right">
-                  <font-awesome-icon :icon="['fas', 'taxi']"/>
-                </span>
-                <span class="has-icons-left">Arrived</span>
+              <th v-for="(tableHeader, index) in tableHeaders" class="has-text-centered">
+                <a @click="sortColumn(index)">
+                  <span>
+                    <font-awesome-icon :icon="['fas', tableHeader.icon]"/>
+                  </span>
+                  <span>{{ tableHeader.text }}</span>
+                  <span v-if="selectedHeader === index">
+                    <font-awesome-icon :icon="['fas', 'angle-down']"
+                        class="rotate-icon"
+                        v-bind:class="{'rotate': sortDirection === 'asc'}"/>
+                  </span>
+                </a>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="user in filteredUsers">
-              <td class="overflow-protection">{{ user.fullname }}</td>
-              <td>{{ user.phonenumber }}</td>
-              <td>{{ getLogAttr(user.id, 'CREATE') }}</td>
-              <td>{{ getLogAttr(user.id, 'SENT') }}</td>
-              <td>{{ getLogAttr(user.id, 'ARRIVED') }}</td>
+              <td class="overflow-protection has-text-centered">{{ user.fullname }}</td>
+              <td class="has-text-centered">{{ formatPhoneNumber(user.phonenumber) }}</td>
+              <td class="has-text-centered">{{ getLogAttr(user.id, 'CREATE') }}</td>
+              <td class="has-text-centered">{{ getLogAttr(user.id, 'SENT') }}</td>
+              <td class="has-text-centered">{{ getLogAttr(user.id, 'ARRIVED') }}</td>
               <!-- <td>{{ getLogAttr(user.id, 'FAILED') }}</td> -->
             </tr>
           </tbody>
@@ -84,6 +67,15 @@ export default {
   data() {
     return {
       auditText: 'Audit',
+      sortDirection: 'desc',
+      tableHeaders: [
+        { 'text': 'Name', 'icon': 'user' },
+        { 'text': 'Phonenumber', 'icon': 'phone' },
+        { 'text': 'Created', 'icon': 'clock' },
+        { 'text': 'Sent', 'icon': 'hourglass-half' },
+        { 'text': 'Arrived', 'icon': 'taxi' },
+      ],
+      selectedHeader: null,
       search: '',
       users: []
     }
@@ -115,22 +107,75 @@ export default {
       });
 
       this.users = loadedUsers;
+
+      // NOTE: by default, sort direction is in descending order
+      this.selectedHeader = this.tableHeaders.findIndex(h => h.text === 'Created');
+      this.sortDirection = 'desc';
     },
     getLogAttr(id, action) {
       return this.users.find(user => user.id === id).actions[action] || 'N/A';
     },
     noLogsExistText() {
       return `There are no logs for ${new Date(logdate).toDateString()}.`;
+    },
+    formatPhoneNumber(pn) {
+      return `${pn.substr(0,2)} (${pn.substr(2,3)}) ${pn.substr(5,3)}-${pn.substr(8)}`;
+    },
+    sortColumn(index) {
+      if (this.selectedHeader === index) {
+        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        this.users.reverse();
+      }
+      else {
+        this.selectedHeader = index;
+        this.sortDirection = 'desc';
+        switch(index) {
+          case 0:   // name
+            this.users.sort((a, b) => a.fullname > b.fullname ? 1 : -1);
+            break;
+          case 1:   // phonenumber
+            this.users.sort((a, b) => a.phonenumber > b.phonenumber ? 1 : -1);
+            break;
+          case 2:   // action -> created
+            this.users.sort((a, b) => a.actions['CREATE'] > b.actions['CREATE'] ? 1 : -1);
+            break;
+          case 3:   // action -> messaged
+            this.users.sort((a, b) => { 
+              const d1 = a.actions['SENT'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['SENT']}`)
+                  : new Date();
+              const d2 = b.actions['SENT'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['SENT']}`)
+                  : new Date();
+
+              return d1 > d2 ? 1 : -1;
+            });
+            break;
+          case 4:   // action -> arrived
+            this.users.sort((a, b) => { 
+              const d1 = a.actions['ARRIVED'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['ARRIVED']}`)
+                  : new Date();
+              const d2 = b.actions['ARRIVED'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['ARRIVED']}`)
+                  : new Date();
+
+              return d1 > d2 ? 1 : -1;
+            });
+            break;
+          default:  // default
+            break;
+        }
+      }
+
     }
   },
   computed: {
     filteredUsers() {
       return this.users.filter(user => {
-        const escapedMatchingStr = this.search
-            .toLowerCase()
-            .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const escapedMatchingStr = this.search.toLowerCase().replace(/\(|\)|-|\s/g, '');
         const nameMatch = user.fullname.toLowerCase().match(escapedMatchingStr);
-        const phoneMatch = user.phonenumber.toLowerCase().match(escapedMatchingStr);
+        const phoneMatch = user.phonenumber.match(escapedMatchingStr);
         const createdMatch = this.getLogAttr(user.id, 'CREATE')
             .toLowerCase()
             .match(escapedMatchingStr);
@@ -164,14 +209,23 @@ export default {
 .audit-content {
   height: 100%;
 }
-.audit-content table { 
-  width: 100%; 
-}
 .audit-table {
+  width: 100%; 
   table-layout: fixed;
+}
+.audit-table th > a > *:not(:last-child) {
+  margin-right: 8px;
 }
 .fitler-icon {
   padding-left: 4px;
+}
+.rotate-icon {
+  transition-duration: 0.1s;
+  transform: rotate(0deg);
+}
+.rotate-icon.rotate {
+  transition-duration: 0.1s;
+  transform: rotate(-180deg);
 }
 .true-center {
   display:flex;

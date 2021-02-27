@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       confirmDeleteHeaderText: 'Delete Group',
-      confirmDeleteBodyText: 'Are you sure you want to delete the following group from the waiting list?',
+      confirmDeleteBodyText: 'Would you like to delete the following group from the waiting list?',
       cancelDeleteGroupText: 'Cancel',
       confirmDeleteGroupText: 'Delete Group'
     }

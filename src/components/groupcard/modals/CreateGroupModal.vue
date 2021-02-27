@@ -129,7 +129,7 @@ export default {
       this.$emit('newGroupCreated', {
         id: uuidv4,
         fullname: this.newFullname, 
-        phonenumber: `+1${ this.newPhonenumber }`,
+        phonenumber: `+1${ this.newPhonenumber.replace(/\(|\)|-|\s/g,'') }`,
         notes: this.newNotes,
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null,

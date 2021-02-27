@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       confirmArrivedHeaderText: 'Arrived Group',
-      confirmArrivedBodyText: 'Would you like to mark the group as \'arrived\' and remove them from the list?',
+      confirmArrivedBodyText: 'Would you like to mark the following group as \'arrived\' and remove them from the list?',
       cancelArrivedGroupText: 'No',
       confirmArrivedGroupText: 'Yes'
     }

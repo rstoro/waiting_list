@@ -5,14 +5,14 @@ module.exports = {
         files: [ 
           '**/*',
           '!**/*.example'
+        ],
+        extraFiles: [
+          {
+            'from': 'public',
+            'to': 'public',
+            'filter': 'config.json.example'
+          }
         ]
-        // extraResources: [
-        //   {
-        //     'from': 'public/customResources',
-        //     'to': 'customResources',
-        //     'filter': ['**/*']
-        //   }
-        // ]
       }
     }
   }

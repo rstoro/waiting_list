@@ -11,7 +11,7 @@ This is a simple waiting list app using Vue.js, Bulma, Electron, and Twilio.
   - [Icon](#icon)
 - [Testing](#testing)
 - [Building](#building)
-- [Todo](#todo)
+- [Installing](#installing)
 
 ## Custom Configuration
 
@@ -59,7 +59,8 @@ Save a `.png` image within the `./public/` folder as `icon.png`.  After this run
 
 Run `npm run electron:build -- --win nsis --x64 --ia32`.  **Currently this is only built for Windows.**
 
-## TODO
+## Installing
 
-- [ ] Add accessibility options
+Navigate to `%AppData%/../Local/Programs/waiting_list/public/` and modify the `config.json` file with the require fields.
+
 

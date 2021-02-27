@@ -17,7 +17,7 @@
           <thead>
             <tr>
               <th v-for="(tableHeader, index) in tableHeaders" class="has-text-centered">
-                <a @click="sortColumn(index)">
+                <a @click="sortColumn(index)" class="audit-table-header-item">
                   <span>
                     <font-awesome-icon :icon="['fas', tableHeader.icon]"/>
                   </span>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import storage from '../mixins/storage.js';
+import Storage from '../mixins/storage.js';
 import Page from './base/Page.vue';
 import Calendar from './calendar/Calendar.vue';
 
@@ -63,7 +63,7 @@ export default {
     Page,
     Calendar
   },
-  mixins: [ storage ],
+  mixins: [ Storage ],
   data() {
     return {
       auditText: 'Audit',
@@ -215,6 +215,9 @@ export default {
 }
 .audit-table th > a > *:not(:last-child) {
   margin-right: 8px;
+}
+.audit-table-header-item {
+  user-select: none;
 }
 .fitler-icon {
   padding-left: 4px;

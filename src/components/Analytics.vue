@@ -26,8 +26,8 @@
       </div>
     </div>
     <div slot="body">
-      <bar-chart></bar-chart>
-      <line-chart></line-chart>
+      <!--<bar-chart></bar-chart>
+      <line-chart></line-chart>-->
     </div>
   </Page>
 

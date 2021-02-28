@@ -6,6 +6,7 @@
         <div class="analytics-header-row">
           <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
         </div>
+        <!--
         <div class="analytics-header-row">
           <Dropdown class="display-selection-dropdown"
                     v-bind:values="chartTypes" 
@@ -23,9 +24,16 @@
                     v-bind:buttonText="'Y Axis'"
                     v-model="yAxisDataType"/>
         </div>
+        -->
       </div>
     </div>
     <div slot="body">
+      {{ avgWaitTime }}
+      {{ avgTravelTime }}
+      {{ avgOnListTime }}
+      {{ showNoShowRatio }}
+      {{ percentageShowed }}
+      {{ percentageNoShowed }}
       <!--<bar-chart></bar-chart>
       <line-chart></line-chart>-->
     </div>
@@ -57,40 +65,82 @@ export default {
     //       chart types: bar, graph, doughnut, scatter with best fit (do we need others?)
     //       data to be displayed: averages (what else?)
     return {
-      chartType: '',
-      chartTypes: [],
-      xAxisDataType: '',
-      xAxisDataTypes: [],
-      yAxisDataType: '',
-      yAxisDataTypes: [],
-      xAxisData: [],
-      yAxisData: []
+      avgWaitTime: 0,
+      avgTravelTime: 0,
+      avgOnListTime: 0,
+      showNoShowRatio: 0,
+      percentageShowed: 0,
+      percentageNoShowed: 0
     }
   },
   methods: {
     getLogData(dateRange) {
+      // load actionsDict from logs
       const startDate = dateRange[0];
       const endDate = dateRange[1];
-      const logData = this.getLogs(startDate, endDate);
-      console.log(logData);
-      // TODO: populate charts from data
-      this.resetSelections();
-    },
-    resetSelections() {
-      this.chartType = '';
-      this.resetAxisData();
-    },
-    resetAxisData() {
-      this.xAxisData = [];
-      this.yAxisData = [];
-    },
-    setChartType(e) {
-      if (e === this.chartType) {
-        return
+      const actionsDict = {};
+
+      // NOTE: time-on-list is equal to showed plus noShowed
+      const tData = {
+        'waitTime': { 'val': 0, 'count': 0, 'keys': [
+          { 'pk': 'SENT', 'fk': 'CREATE' }
+        ]},
+        'travelTime': { 'val': 0, 'count': 0, 'keys': [
+          { 'pk': 'ARRIVE', 'fk': 'SENT' }
+        ]},
+        'showed': { 'val': 0, 'count': 0, 'keys': [
+          { 'pk': 'ARRIVE', 'fk': 'CREATE' }
+        ]},
+        'noShowed': { 'val': 0, 'count': 0, 'keys': [
+          { 'pk': 'DELETE', 'fk': 'CREATE' }
+        ]}
       }
 
-      this.chartType = e;
-      this.resetAxisData();
+      // NOTE: logs are ALWAYS sequential
+      this.getLogs(startDate, endDate).forEach(logfile => {
+        logfile.forEach(log => {
+          const newTime = this.getSecondsFromTimestamp(log.time);
+
+          // set new action for user
+          if (log.id in actionsDict) {
+            actionsDict[log.id][log.action] = newTime;
+          }
+          else {
+            actionsDict[log.id] = { [log.action]: newTime };
+          }
+
+          // check to see if we can update our tData 
+          for (const dataType in tData) {
+            tData[dataType]['keys'].forEach( key => {
+
+              // check to see if the pk matches the current key
+              if (log.action === key['pk']) {
+
+                // update the count of the acc
+                tData[dataType]['count'] += 1;
+
+                // add to the cumulative value
+                const timeDiff = newTime - actionsDict[log.id][key['fk']];
+                tData[dataType]['val'] += timeDiff;
+              }
+            });
+          }
+
+        });
+      });
+
+      // populate data
+      const tCount = tData['showed']['count'] + tData['noShowed']['count'];
+      this.avgOnListTime = (tData['showed']['val'] + tData['noShowed']['val']) / tCount;
+      this.avgWaitTime = tData['waitTime']['val'] / tData['waitTime']['count'];
+      this.avgTravelTime = tData['travelTime']['val'] / tData['travelTime']['count'];
+      this.showNoShowRatio = `${tData['showed']['count']}:${tData['noShowed']['count']}`;
+      this.percentageShowed = tData['showed']['count'] / tCount * 100;
+      this.percentageNoShowed = tData['noShowed']['count'] / tCount * 100;
+    },
+    getSecondsFromTimestamp(t) {
+      const [hours, minutes, seconds] = t.split(' ')[0].split(':').map(n => parseInt(n));
+      return hours * 60 * 60 + minutes * 60 + seconds;
     }
   }
 }

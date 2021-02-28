@@ -145,13 +145,19 @@ export default {
       this.groups.push(newGroup);
     },
     logArrivalAndRemoveFromGroups(index) {
-      this.log('ARRIVED', { 
+      this.log('ARRIVE', { 
         'id': this.groups[index].id, 
         'fullname': this.groups[index].fullname, 
         'phonenumber': this.groups[index].phonenumber 
       });
 
-      this.removeGroupFromGroups(index);
+      openNotificationAlert({
+        message: `Successfuly deleted group "${ this.groups[index].fullname }".`,
+        colour: 'success',
+        duration: 5000
+      });
+
+      this.groups.splice(index, 1);
     },
     removeGroupFromGroups(index) {
       this.log('DELETE', { 

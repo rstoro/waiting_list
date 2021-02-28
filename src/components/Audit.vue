@@ -37,7 +37,7 @@
               <td class="has-text-centered">{{ formatPhoneNumber(user.phonenumber) }}</td>
               <td class="has-text-centered">{{ getLogAttr(user.id, 'CREATE') }}</td>
               <td class="has-text-centered">{{ getLogAttr(user.id, 'SENT') }}</td>
-              <td class="has-text-centered">{{ getLogAttr(user.id, 'ARRIVED') }}</td>
+              <td class="has-text-centered">{{ getLogAttr(user.id, 'ARRIVE') }}</td>
               <!-- <td>{{ getLogAttr(user.id, 'FAILED') }}</td> -->
             </tr>
           </tbody>
@@ -153,11 +153,11 @@ export default {
             break;
           case 4:   // action -> arrived
             this.users.sort((a, b) => { 
-              const d1 = a.actions['ARRIVED'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['ARRIVED']}`)
+              const d1 = a.actions['ARRIVE'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['ARRIVE']}`)
                   : new Date();
-              const d2 = b.actions['ARRIVED'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['ARRIVED']}`)
+              const d2 = b.actions['ARRIVE'] !== undefined 
+                  ? new Date(`${logdate} ${b.actions['ARRIVE']}`)
                   : new Date();
 
               return d1 > d2 ? 1 : -1;
@@ -182,7 +182,7 @@ export default {
         const sentMatch = this.getLogAttr(user.id, 'SENT')
             .toLowerCase()
             .match(escapedMatchingStr);
-        const arrivedMatch = this.getLogAttr(user.id, 'ARRIVED')
+        const arrivedMatch = this.getLogAttr(user.id, 'ARRIVE')
             .toLowerCase()
             .match(escapedMatchingStr);
         return nameMatch || phoneMatch || createdMatch || sentMatch || arrivedMatch;

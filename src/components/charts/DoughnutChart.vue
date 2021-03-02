@@ -10,13 +10,15 @@ export default {
     },
     chartData: {
       type: Object,
-      default: { 
-        labels: ['No Data'],
-        datasets: [{ 
-          borderWidth: 0,
-          backgroundColor: '#f14668', //[ '#48c774', '#ffdd57', '#f14668' ]
-          data: [100]
-        }]
+      default: function() {
+        return { 
+          labels: ['No Data'],
+          datasets: [{ 
+            borderWidth: 0,
+            backgroundColor: '#f14668', //[ '#48c774', '#ffdd57', '#f14668' ]
+            data: []
+          }]
+        }
       }
     }
   },

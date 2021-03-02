@@ -6,25 +6,6 @@
         <div class="analytics-header-row">
           <Calendar v-bind:is-range="false" v-on:dateSelected="loadLogdata"/>
         </div>
-        <!--
-        <div class="analytics-header-row">
-          <Dropdown class="display-selection-dropdown"
-                    v-bind:values="chartTypes" 
-                    v-bind:buttonText="'Chart Type'"
-                    v-bind:value="chartType"
-                    v-on:input="setChartType"/>
-          <Dropdown class="display-selection-dropdown"
-                    v-bind:values="xAxisDataTypes"
-                    v-bind:isDisabled="chartType === ''"
-                    v-bind:buttonText="'X Axis'"
-                    v-model="xAxisDataType"/>
-          <Dropdown class="display-selection-dropdown"
-                    v-bind:values="yAxisDataTypes"
-                    v-bind:isDisabled="chartType === ''"
-                    v-bind:buttonText="'Y Axis'"
-                    v-model="yAxisDataType"/>
-        </div>
-        -->
       </div>
     </div>
     <div slot="body" class="analytics-body">
@@ -38,7 +19,7 @@
               <span><b>Average Travel Time</b>&nbsp;{{formatAvg(avgTravel)}}</span>
             </div>
             <div class="column">
-              <span><b>Average Time-on-List</b>&nbsp;{{formatAvg(avgTotal)}}</span>
+              <span><b>Average Total Time</b>&nbsp;{{formatAvg(avgTotal)}}</span>
             </div>
           </div>
         </div>

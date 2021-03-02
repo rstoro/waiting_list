@@ -1,6 +1,6 @@
 {
   "name": "waiting_list",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Ryan Storo <ryanstoro@gmail.com>",
   "description": "A waiting list that is used to send SMS messages.",
   "icon": "resource://waiting_list/build/icons/icon.ico",

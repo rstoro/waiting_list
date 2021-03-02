@@ -2,7 +2,7 @@
 
   <Page>
     <div slot="header" class="audit-header">
-      <Calendar v-on:dateSelected="get"/>
+      <Calendar v-on:dateSelected="loadLogdata"/>
       <div class="filter field">
         <p class="control has-icons-left">
           <span class="filter-icon icon has-text-info is-left">
@@ -55,7 +55,7 @@ import Storage from '../mixins/storage.js';
 import Page from './base/Page.vue';
 import Calendar from './calendar/Calendar.vue';
 
-let logdate = null;
+let logdate;
 
 export default {
   name: 'Audit',
@@ -81,7 +81,7 @@ export default {
     }
   },
   methods: {
-    get(newLogdate) {
+    loadLogdata(newLogdate) {
       logdate = newLogdate;
       this.users = [];
 

@@ -4,7 +4,7 @@
     <div slot="header">
       <div class="analytics-header">
         <div class="analytics-header-row">
-          <Calendar v-bind:is-range="true" v-on:dateSelected="getLogData"/>
+          <Calendar v-bind:is-range="false" v-on:dateSelected="loadLogdata"/>
         </div>
         <!--
         <div class="analytics-header-row">
@@ -27,15 +27,27 @@
         -->
       </div>
     </div>
-    <div slot="body">
-      {{ avgWaitTime }}
-      {{ avgTravelTime }}
-      {{ avgOnListTime }}
-      {{ showNoShowRatio }}
-      {{ percentageShowed }}
-      {{ percentageNoShowed }}
+    <div slot="body" class="analytics-body">
+      <div class="columns is-multiline is-mobile" v-if="chartData.length !== 0">
+        <div class="column is-half">
+          <doughnut-chart v-bind:chart-data="showedNoShowedChartData"
+                          v-bind:center-text="showedNoShowedChartText"></doughnut-chart>
+        </div>
+        <div class="column is-one-quarter">
+          wow
+        </div>
+        <div class="column is-one-quarter">
+          wow2
+        </div>
+        <div class="column is-full">
+          wow3
+        </div>
+      </div>
       <!--<bar-chart></bar-chart>
       <line-chart></line-chart>-->
+      <div class="true-center" v-else>
+        <span class="has-text-grey">{{ noDataExistText() }}</span>
+      </div>
     </div>
   </Page>
 
@@ -48,6 +60,9 @@ import Calendar from './calendar/Calendar.vue';
 import Dropdown from './dropdown/Dropdown.vue';
 import LineChart from './charts/LineChart.vue';
 import BarChart from './charts/BarChart.vue';
+import DoughnutChart from './charts/DoughnutChart.vue';
+
+let logdate;
 
 export default {
   name: 'Analytics',
@@ -57,7 +72,8 @@ export default {
     Calendar,
     Dropdown,
     LineChart,
-    BarChart
+    BarChart,
+    DoughnutChart 
   },
   data() {
     // TODO: chart data types: time, date, wait:message, message:arrival, wait:arrival
@@ -65,82 +81,87 @@ export default {
     //       chart types: bar, graph, doughnut, scatter with best fit (do we need others?)
     //       data to be displayed: averages (what else?)
     return {
-      avgWaitTime: 0,
-      avgTravelTime: 0,
-      avgOnListTime: 0,
-      showNoShowRatio: 0,
-      percentageShowed: 0,
-      percentageNoShowed: 0
+      showedNoShowedChartText: '',
+      showedNoShowedChartData: {},
+      chartData: []
     }
   },
   methods: {
-    getLogData(dateRange) {
-      // load actionsDict from logs
-      const startDate = dateRange[0];
-      const endDate = dateRange[1];
-      const actionsDict = {};
+    loadLogdata(newDate) {
+      // set prev
+      logdate = newDate;
+
+      // reset chartData
+      this.chartData = [];
 
       // NOTE: time-on-list is equal to showed plus noShowed
-      const tData = {
-        'waitTime': { 'val': 0, 'count': 0, 'keys': [
-          { 'pk': 'SENT', 'fk': 'CREATE' }
-        ]},
-        'travelTime': { 'val': 0, 'count': 0, 'keys': [
-          { 'pk': 'ARRIVE', 'fk': 'SENT' }
-        ]},
-        'showed': { 'val': 0, 'count': 0, 'keys': [
-          { 'pk': 'ARRIVE', 'fk': 'CREATE' }
-        ]},
-        'noShowed': { 'val': 0, 'count': 0, 'keys': [
-          { 'pk': 'DELETE', 'fk': 'CREATE' }
-        ]}
+      const logs = this.getLog(logdate);
+
+      // early out
+      if (logs === null) {
+        return;
       }
 
-      // NOTE: logs are ALWAYS sequential
-      this.getLogs(startDate, endDate).forEach(logfile => {
-        logfile.forEach(log => {
-          const newTime = this.getSecondsFromTimestamp(log.time);
-
-          // set new action for user
-          if (log.id in actionsDict) {
-            actionsDict[log.id][log.action] = newTime;
-          }
-          else {
-            actionsDict[log.id] = { [log.action]: newTime };
-          }
-
-          // check to see if we can update our tData 
-          for (const dataType in tData) {
-            tData[dataType]['keys'].forEach( key => {
-
-              // check to see if the pk matches the current key
-              if (log.action === key['pk']) {
-
-                // update the count of the acc
-                tData[dataType]['count'] += 1;
-
-                // add to the cumulative value
-                const timeDiff = newTime - actionsDict[log.id][key['fk']];
-                tData[dataType]['val'] += timeDiff;
-              }
-            });
-          }
-
-        });
+      logs.forEach(log => {
+        const currentUser = this.chartData.find(user => user.id === log.id);
+        if (currentUser === null || currentUser === undefined) {
+          this.chartData.push({
+            'id': log.id,
+            'fullname': log.fullname,
+            'phonenumber': log.phonenumber,
+            'actions': { [log.action]: log.time.split(' ')[0] }
+          });
+        }
+        else {
+          currentUser.actions[log.action] = log.time.split(' ')[0];
+        }
       });
 
       // populate data
-      const tCount = tData['showed']['count'] + tData['noShowed']['count'];
-      this.avgOnListTime = (tData['showed']['val'] + tData['noShowed']['val']) / tCount;
+      const showedCount = this.chartData.reduce( (acc, user) => {
+        return user['actions']['ARRIVE'] ? acc + 1 : acc;
+      }, 0);
+      const noShowedCount = this.chartData.length - showedCount;
+      this.showedNoShowedChartData = this.buildShowedNoShowedChartData(
+        showedCount,
+        noShowedCount
+      );
+      this.showedNoShowedChartText = this.getShowedNoShowedRatio(
+        showedCount,
+        noShowedCount
+      );
+
+      /*
+      this.avgOnListTime = (tData['showed']['val'] + tData['noShowed']['val']) / (tData['showed']['count'] + tData['noShowed']['count']);
       this.avgWaitTime = tData['waitTime']['val'] / tData['waitTime']['count'];
       this.avgTravelTime = tData['travelTime']['val'] / tData['travelTime']['count'];
       this.showNoShowRatio = `${tData['showed']['count']}:${tData['noShowed']['count']}`;
-      this.percentageShowed = tData['showed']['count'] / tCount * 100;
-      this.percentageNoShowed = tData['noShowed']['count'] / tCount * 100;
+      */
+
     },
     getSecondsFromTimestamp(t) {
       const [hours, minutes, seconds] = t.split(' ')[0].split(':').map(n => parseInt(n));
       return hours * 60 * 60 + minutes * 60 + seconds;
+    },
+    getShowedNoShowedRatio(showed, noShowed) {
+      const total = showed + noShowed;
+      const showedPercentage = showed === 0 ? 0 : Math.round((showed / total) * 100);
+      return `${showedPercentage}%`;
+    },
+    buildShowedNoShowedChartData(showed, noShowed) {
+      return {
+        labels: ['Showed', 'No Showed'],
+        datasets: [
+          {
+            borderWidth: 0,
+            backgroundColor: ['#48c774', '#f14668'],
+            data: [ showed, noShowed ]
+          }
+        ]
+      }
+    },
+    noDataExistText() {
+      return `There is no data for ${new Date(logdate).toDateString()}.`;
     }
   }
 }
@@ -162,6 +183,9 @@ export default {
 }
 .analytics-header > .analytics-header-row > *:not(:last-child) {
   padding-right: 8px;
+}
+.analytics-body {
+  height: 100%;
 }
 .true-center {
   display:flex;

@@ -142,7 +142,7 @@ export default {
           case 3:   // action -> messaged
             this.users.sort((a, b) => { 
               const d1 = a.actions['SENT'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['SENT']}`)
+                  ? new Date(`${logdate} ${a.actions['SENT']}`)
                   : new Date();
               const d2 = b.actions['SENT'] !== undefined 
                   ? new Date(`${logdate} ${b.actions['SENT']}`)
@@ -154,7 +154,7 @@ export default {
           case 4:   // action -> arrived
             this.users.sort((a, b) => { 
               const d1 = a.actions['ARRIVE'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['ARRIVE']}`)
+                  ? new Date(`${logdate} ${a.actions['ARRIVE']}`)
                   : new Date();
               const d2 = b.actions['ARRIVE'] !== undefined 
                   ? new Date(`${logdate} ${b.actions['ARRIVE']}`)

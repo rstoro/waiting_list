@@ -21,6 +21,16 @@ export default {
           }]
         }
       }
+    },
+    xAxisLabel: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    yAxisLabel: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data() {
@@ -32,11 +42,19 @@ export default {
           yAxes: [{
             ticks: { beginAtZero: true },
             gridLines: { display: true },
-            stacked: this.stacked
+            stacked: this.stacked,
+            scaleLabel: {
+              display: true,
+              labelString: this.yAxisLabel
+            }
           }],
           xAxes: [{
             gridLines: { display: false },
-            stacked: this.stacked
+            stacked: this.stacked,
+            scaleLabel: {
+              display: true,
+              labelString: this.xAxisLabel
+            }
           }]
         },
         legend: { display: true },

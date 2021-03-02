@@ -29,8 +29,8 @@
         </div>
         <div class="column is-two-thirds">
           <bar-chart v-bind:chart-data="timesChartData"
-                     v-bind:x-axis-display="'Time'"
-                     v-bind:y-axis-display="'Minutes'"></bar-chart>
+                     v-bind:x-axis-label="'Time of Day'"
+                     v-bind:y-axis-label="'Minutes'"></bar-chart>
         </div>
       </div>
       <div class="true-center" v-else>
@@ -145,14 +145,14 @@ export default {
         // if they were messaged
         const messagedAt = user['actions']['SENT'];
         messagedDataset['data'].push(messagedAt !== null && messagedAt !== undefined 
-          ? Math.round((this.getSecondsFromTimestamp(messagedAt) - addedT) / 60)
+          ? (this.getSecondsFromTimestamp(messagedAt) - addedT) / 60
           : 0
         );
 
         // if they arrived
         const arrivedAt = user['actions']['ARRIVE'];
         arrivedDataset['data'].push(arrivedAt !== null && arrivedAt !== undefined
-          ? Math.round((this.getSecondsFromTimestamp(arrivedAt) - this.getSecondsFromTimestamp(messagedAt)) / 60)
+          ? (this.getSecondsFromTimestamp(arrivedAt) - this.getSecondsFromTimestamp(messagedAt)) / 60
           : 0
         );
 
@@ -160,7 +160,7 @@ export default {
           // if they do not arrive and were not messaged
           const deletedAt = user['actions']['DELETE'];
           deletedDataset['data'].push(deletedAt !== null && deletedAt !== undefined
-            ? Math.round((this.getSecondsFromTimestamp(deletedAt) - addedT) / 60)
+            ? (this.getSecondsFromTimestamp(deletedAt) - addedT) / 60
             : 0
           );
         }

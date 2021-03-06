@@ -51,8 +51,9 @@ export default {
         : null;
     },
     saveGroup(group) {
-      const d = new Date();
-      const filePath = `logs/${this.getDate(d)}/${group['id']}.json`;
+      // NOTE: group should be stored durring the day they were made
+      const d = new Date(group.epoch);
+      const filePath = `logs/${this.getDate(d)}/${group.id}.json`;
       const data = JSON.stringify(group);
       this.appendFile(filePath, data);
     },

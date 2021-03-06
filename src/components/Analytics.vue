@@ -74,7 +74,7 @@ export default {
   methods: {
     loadLogdata(logdate) {
       const users = this.loadGroups(logdate);
-      if (users === null || users === undefined) {
+      if (users === null || users === undefined || users.length === 0) {
         this.dataExists = false;
         return
       }
@@ -175,24 +175,22 @@ export default {
 
       return showedCount !== 0 
         ? Math.round((showedCount / (showedCount + noShowedCount)) * 100) + '%'
-        : 0;
+        : '0';
     },
     getAverages(users) {
       return users
         .reduce((acc, user) => {
             if (user.messageSentEpoch !== null) {
-              acc[0] += (user.messageSentEpoch - user.epoch) / 1000 / 60;
+              acc[0] += (user.messageSentEpoch - user.epoch) / 1000;
 
               if (user.arrivalEpoch !== null) {
-                acc[1] += (user.arrivalEpoch - user.messageSentEpoch) / 1000 / 60;
+                acc[1] += (user.arrivalEpoch - user.messageSentEpoch) / 1000;
               }
             }
 
             //NOTE: deleted time will be same as arrival if arrived
             if (user.deletedEpoch !== null) {
-              acc[2] += (user.deletedEpoch - user.messageSentEpoch !== null 
-                ? user.messageSentEpoch
-                : user.epoch) / 1000 / 60;
+              acc[2] += (user.deletedEpoch - user.epoch) / 1000;
             }
 
             return acc;

@@ -133,6 +133,7 @@ export default {
         epoch: Date.now(), //NOTE: prevents new date object from being created, something something premature micro-optimizations.
         messageSentEpoch: null,
         arrivalEpoch: null,
+        deletedEpoch: null,
         waitTime: this.$waitingListConfig.companyData.waitTime
       });
       this.cancelNewGroup();

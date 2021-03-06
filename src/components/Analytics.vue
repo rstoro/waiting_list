@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="true-center" v-else>
-        <span class="has-text-grey">{{ noDataMessage }}</span>
+        <span class="has-text-grey">{{ noDataExistsText }}</span>
       </div>
     </div>
   </Page>
@@ -60,14 +60,10 @@ export default {
     DoughnutChart 
   },
   data() {
-    // TODO: chart data types: time, date, wait:message, message:arrival, wait:arrival
-    //                         show:no-show
-    //       chart types: bar, graph, doughnut, scatter with best fit (do we need others?)
-    //       data to be displayed: averages (what else?)
     return {
       showedNoShowedChartData: {},
       timesChartData: {},
-      noDataMessage: '',
+      noDataExistsText: '',
       showedNoShowedChartText: '',
       avgWait: 0,
       avgTravel: 0,
@@ -76,39 +72,19 @@ export default {
     }
   },
   methods: {
-    loadLogdata(newDate) {
-      // NOTE: time-on-list is equal to showed plus noShowed
-      const logs = this.getLog(newDate);
-
-      // set flag
-      this.dataExists = logs !== null ? true : false;
-
-      // early out
-      if (!this.dataExists) {
-        this.noDataMessage = `There is no data for ${new Date(newDate).toDateString()}.`;
-        return;
+    loadLogdata(logdate) {
+      const users = this.loadGroups(logdate);
+      if (users === null || users === undefined) {
+        this.dataExists = false;
+        return
       }
 
-      // user data
-      const users = [];
-      logs.forEach(log => {
-        const currentUser = users.find(user => user.id === log.id);
-        if (currentUser === null || currentUser === undefined) {
-          users.push({
-            'id': log.id,
-            'fullname': log.fullname,
-            'phonenumber': log.phonenumber,
-            'actions': { [log.action]: log.time.split(' ')[0] }
-          });
-        }
-        else {
-          currentUser.actions[log.action] = log.time.split(' ')[0];
-        }
-      });
-
-      this.populateTimesChart(users);
-      this.populateShowedNoShowedChart(users);
-      this.populateAverages(users);
+      this.dataExists = true;
+      this.noDataExistsText = `There is no data for ${new Date(logdate).toDateString()}.`;
+      this.timesChartData = this.getTimesChart(users);
+      this.showedNoShowedChartData = this.getShowedNoShowedChartData(users);
+      this.showedNoShowedChartText = this.getShowedNoShowedChartText(users);
+      [this.avgWait, this.avgTravel, this.avgTotal] = this.getAverages(users);
     },
     formatAvg(n) {
       const f = n => n < 10 ? '0' + n : n;
@@ -123,7 +99,7 @@ export default {
       const [hours, minutes, seconds] = t.split(' ')[0].split(':').map(n => parseInt(n));
       return hours * 60 * 60 + minutes * 60 + seconds;
     },
-    populateTimesChart(users) {
+    getTimesChart(users) {
       // user times data
       const labels = [];
       const messagedDataset = {
@@ -138,60 +114,49 @@ export default {
 
       users.forEach( user => {
         // set the label
-        const createdAt = user['actions']['CREATE'];
-        const addedT = this.getSecondsFromTimestamp(createdAt);
-        labels.push(createdAt)
+        labels.push(new Date(user.epoch).toTimeString().split(' ')[0]);
         
         // if they were messaged
-        const messagedAt = user['actions']['SENT'];
-        messagedDataset['data'].push(messagedAt !== null && messagedAt !== undefined 
-          ? (this.getSecondsFromTimestamp(messagedAt) - addedT) / 60
+        messagedDataset['data'].push(user.messageSentEpoch !== null
+          ? (user.messageSentEpoch - user.epoch) / 1000 / 60
           : 0
         );
 
-        // if they arrived
-        const arrivedAt = user['actions']['ARRIVE'];
-        arrivedDataset['data'].push(arrivedAt !== null && arrivedAt !== undefined
-          ? (this.getSecondsFromTimestamp(arrivedAt) - this.getSecondsFromTimestamp(messagedAt)) / 60
+        arrivedDataset['data'].push(user.arrivalEpoch !== null
+          ? (user.arrivalEpoch - user.messageSentEpoch) / 1000 / 60
           : 0
         );
 
-        if (messagedAt === null || messagedAt === undefined) {
-          // if they do not arrive and were not messaged
-          const deletedAt = user['actions']['DELETE'];
-          deletedDataset['data'].push(deletedAt !== null && deletedAt !== undefined
-            ? (this.getSecondsFromTimestamp(deletedAt) - addedT) / 60
-            : 0
-          );
+
+        if (user.messageSentEpoch === null) {
+          // if they did not arrive and were not messaged
+          deletedDataset['data'].push((user.deletedEpoch - user.epoch) / 1000 / 60);
         }
         else {
-          // if they do not arrive and were messaged
-          const deletedAt = user['actions']['DELETE'];
-          deletedDataset['data'].push(deletedAt !== null && deletedAt !== undefined
-            ? Math.round((this.getSecondsFromTimestamp(deletedAt) - this.getSecondsFromTimestamp(messagedAt)) / 60)
+          // if they did not arrive and were messaged
+          deletedDataset['data'].push(user.arrivalEpoch === null
+            ? (user.deletedEpoch - user.messageSentEpoch) / 1000 / 60
             : 0
           );
         }
       });
 
-      this.timesChartData = {
+      return {
         labels: labels,
         datasets: [
           messagedDataset,
           arrivedDataset,
           deletedDataset
         ]
-      }
+      };
     },
-    populateShowedNoShowedChart(users) {
-      // showed-noshowed data
+    getShowedNoShowedChartData(users) {
       const showedCount = users.reduce((acc, user) => {
-        return user['actions']['ARRIVE'] ? acc + 1 : acc;
+        return user.arrivalEpoch !== null ? acc + 1 : acc;
       }, 0);
       const noShowedCount = users.length - showedCount;
 
-      // showed-noshowed chart data
-      this.showedNoShowedChartData = {
+      return {
         labels: ['Showed', 'No Showed'],
         datasets: [
           {
@@ -200,48 +165,39 @@ export default {
             data: [ showedCount, noShowedCount ]
           }
         ]
-      }
-
-      // showed-noshowed display text
-      const showedPercentage = showedCount === 0 
-        ? 0 
-        : Math.round((showedCount / (showedCount + noShowedCount)) * 100);
-      this.showedNoShowedChartText = `${showedPercentage}%`;
+      };
     },
-    populateAverages(users) {
-      const averages = users.reduce((acc, user) => {
-        const addedT = this.getSecondsFromTimestamp(user['actions']['CREATE']);
+    getShowedNoShowedChartText(users) {
+      const showedCount = users.reduce((acc, user) => {
+        return user.arrivalEpoch !== null ? acc + 1 : acc;
+      }, 0);
+      const noShowedCount = users.length - showedCount;
 
-        const sent = user['actions']['SENT'];
-        if (sent !== null && sent != undefined) {
-          // add to total wait time
-          const sentT = this.getSecondsFromTimestamp(sent);
-          acc[0] += sentT - addedT;
+      return showedCount !== 0 
+        ? Math.round((showedCount / (showedCount + noShowedCount)) * 100) + '%'
+        : 0;
+    },
+    getAverages(users) {
+      return users
+        .reduce((acc, user) => {
+            if (user.messageSentEpoch !== null) {
+              acc[0] += (user.messageSentEpoch - user.epoch) / 1000 / 60;
 
-          // add to total travel time and total time on list 
-          // (NOTE: cannot be deleted if arrived)
-          const arrived = user['actions']['ARRIVE'];
-          if (arrived !== null && arrived != undefined) {
-            acc[1] += this.getSecondsFromTimestamp(arrived) - sentT;
-            acc[2] += this.getSecondsFromTimestamp(arrived) - addedT;
-          }
-        }
+              if (user.arrivalEpoch !== null) {
+                acc[1] += (user.arrivalEpoch - user.messageSentEpoch) / 1000 / 60;
+              }
+            }
 
-        // add to total time on list 
-        // (NOTE: can be deleted at any time)
-        const deleted = user['actions']['DELETE'];
-        if (deleted !== null && deleted != undefined) {
-          acc[2] += this.getSecondsFromTimestamp(deleted) - addedT;
-        }
+            //NOTE: deleted time will be same as arrival if arrived
+            if (user.deletedEpoch !== null) {
+              acc[2] += (user.deletedEpoch - user.messageSentEpoch !== null 
+                ? user.messageSentEpoch
+                : user.epoch) / 1000 / 60;
+            }
 
-        return acc;
-
-      }, [0, 0, 0]);
-
-      // set data
-      [this.avgWait, this.avgTravel, this.avgTotal] = averages.map(avg => {
-        return avg / users.length;
-      });
+            return acc;
+          }, [0, 0, 0])
+        .map(avg => avg / users.length);
     }
   }
 }

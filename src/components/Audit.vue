@@ -35,15 +35,14 @@
             <tr v-for="user in filteredUsers">
               <td class="overflow-protection has-text-centered">{{ user.fullname }}</td>
               <td class="has-text-centered">{{ formatPhoneNumber(user.phonenumber) }}</td>
-              <td class="has-text-centered">{{ getLogAttr(user.id, 'CREATE') }}</td>
-              <td class="has-text-centered">{{ getLogAttr(user.id, 'SENT') }}</td>
-              <td class="has-text-centered">{{ getLogAttr(user.id, 'ARRIVE') }}</td>
-              <!-- <td>{{ getLogAttr(user.id, 'FAILED') }}</td> -->
+              <td class="has-text-centered">{{ formatDate(user.epoch) }}</td>
+              <td class="has-text-centered">{{ formatDate(user.messageSentEpoch) }}</td>
+              <td class="has-text-centered">{{ formatDate(user.arrivalEpoch) }}</td>
             </tr>
           </tbody>
       </table>
       <div class="true-center" v-else>
-        <span class="has-text-grey">{{ noLogsExistText() }}</span>
+        <span class="has-text-grey">{{ noLogsExistText }}</span>
       </div>
     </div>
   </Page>
@@ -54,8 +53,6 @@
 import Storage from '../mixins/storage.js';
 import Page from './base/Page.vue';
 import Calendar from './calendar/Calendar.vue';
-
-let logdate;
 
 export default {
   name: 'Audit',
@@ -77,49 +74,23 @@ export default {
       ],
       selectedHeader: null,
       search: '',
-      users: []
+      users: [],
+      noLogsExistText: `There are no logs for ${new Date().toDateString()}.`
     }
   },
   methods: {
-    loadLogdata(newLogdate) {
-      logdate = newLogdate;
-      this.users = [];
-
-      const logdata = this.getLog(logdate);
-      if (logdata === null) {
-        return;
-      }
-
-      const loadedUsers = []
-      logdata.forEach(log => {
-        const loadedUser = loadedUsers.find(user => user.id === log.id);
-        if (loadedUser === null || loadedUser === undefined) {
-          loadedUsers.push({
-            'id': log.id,
-            'fullname': log.fullname, 
-            'phonenumber': log.phonenumber,
-            'actions': { [log.action]: log.time.split(' ')[0] }
-          });
-        }
-        else {
-          loadedUser.actions[log.action] = log.time.split(' ')[0];
-        }
-      });
-
-      this.users = loadedUsers;
-
-      // NOTE: by default, sort direction is in descending order
-      this.selectedHeader = this.tableHeaders.findIndex(h => h.text === 'Created');
-      this.sortDirection = 'desc';
+    loadLogdata(logdate) {
+      this.noLogsExistText = `There are no logs for ${new Date(logdate).toDateString()}.`;
+      this.users = this.loadGroups(logdate);
+      this.sortColumn(2);
     },
-    getLogAttr(id, action) {
-      return this.users.find(user => user.id === id).actions[action] || 'N/A';
-    },
-    noLogsExistText() {
-      return `There are no logs for ${new Date(logdate).toDateString()}.`;
+    formatDate(timestamp) {
+      return timestamp === null 
+        ? 'N/A' 
+        : new Date(timestamp).toTimeString().split(' ')[0];
     },
     formatPhoneNumber(pn) {
-      return `${pn.substr(0,2)} (${pn.substr(2,3)}) ${pn.substr(5,3)}-${pn.substr(8)}`;
+      return `${pn.substr(0,1)} (${pn.substr(1,3)}) ${pn.substr(4,3)}-${pn.substr(7)}`;
     },
     sortColumn(index) {
       if (this.selectedHeader === index) {
@@ -137,31 +108,13 @@ export default {
             this.users.sort((a, b) => a.phonenumber > b.phonenumber ? 1 : -1);
             break;
           case 2:   // action -> created
-            this.users.sort((a, b) => a.actions['CREATE'] > b.actions['CREATE'] ? 1 : -1);
+            this.users.sort((a, b) => a.epoch > b.epoch ? 1 : -1);
             break;
           case 3:   // action -> messaged
-            this.users.sort((a, b) => { 
-              const d1 = a.actions['SENT'] !== undefined 
-                  ? new Date(`${logdate} ${a.actions['SENT']}`)
-                  : new Date();
-              const d2 = b.actions['SENT'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['SENT']}`)
-                  : new Date();
-
-              return d1 > d2 ? 1 : -1;
-            });
+            this.users.sort((a, b) => a.messageSentEpoch > b.messageSentEpoch ? 1 : -1);
             break;
           case 4:   // action -> arrived
-            this.users.sort((a, b) => { 
-              const d1 = a.actions['ARRIVE'] !== undefined 
-                  ? new Date(`${logdate} ${a.actions['ARRIVE']}`)
-                  : new Date();
-              const d2 = b.actions['ARRIVE'] !== undefined 
-                  ? new Date(`${logdate} ${b.actions['ARRIVE']}`)
-                  : new Date();
-
-              return d1 > d2 ? 1 : -1;
-            });
+            this.users.sort((a, b) => a.arrivalEpoch > b.arrivalEpoch ? 1 : -1);
             break;
           default:  // default
             break;
@@ -176,15 +129,25 @@ export default {
         const escapedMatchingStr = this.search.toLowerCase().replace(/\(|\)|-|\s/g, '');
         const nameMatch = user.fullname.toLowerCase().match(escapedMatchingStr);
         const phoneMatch = user.phonenumber.match(escapedMatchingStr);
-        const createdMatch = this.getLogAttr(user.id, 'CREATE')
+        const createdMatch = new Date(user.epoch)
+            .toTimeString()
+            .split(' ')[0]
             .toLowerCase()
             .match(escapedMatchingStr);
-        const sentMatch = this.getLogAttr(user.id, 'SENT')
-            .toLowerCase()
-            .match(escapedMatchingStr);
-        const arrivedMatch = this.getLogAttr(user.id, 'ARRIVE')
-            .toLowerCase()
-            .match(escapedMatchingStr);
+        const sentMatch = user.messageSentEpoch === null
+            ? 'N/A'
+            : new Date(user.messageSentEpoch)
+                .toTimeString()
+                .split(' ')[0]
+                .toLowerCase()
+                .match(escapedMatchingStr);
+        const arrivedMatch = user.arrivalEpoch === null
+            ? 'N/A'
+            : new Date(user.arrivalEpoch)
+                .toTimeString()
+                .split(' ')[0]
+                .toLowerCase()
+                .match(escapedMatchingStr);
         return nameMatch || phoneMatch || createdMatch || sentMatch || arrivedMatch;
       });
     }

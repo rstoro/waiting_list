@@ -37,37 +37,32 @@ export default {
     },
     log(action, params) {
       const d = new Date();
-      const filePath = `logs/${this.getDate(d)}.log`;
+      const filePath = `logs/${this.getDate(d)}/actions.log`;
       const data = JSON.stringify(
         { 'action': action, 'time': d.toTimeString(), ...params }
       ) + '\n';
       this.appendFile(filePath, data);
     },
     getLog(path) {
-      const relPath = `logs/${path}.log`;
+      const relPath = `logs/${path}/actions.log`;
       const files = this.loadFile(relPath);
       return files !== null 
         ? files.split(/\r?\n/).filter(u => u !== '').map(JSON.parse) 
         : null;
     },
-    getLogs(sPath, ePath) {
-      // NOTE: these are expected to be date like paths (i.e. 2021/10/23)
-      const sDate = new Date(sPath);
-      const eDate = new Date(ePath);
-      const dates = [];
-      for (const dt = new Date(sDate); dt <= eDate; dt.setDate(dt.getDate()+1)) {
-        dates.push(this.getDate(dt));
-      }
-
-      const logs = [];
-      dates.forEach(date => {
-        const curLog = this.getLog(date);
-        if (curLog !== null) {
-          logs.push(curLog);
-        }
-      });
-
-      return logs;
+    saveGroup(group) {
+      const d = new Date();
+      const filePath = `logs/${this.getDate(d)}/${group['id']}.json`;
+      const data = JSON.stringify(group);
+      this.appendFile(filePath, data);
+    },
+    loadGroups(path) {
+      const relPath = `logs/${path}/`;
+      const filenames = this.listDir(relPath) || [];
+      return filenames
+          .filter(filename => !filename.includes('.log'))
+          .map(filename => this.loadFile(relPath + filename))
+          .map(JSON.parse);
     },
     getDate(d) {
       const newD = new Date(d.getTime() - (d.getTimezoneOffset()*60*1000));

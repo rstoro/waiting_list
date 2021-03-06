@@ -73,6 +73,8 @@ export default {
   },
   methods: {
     loadLogdata(logdate) {
+      this.noDataExistsText = `There is no data for ${new Date(logdate).toDateString()}.`;
+
       const users = this.loadGroups(logdate);
       if (users === null || users === undefined || users.length === 0) {
         this.dataExists = false;
@@ -80,7 +82,6 @@ export default {
       }
 
       this.dataExists = true;
-      this.noDataExistsText = `There is no data for ${new Date(logdate).toDateString()}.`;
       this.timesChartData = this.getTimesChart(users);
       this.showedNoShowedChartData = this.getShowedNoShowedChartData(users);
       this.showedNoShowedChartText = this.getShowedNoShowedChartText(users);

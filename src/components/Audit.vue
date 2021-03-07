@@ -82,7 +82,7 @@ export default {
     loadLogdata(logdate) {
       this.noLogsExistText = `There are no logs for ${new Date(logdate).toDateString()}.`;
       this.users = this.loadGroups(logdate);
-      this.sortColumn(2);
+      this.setColumn(2);
     },
     formatDate(timestamp) {
       return timestamp === null 
@@ -98,29 +98,31 @@ export default {
         this.users.reverse();
       }
       else {
-        this.selectedHeader = index;
-        this.sortDirection = 'desc';
-        switch(index) {
-          case 0:   // name
-            this.users.sort((a, b) => a.fullname > b.fullname ? 1 : -1);
-            break;
-          case 1:   // phonenumber
-            this.users.sort((a, b) => a.phonenumber > b.phonenumber ? 1 : -1);
-            break;
-          case 2:   // action -> created
-            this.users.sort((a, b) => a.epoch > b.epoch ? 1 : -1);
-            break;
-          case 3:   // action -> messaged
-            this.users.sort((a, b) => a.messageSentEpoch > b.messageSentEpoch ? 1 : -1);
-            break;
-          case 4:   // action -> arrived
-            this.users.sort((a, b) => a.arrivalEpoch > b.arrivalEpoch ? 1 : -1);
-            break;
-          default:  // default
-            break;
-        }
+        this.setColumn(index);
       }
-
+    },
+    setColumn(index) {
+      this.selectedHeader = index;
+      this.sortDirection = 'desc';
+      switch(index) {
+        case 0:   // name
+          this.users.sort((a, b) => a.fullname > b.fullname ? 1 : -1);
+          break;
+        case 1:   // phonenumber
+          this.users.sort((a, b) => a.phonenumber > b.phonenumber ? 1 : -1);
+          break;
+        case 2:   // action -> created
+          this.users.sort((a, b) => a.epoch > b.epoch ? 1 : -1);
+          break;
+        case 3:   // action -> messaged
+          this.users.sort((a, b) => a.messageSentEpoch > b.messageSentEpoch ? 1 : -1);
+          break;
+        case 4:   // action -> arrived
+          this.users.sort((a, b) => a.arrivalEpoch > b.arrivalEpoch ? 1 : -1);
+          break;
+        default:  // default
+          break;
+      }
     }
   },
   computed: {
